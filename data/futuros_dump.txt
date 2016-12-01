@@ -1,0 +1,1675 @@
+﻿<div id="results_box">
+<table class="genTbl closedTbl historicalTbl" id="curr_table" tablesorter>
+    <thead>
+        <tr>
+            <th class="first left noWrap">Fecha<span sort_default="" class="headerSortDefault"></span></th>
+            <th class="noWrap">Cierre<span sort_default="" class="headerSortDefault"></span></th>
+            <th class="noWrap">Apertura<span sort_default="" class="headerSortDefault"></span></th>
+            <th class="noWrap">Máximo<span sort_default="" class="headerSortDefault"></span></th>
+            <th class="noWrap">Mínimo<span sort_default="" class="headerSortDefault"></span></th>
+            <th class="noWrap">Vol.<span sort_default="" class="headerSortDefault"></span></th>            <th class="noWrap">Var. %<span sort_default="" class="headerSortDefault"></span></th>
+        </tr>
+    </thead>
+    <tbody>
+                <tr>
+            <td  data-real-value="1477958400" class="first left bold noWrap">Nov 2016</td>
+            <td class="greenFont">360.00</td>
+            <td>354.50</td>
+            <td>360.00</td>
+            <td>336.00</td>
+            <td data-real-value="0">-</td>            <td class="bold greenFont">1.48%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1475280000" class="first left bold noWrap">Oct 2016</td>
+            <td class="greenFont">354.75</td>
+            <td>336.25</td>
+            <td>359.25</td>
+            <td>335.25</td>
+            <td data-real-value="3551539">3,55M</td>            <td class="bold greenFont">5.35%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1472688000" class="first left bold noWrap">Sep 2016</td>
+            <td class="greenFont">336.75</td>
+            <td>302.00</td>
+            <td>342.25</td>
+            <td>301.75</td>
+            <td data-real-value="1756137">1,76M</td>            <td class="bold greenFont">11.69%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1470009600" class="first left bold noWrap">Ago 2016</td>
+            <td class="redFont">301.50</td>
+            <td>332.50</td>
+            <td>334.75</td>
+            <td>301.00</td>
+            <td data-real-value="2343872">2,34M</td>            <td class="bold redFont">-9.87%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1467331200" class="first left bold noWrap">Jul 2016</td>
+            <td class="redFont">334.50</td>
+            <td>360.75</td>
+            <td>374.50</td>
+            <td>326.75</td>
+            <td data-real-value="1065695">1,07M</td>            <td class="bold redFont">-6.76%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1464739200" class="first left bold noWrap">Jun 2016</td>
+            <td class="redFont">358.75</td>
+            <td>404.25</td>
+            <td>439.25</td>
+            <td>355.75</td>
+            <td data-real-value="4551294">4,55M</td>            <td class="bold redFont">-11.37%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1462060800" class="first left bold noWrap">May 2016</td>
+            <td class="greenFont">404.75</td>
+            <td>388.75</td>
+            <td>413.50</td>
+            <td>367.00</td>
+            <td data-real-value="2070082">2,07M</td>            <td class="bold greenFont">3.72%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1459468800" class="first left bold noWrap">Abr 2016</td>
+            <td class="greenFont">390.25</td>
+            <td>351.75</td>
+            <td>402.00</td>
+            <td>347.25</td>
+            <td data-real-value="4425796">4,43M</td>            <td class="bold greenFont">11.02%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1456790400" class="first left bold noWrap">Mar 2016</td>
+            <td class="redFont">351.50</td>
+            <td>353.50</td>
+            <td>374.00</td>
+            <td>347.50</td>
+            <td data-real-value="2105248">2,11M</td>            <td class="bold redFont">-0.57%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1454284800" class="first left bold noWrap">Feb 2016</td>
+            <td class="redFont">353.50</td>
+            <td>371.00</td>
+            <td>373.75</td>
+            <td>352.50</td>
+            <td data-real-value="3579814">3,58M</td>            <td class="bold redFont">-4.97%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1451606400" class="first left bold noWrap">Ene 2016</td>
+            <td class="greenFont">372.00</td>
+            <td>359.50</td>
+            <td>373.00</td>
+            <td>348.50</td>
+            <td data-real-value="3567210">3,57M</td>            <td class="bold greenFont">3.69%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1448928000" class="first left bold noWrap">Dic 2015</td>
+            <td class="redFont">358.75</td>
+            <td>365.25</td>
+            <td>381.75</td>
+            <td>357.00</td>
+            <td data-real-value="1571002">1,57M</td>            <td class="bold redFont">-1.71%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1446336000" class="first left bold noWrap">Nov 2015</td>
+            <td class="redFont">365.00</td>
+            <td>381.25</td>
+            <td>383.50</td>
+            <td>356.00</td>
+            <td data-real-value="4094122">4,09M</td>            <td class="bold redFont">-4.51%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1443657600" class="first left bold noWrap">Oct 2015</td>
+            <td class="redFont">382.25</td>
+            <td>387.75</td>
+            <td>399.75</td>
+            <td>372.00</td>
+            <td data-real-value="3498237">3,50M</td>            <td class="bold redFont">-1.42%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1441065600" class="first left bold noWrap">Sep 2015</td>
+            <td class="greenFont">387.75</td>
+            <td>362.50</td>
+            <td>395.00</td>
+            <td>346.75</td>
+            <td data-real-value="1712630">1,71M</td>            <td class="bold greenFont">6.60%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1438387200" class="first left bold noWrap">Ago 2015</td>
+            <td class="redFont">363.75</td>
+            <td>370.00</td>
+            <td>391.50</td>
+            <td>346.50</td>
+            <td data-real-value="2473197">2,47M</td>            <td class="bold redFont">-1.95%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1435708800" class="first left bold noWrap">Jul 2015</td>
+            <td class="redFont">371.00</td>
+            <td>411.00</td>
+            <td>438.75</td>
+            <td>365.75</td>
+            <td data-real-value="1568632">1,57M</td>            <td class="bold redFont">-10.39%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1433116800" class="first left bold noWrap">Jun 2015</td>
+            <td class="greenFont">414.00</td>
+            <td>350.50</td>
+            <td>415.00</td>
+            <td>346.75</td>
+            <td data-real-value="4330105">4,33M</td>            <td class="bold greenFont">17.78%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1430438400" class="first left bold noWrap">May 2015</td>
+            <td class="redFont">351.50</td>
+            <td>362.50</td>
+            <td>371.50</td>
+            <td>348.25</td>
+            <td data-real-value="1662392">1,66M</td>            <td class="bold redFont">-3.03%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1427846400" class="first left bold noWrap">Abr 2015</td>
+            <td class="redFont">362.50</td>
+            <td>377.00</td>
+            <td>390.00</td>
+            <td>359.00</td>
+            <td data-real-value="3190248">3,19M</td>            <td class="bold redFont">-3.65%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1425168000" class="first left bold noWrap">Mar 2015</td>
+            <td class="redFont">376.25</td>
+            <td>383.00</td>
+            <td>398.50</td>
+            <td>367.00</td>
+            <td data-real-value="2157055">2,16M</td>            <td class="bold redFont">-2.15%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1422748800" class="first left bold noWrap">Feb 2015</td>
+            <td class="greenFont">384.50</td>
+            <td>369.75</td>
+            <td>391.75</td>
+            <td>367.50</td>
+            <td data-real-value="3084387">3,08M</td>            <td class="bold greenFont">3.92%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1420070400" class="first left bold noWrap">Ene 2015</td>
+            <td class="redFont">370.00</td>
+            <td>396.25</td>
+            <td>409.50</td>
+            <td>365.75</td>
+            <td data-real-value="3190538">3,19M</td>            <td class="bold redFont">-6.80%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1417392000" class="first left bold noWrap">Dic 2014</td>
+            <td class="greenFont">397.00</td>
+            <td>374.00</td>
+            <td>417.00</td>
+            <td>364.25</td>
+            <td data-real-value="1382165">1,38M</td>            <td class="bold greenFont">5.66%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1414800000" class="first left bold noWrap">Nov 2014</td>
+            <td class="redFont">375.75</td>
+            <td>374.50</td>
+            <td>389.00</td>
+            <td>359.00</td>
+            <td data-real-value="3705708">3,71M</td>            <td class="bold redFont">-0.27%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1412121600" class="first left bold noWrap">Oct 2014</td>
+            <td class="greenFont">376.75</td>
+            <td>320.25</td>
+            <td>381.00</td>
+            <td>318.25</td>
+            <td data-real-value="3800963">3,80M</td>            <td class="bold greenFont">17.46%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1409529600" class="first left bold noWrap">Sep 2014</td>
+            <td class="redFont">320.75</td>
+            <td>357.50</td>
+            <td>360.75</td>
+            <td>319.50</td>
+            <td data-real-value="1439089">1,44M</td>            <td class="bold redFont">-10.65%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1406851200" class="first left bold noWrap">Ago 2014</td>
+            <td class="greenFont">359.00</td>
+            <td>357.00</td>
+            <td>370.00</td>
+            <td>347.75</td>
+            <td data-real-value="1960233">1,96M</td>            <td class="bold greenFont">0.56%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1404172800" class="first left bold noWrap">Jul 2014</td>
+            <td class="redFont">357.00</td>
+            <td>423.75</td>
+            <td>423.75</td>
+            <td>356.50</td>
+            <td data-real-value="1030093">1,03M</td>            <td class="bold redFont">-15.85%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1401580800" class="first left bold noWrap">Jun 2014</td>
+            <td class="redFont">424.25</td>
+            <td>465.00</td>
+            <td>470.50</td>
+            <td>422.50</td>
+            <td data-real-value="2609528">2,61M</td>            <td class="bold redFont">-8.91%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1398902400" class="first left bold noWrap">May 2014</td>
+            <td class="redFont">465.75</td>
+            <td>513.25</td>
+            <td>519.50</td>
+            <td>465.00</td>
+            <td data-real-value="1273234">1,27M</td>            <td class="bold redFont">-9.39%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1396310400" class="first left bold noWrap">Abr 2014</td>
+            <td class="greenFont">514.00</td>
+            <td>501.50</td>
+            <td>519.00</td>
+            <td>485.50</td>
+            <td data-real-value="2651250">2,65M</td>            <td class="bold greenFont">2.39%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1393632000" class="first left bold noWrap">Mar 2014</td>
+            <td class="greenFont">502.00</td>
+            <td>459.00</td>
+            <td>503.75</td>
+            <td>457.25</td>
+            <td data-real-value="1342413">1,34M</td>            <td class="bold greenFont">9.73%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1391212800" class="first left bold noWrap">Feb 2014</td>
+            <td class="greenFont">457.50</td>
+            <td>433.50</td>
+            <td>459.00</td>
+            <td>433.25</td>
+            <td data-real-value="3193207">3,19M</td>            <td class="bold greenFont">5.41%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1388534400" class="first left bold noWrap">Ene 2014</td>
+            <td class="greenFont">434.00</td>
+            <td>422.00</td>
+            <td>435.50</td>
+            <td>406.25</td>
+            <td data-real-value="3246516">3,25M</td>            <td class="bold greenFont">2.84%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1385856000" class="first left bold noWrap">Dic 2013</td>
+            <td class="greenFont">422.00</td>
+            <td>414.75</td>
+            <td>436.00</td>
+            <td>410.00</td>
+            <td data-real-value="879439">879,44K</td>            <td class="bold greenFont">1.63%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1383264000" class="first left bold noWrap">Nov 2013</td>
+            <td class="redFont">415.25</td>
+            <td>427.75</td>
+            <td>438.00</td>
+            <td>410.75</td>
+            <td data-real-value="3724885">3,72M</td>            <td class="bold redFont">-3.04%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1380585600" class="first left bold noWrap">Oct 2013</td>
+            <td class="redFont">428.25</td>
+            <td>441.25</td>
+            <td>449.75</td>
+            <td>427.00</td>
+            <td data-real-value="2949249">2,95M</td>            <td class="bold redFont">-3.00%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1377993600" class="first left bold noWrap">Sep 2013</td>
+            <td class="redFont">441.50</td>
+            <td>501.25</td>
+            <td>504.50</td>
+            <td>440.75</td>
+            <td data-real-value="1321084">1,32M</td>            <td class="bold redFont">-10.81%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1375315200" class="first left bold noWrap">Ago 2013</td>
+            <td class="redFont">495.00</td>
+            <td>499.00</td>
+            <td>522.75</td>
+            <td>453.75</td>
+            <td data-real-value="1616495">1,62M</td>            <td class="bold redFont">-0.80%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1372636800" class="first left bold noWrap">Jul 2013</td>
+            <td class="redFont">499.00</td>
+            <td>678.50</td>
+            <td>800.00</td>
+            <td>488.25</td>
+            <td data-real-value="988749">988,75K</td>            <td class="bold redFont">-26.54%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1370044800" class="first left bold noWrap">Jun 2013</td>
+            <td class="greenFont">679.25</td>
+            <td>661.25</td>
+            <td>685.50</td>
+            <td>640.50</td>
+            <td data-real-value="2050502">2,05M</td>            <td class="bold greenFont">2.61%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1367366400" class="first left bold noWrap">May 2013</td>
+            <td class="redFont">662.00</td>
+            <td>679.50</td>
+            <td>722.50</td>
+            <td>632.50</td>
+            <td data-real-value="1224522">1,22M</td>            <td class="bold redFont">-3.11%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1364774400" class="first left bold noWrap">Abr 2013</td>
+            <td class="redFont">683.25</td>
+            <td>679.00</td>
+            <td>693.00</td>
+            <td>626.50</td>
+            <td data-real-value="2672653">2,67M</td>            <td class="bold redFont">-1.73%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1362096000" class="first left bold noWrap">Mar 2013</td>
+            <td class="redFont">695.25</td>
+            <td>719.50</td>
+            <td>749.00</td>
+            <td>695.25</td>
+            <td data-real-value="1216209">1,22M</td>            <td class="bold redFont">-3.37%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1359676800" class="first left bold noWrap">Feb 2013</td>
+            <td class="redFont">719.50</td>
+            <td>740.25</td>
+            <td>746.25</td>
+            <td>687.25</td>
+            <td data-real-value="2702643">2,70M</td>            <td class="bold redFont">-2.84%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1356998400" class="first left bold noWrap">Ene 2013</td>
+            <td class="greenFont">740.50</td>
+            <td>706.25</td>
+            <td>744.50</td>
+            <td>678.00</td>
+            <td data-real-value="2881610">2,88M</td>            <td class="bold greenFont">6.05%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1354320000" class="first left bold noWrap">Dic 2012</td>
+            <td class="redFont">698.25</td>
+            <td>752.00</td>
+            <td>759.00</td>
+            <td>687.50</td>
+            <td data-real-value="874508">874,51K</td>            <td class="bold redFont">-6.65%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1351728000" class="first left bold noWrap">Nov 2012</td>
+            <td class="redFont">748.00</td>
+            <td>755.50</td>
+            <td>763.25</td>
+            <td>710.50</td>
+            <td data-real-value="3127087">3,13M</td>            <td class="bold redFont">-1.03%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1349049600" class="first left bold noWrap">Oct 2012</td>
+            <td class="redFont">755.75</td>
+            <td>760.25</td>
+            <td>776.00</td>
+            <td>732.25</td>
+            <td data-real-value="2995226">3,00M</td>            <td class="bold redFont">-0.07%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1346457600" class="first left bold noWrap">Sep 2012</td>
+            <td class="redFont">756.25</td>
+            <td>805.00</td>
+            <td>818.25</td>
+            <td>705.00</td>
+            <td data-real-value="1555098">1,56M</td>            <td class="bold redFont">-5.79%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1343779200" class="first left bold noWrap">Ago 2012</td>
+            <td class="redFont">802.75</td>
+            <td>806.50</td>
+            <td>843.75</td>
+            <td>776.75</td>
+            <td data-real-value="1600457">1,60M</td>            <td class="bold redFont">-0.46%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1341100800" class="first left bold noWrap">Jul 2012</td>
+            <td class="greenFont">806.50</td>
+            <td>682.00</td>
+            <td>828.75</td>
+            <td>679.75</td>
+            <td data-real-value="1029918">1,03M</td>            <td class="bold greenFont">19.93%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1338508800" class="first left bold noWrap">Jun 2012</td>
+            <td class="greenFont">672.50</td>
+            <td>557.75</td>
+            <td>676.25</td>
+            <td>551.00</td>
+            <td data-real-value="2757341">2,76M</td>            <td class="bold greenFont">21.12%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1335830400" class="first left bold noWrap">May 2012</td>
+            <td class="redFont">555.25</td>
+            <td>659.25</td>
+            <td>685.75</td>
+            <td>553.50</td>
+            <td data-real-value="1901509">1,90M</td>            <td class="bold redFont">-15.90%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1333238400" class="first left bold noWrap">Abr 2012</td>
+            <td class="greenFont">660.25</td>
+            <td>649.50</td>
+            <td>666.00</td>
+            <td>599.50</td>
+            <td data-real-value="2763220">2,76M</td>            <td class="bold greenFont">2.52%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1330560000" class="first left bold noWrap">Mar 2012</td>
+            <td class="redFont">644.00</td>
+            <td>655.75</td>
+            <td>678.50</td>
+            <td>603.00</td>
+            <td data-real-value="1999605">2,00M</td>            <td class="bold redFont">-1.90%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1328054400" class="first left bold noWrap">Feb 2012</td>
+            <td class="greenFont">656.50</td>
+            <td>639.00</td>
+            <td>659.00</td>
+            <td>621.75</td>
+            <td data-real-value="3244416">3,24M</td>            <td class="bold greenFont">2.74%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1325376000" class="first left bold noWrap">Ene 2012</td>
+            <td class="redFont">639.00</td>
+            <td>662.00</td>
+            <td>664.25</td>
+            <td>592.50</td>
+            <td data-real-value="3417325">3,42M</td>            <td class="bold redFont">-1.16%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1322697600" class="first left bold noWrap">Dic 2011</td>
+            <td class="greenFont">646.50</td>
+            <td>602.00</td>
+            <td>648.50</td>
+            <td>570.00</td>
+            <td data-real-value="1272553">1,27M</td>            <td class="bold greenFont">7.53%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1320105600" class="first left bold noWrap">Nov 2011</td>
+            <td class="redFont">601.25</td>
+            <td>646.25</td>
+            <td>666.00</td>
+            <td>580.50</td>
+            <td data-real-value="3897451">3,90M</td>            <td class="bold redFont">-7.07%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1317427200" class="first left bold noWrap">Oct 2011</td>
+            <td class="greenFont">647.00</td>
+            <td>590.00</td>
+            <td>665.50</td>
+            <td>572.25</td>
+            <td data-real-value="3533848">3,53M</td>            <td class="bold greenFont">9.20%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1314835200" class="first left bold noWrap">Sep 2011</td>
+            <td class="redFont">592.50</td>
+            <td>756.50</td>
+            <td>757.00</td>
+            <td>592.50</td>
+            <td data-real-value="2230798">2,23M</td>            <td class="bold redFont">-21.78%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1312156800" class="first left bold noWrap">Ago 2011</td>
+            <td class="greenFont">757.50</td>
+            <td>668.50</td>
+            <td>765.50</td>
+            <td>658.50</td>
+            <td data-real-value="1778339">1,78M</td>            <td class="bold greenFont">13.82%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1309478400" class="first left bold noWrap">Jul 2011</td>
+            <td class="greenFont">665.50</td>
+            <td>629.00</td>
+            <td>742.00</td>
+            <td>620.75</td>
+            <td data-real-value="798167">798,17K</td>            <td class="bold greenFont">5.80%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1306886400" class="first left bold noWrap">Jun 2011</td>
+            <td class="redFont">629.00</td>
+            <td>751.00</td>
+            <td>799.75</td>
+            <td>615.00</td>
+            <td data-real-value="3693061">3,69M</td>            <td class="bold redFont">-15.85%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1304208000" class="first left bold noWrap">May 2011</td>
+            <td class="redFont">747.50</td>
+            <td>752.75</td>
+            <td>775.00</td>
+            <td>659.25</td>
+            <td data-real-value="1674331">1,67M</td>            <td class="bold redFont">-0.86%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1301616000" class="first left bold noWrap">Abr 2011</td>
+            <td class="greenFont">754.00</td>
+            <td>730.00</td>
+            <td>783.75</td>
+            <td>715.50</td>
+            <td data-real-value="3293402">3,29M</td>            <td class="bold greenFont">8.76%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1298937600" class="first left bold noWrap">Mar 2011</td>
+            <td class="redFont">693.25</td>
+            <td>722.00</td>
+            <td>735.00</td>
+            <td>608.00</td>
+            <td data-real-value="2240800">2,24M</td>            <td class="bold redFont">-4.05%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1296518400" class="first left bold noWrap">Feb 2011</td>
+            <td class="greenFont">722.50</td>
+            <td>658.75</td>
+            <td>724.25</td>
+            <td>655.75</td>
+            <td data-real-value="3052085">3,05M</td>            <td class="bold greenFont">9.55%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1293840000" class="first left bold noWrap">Ene 2011</td>
+            <td class="greenFont">659.50</td>
+            <td>626.25</td>
+            <td>667.00</td>
+            <td>595.00</td>
+            <td data-real-value="3351369">3,35M</td>            <td class="bold greenFont">4.85%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1291161600" class="first left bold noWrap">Dic 2010</td>
+            <td class="greenFont">629.00</td>
+            <td>530.75</td>
+            <td>630.00</td>
+            <td>528.75</td>
+            <td data-real-value="1267673">1,27M</td>            <td class="bold greenFont">18.68%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1288569600" class="first left bold noWrap">Nov 2010</td>
+            <td class="redFont">530.00</td>
+            <td>585.00</td>
+            <td>605.00</td>
+            <td>506.25</td>
+            <td data-real-value="4185902">4,19M</td>            <td class="bold redFont">-8.93%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1285891200" class="first left bold noWrap">Oct 2010</td>
+            <td class="greenFont">582.00</td>
+            <td>494.75</td>
+            <td>588.00</td>
+            <td>454.25</td>
+            <td data-real-value="4067650">4,07M</td>            <td class="bold greenFont">17.40%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1283299200" class="first left bold noWrap">Sep 2010</td>
+            <td class="greenFont">495.75</td>
+            <td>424.75</td>
+            <td>528.75</td>
+            <td>423.25</td>
+            <td data-real-value="2551381">2,55M</td>            <td class="bold greenFont">16.78%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1280620800" class="first left bold noWrap">Ago 2010</td>
+            <td class="greenFont">424.50</td>
+            <td>391.50</td>
+            <td>429.50</td>
+            <td>385.00</td>
+            <td data-real-value="1805018">1,81M</td>            <td class="bold greenFont">8.08%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1277942400" class="first left bold noWrap">Jul 2010</td>
+            <td class="greenFont">392.75</td>
+            <td>354.00</td>
+            <td>397.75</td>
+            <td>351.50</td>
+            <td data-real-value="927977">927,98K</td>            <td class="bold greenFont">10.87%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1275350400" class="first left bold noWrap">Jun 2010</td>
+            <td class="redFont">354.25</td>
+            <td>358.75</td>
+            <td>367.25</td>
+            <td>324.50</td>
+            <td data-real-value="2707407">2,71M</td>            <td class="bold redFont">-1.32%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1272672000" class="first left bold noWrap">May 2010</td>
+            <td class="redFont">359.00</td>
+            <td>366.00</td>
+            <td>379.00</td>
+            <td>353.50</td>
+            <td data-real-value="1231273">1,23M</td>            <td class="bold redFont">-1.98%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1270080000" class="first left bold noWrap">Abr 2010</td>
+            <td class="greenFont">366.25</td>
+            <td>345.25</td>
+            <td>370.00</td>
+            <td>343.50</td>
+            <td data-real-value="2313157">2,31M</td>            <td class="bold greenFont">6.16%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1267401600" class="first left bold noWrap">Mar 2010</td>
+            <td class="redFont">345.00</td>
+            <td>378.00</td>
+            <td>381.00</td>
+            <td>343.50</td>
+            <td data-real-value="1312395">1,31M</td>            <td class="bold redFont">-8.73%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1264982400" class="first left bold noWrap">Feb 2010</td>
+            <td class="greenFont">378.00</td>
+            <td>356.25</td>
+            <td>380.00</td>
+            <td>347.25</td>
+            <td data-real-value="2424064">2,42M</td>            <td class="bold greenFont">6.03%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1262304000" class="first left bold noWrap">Ene 2010</td>
+            <td class="redFont">356.50</td>
+            <td>415.75</td>
+            <td>426.25</td>
+            <td>355.25</td>
+            <td data-real-value="2425252">2,43M</td>            <td class="bold redFont">-13.99%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1259625600" class="first left bold noWrap">Dic 2009</td>
+            <td class="greenFont">414.50</td>
+            <td>400.75</td>
+            <td>418.75</td>
+            <td>363.75</td>
+            <td data-real-value="1100457">1,10M</td>            <td class="bold greenFont">2.92%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1257033600" class="first left bold noWrap">Nov 2009</td>
+            <td class="greenFont">402.75</td>
+            <td>362.00</td>
+            <td>409.50</td>
+            <td>359.25</td>
+            <td data-real-value="2894470">2,89M</td>            <td class="bold greenFont">10.04%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1254355200" class="first left bold noWrap">Oct 2009</td>
+            <td class="greenFont">366.00</td>
+            <td>341.25</td>
+            <td>413.50</td>
+            <td>327.50</td>
+            <td data-real-value="2933777">2,93M</td>            <td class="bold greenFont">6.40%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1251763200" class="first left bold noWrap">Sep 2009</td>
+            <td class="greenFont">344.00</td>
+            <td>325.00</td>
+            <td>347.75</td>
+            <td>296.75</td>
+            <td data-real-value="1490498">1,49M</td>            <td class="bold greenFont">5.44%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1249084800" class="first left bold noWrap">Ago 2009</td>
+            <td class="redFont">326.25</td>
+            <td>342.00</td>
+            <td>365.00</td>
+            <td>304.25</td>
+            <td data-real-value="1402020">1,40M</td>            <td class="bold redFont">-3.90%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1246406400" class="first left bold noWrap">Jul 2009</td>
+            <td class="redFont">339.50</td>
+            <td>346.00</td>
+            <td>369.00</td>
+            <td>304.00</td>
+            <td data-real-value="893611">893,61K</td>            <td class="bold redFont">-2.37%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1243814400" class="first left bold noWrap">Jun 2009</td>
+            <td class="redFont">347.75</td>
+            <td>434.25</td>
+            <td>450.00</td>
+            <td>337.75</td>
+            <td data-real-value="2486037">2,49M</td>            <td class="bold redFont">-20.29%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1241136000" class="first left bold noWrap">May 2009</td>
+            <td class="greenFont">436.25</td>
+            <td>395.00</td>
+            <td>437.00</td>
+            <td>390.00</td>
+            <td data-real-value="1211161">1,21M</td>            <td class="bold greenFont">10.09%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1238544000" class="first left bold noWrap">Abr 2009</td>
+            <td class="redFont">396.25</td>
+            <td>401.50</td>
+            <td>407.50</td>
+            <td>360.50</td>
+            <td data-real-value="1928287">1,93M</td>            <td class="bold redFont">-2.10%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1235865600" class="first left bold noWrap">Mar 2009</td>
+            <td class="greenFont">404.75</td>
+            <td>350.00</td>
+            <td>406.00</td>
+            <td>337.25</td>
+            <td data-real-value="1153526">1,15M</td>            <td class="bold greenFont">15.40%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1233446400" class="first left bold noWrap">Feb 2009</td>
+            <td class="redFont">350.75</td>
+            <td>378.00</td>
+            <td>383.00</td>
+            <td>342.00</td>
+            <td data-real-value="2106962">2,11M</td>            <td class="bold redFont">-7.45%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1230768000" class="first left bold noWrap">Ene 2009</td>
+            <td class="redFont">379.00</td>
+            <td>404.00</td>
+            <td>429.00</td>
+            <td>358.75</td>
+            <td data-real-value="2050088">2,05M</td>            <td class="bold redFont">-6.88%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1228089600" class="first left bold noWrap">Dic 2008</td>
+            <td class="greenFont">407.00</td>
+            <td>350.00</td>
+            <td>423.75</td>
+            <td>290.00</td>
+            <td data-real-value="1145601">1,15M</td>            <td class="bold greenFont">16.45%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1225497600" class="first left bold noWrap">Nov 2008</td>
+            <td class="redFont">349.50</td>
+            <td>398.00</td>
+            <td>422.00</td>
+            <td>336.50</td>
+            <td data-real-value="2403653">2,40M</td>            <td class="bold redFont">-12.95%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1222819200" class="first left bold noWrap">Oct 2008</td>
+            <td class="redFont">401.50</td>
+            <td>494.00</td>
+            <td>500.00</td>
+            <td>364.00</td>
+            <td data-real-value="2907364">2,91M</td>            <td class="bold redFont">-17.64%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1220227200" class="first left bold noWrap">Sep 2008</td>
+            <td class="redFont">487.50</td>
+            <td>560.25</td>
+            <td>579.75</td>
+            <td>485.50</td>
+            <td data-real-value="1722771">1,72M</td>            <td class="bold redFont">-14.21%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1217548800" class="first left bold noWrap">Ago 2008</td>
+            <td class="redFont">568.25</td>
+            <td>589.00</td>
+            <td>608.75</td>
+            <td>485.25</td>
+            <td data-real-value="1305062">1,31M</td>            <td class="bold redFont">-3.28%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1214870400" class="first left bold noWrap">Jul 2008</td>
+            <td class="redFont">587.50</td>
+            <td>722.00</td>
+            <td>751.50</td>
+            <td>543.75</td>
+            <td data-real-value="890801">890,80K</td>            <td class="bold redFont">-18.94%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1212278400" class="first left bold noWrap">Jun 2008</td>
+            <td class="greenFont">724.75</td>
+            <td>597.00</td>
+            <td>765.00</td>
+            <td>595.75</td>
+            <td data-real-value="2651929">2,65M</td>            <td class="bold greenFont">20.94%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1209600000" class="first left bold noWrap">May 2008</td>
+            <td class="redFont">599.25</td>
+            <td>602.00</td>
+            <td>627.00</td>
+            <td>572.00</td>
+            <td data-real-value="1313245">1,31M</td>            <td class="bold redFont">-0.17%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1207008000" class="first left bold noWrap">Abr 2008</td>
+            <td class="greenFont">600.25</td>
+            <td>570.50</td>
+            <td>616.00</td>
+            <td>561.25</td>
+            <td data-real-value="2479820">2,48M</td>            <td class="bold greenFont">5.82%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1204329600" class="first left bold noWrap">Mar 2008</td>
+            <td class="greenFont">567.25</td>
+            <td>546.00</td>
+            <td>588.00</td>
+            <td>503.25</td>
+            <td data-real-value="2234720">2,23M</td>            <td class="bold greenFont">3.89%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1201824000" class="first left bold noWrap">Feb 2008</td>
+            <td class="greenFont">546.00</td>
+            <td>503.00</td>
+            <td>547.75</td>
+            <td>491.00</td>
+            <td data-real-value="3137398">3,14M</td>            <td class="bold greenFont">8.93%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1199145600" class="first left bold noWrap">Ene 2008</td>
+            <td class="greenFont">501.25</td>
+            <td>456.25</td>
+            <td>519.25</td>
+            <td>456.00</td>
+            <td data-real-value="1999555">2,00M</td>            <td class="bold greenFont">10.04%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1196467200" class="first left bold noWrap">Dic 2007</td>
+            <td class="greenFont">455.50</td>
+            <td>383.75</td>
+            <td>457.00</td>
+            <td>382.25</td>
+            <td data-real-value="910814">910,81K</td>            <td class="bold greenFont">18.47%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1193875200" class="first left bold noWrap">Nov 2007</td>
+            <td class="greenFont">384.50</td>
+            <td>375.50</td>
+            <td>394.00</td>
+            <td>366.50</td>
+            <td data-real-value="2235448">2,24M</td>            <td class="bold greenFont">2.40%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1191196800" class="first left bold noWrap">Oct 2007</td>
+            <td class="greenFont">375.50</td>
+            <td>373.00</td>
+            <td>380.00</td>
+            <td>335.00</td>
+            <td data-real-value="2130576">2,13M</td>            <td class="bold greenFont">0.67%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1188604800" class="first left bold noWrap">Sep 2007</td>
+            <td class="greenFont">373.00</td>
+            <td>327.50</td>
+            <td>389.50</td>
+            <td>319.75</td>
+            <td data-real-value="1180632">1,18M</td>            <td class="bold greenFont">15.12%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1185926400" class="first left bold noWrap">Ago 2007</td>
+            <td class="redFont">324.00</td>
+            <td>327.00</td>
+            <td>354.50</td>
+            <td>309.50</td>
+            <td data-real-value="1147364">1,15M</td>            <td class="bold redFont">-0.54%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1183248000" class="first left bold noWrap">Jul 2007</td>
+            <td class="redFont">325.75</td>
+            <td>330.00</td>
+            <td>348.25</td>
+            <td>308.50</td>
+            <td data-real-value="634043">634,04K</td>            <td class="bold redFont">-1.14%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1180656000" class="first left bold noWrap">Jun 2007</td>
+            <td class="redFont">329.50</td>
+            <td>390.00</td>
+            <td>428.75</td>
+            <td>323.00</td>
+            <td data-real-value="2101984">2,10M</td>            <td class="bold redFont">-15.57%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1177977600" class="first left bold noWrap">May 2007</td>
+            <td class="greenFont">390.25</td>
+            <td>364.75</td>
+            <td>395.75</td>
+            <td>343.50</td>
+            <td data-real-value="1337258">1,34M</td>            <td class="bold greenFont">9.01%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1175385600" class="first left bold noWrap">Abr 2007</td>
+            <td class="redFont">358.00</td>
+            <td>357.00</td>
+            <td>385.25</td>
+            <td>343.00</td>
+            <td data-real-value="1799742">1,80M</td>            <td class="bold redFont">-4.41%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1172707200" class="first left bold noWrap">Mar 2007</td>
+            <td class="redFont">374.50</td>
+            <td>425.75</td>
+            <td>428.50</td>
+            <td>374.50</td>
+            <td data-real-value="1248259">1,25M</td>            <td class="bold redFont">-11.93%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1170288000" class="first left bold noWrap">Feb 2007</td>
+            <td class="greenFont">425.25</td>
+            <td>404.25</td>
+            <td>437.25</td>
+            <td>391.50</td>
+            <td data-real-value="2030278">2,03M</td>            <td class="bold greenFont">5.26%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1167609600" class="first left bold noWrap">Ene 2007</td>
+            <td class="greenFont">404.00</td>
+            <td>389.25</td>
+            <td>420.50</td>
+            <td>352.50</td>
+            <td data-real-value="2680961">2,68M</td>            <td class="bold greenFont">3.52%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1164931200" class="first left bold noWrap">Dic 2006</td>
+            <td class="greenFont">390.25</td>
+            <td>376.75</td>
+            <td>392.00</td>
+            <td>349.00</td>
+            <td data-real-value="791445">791,45K</td>            <td class="bold greenFont">3.51%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1162339200" class="first left bold noWrap">Nov 2006</td>
+            <td class="greenFont">377.00</td>
+            <td>320.75</td>
+            <td>378.00</td>
+            <td>320.50</td>
+            <td data-real-value="2565994">2,57M</td>            <td class="bold greenFont">17.54%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1159660800" class="first left bold noWrap">Oct 2006</td>
+            <td class="greenFont">320.75</td>
+            <td>263.25</td>
+            <td>334.00</td>
+            <td>261.50</td>
+            <td data-real-value="3001025">3,00M</td>            <td class="bold greenFont">22.19%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1157068800" class="first left bold noWrap">Sep 2006</td>
+            <td class="greenFont">262.50</td>
+            <td>231.50</td>
+            <td>268.00</td>
+            <td>222.25</td>
+            <td data-real-value="1551880">1,55M</td>            <td class="bold greenFont">13.15%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1154390400" class="first left bold noWrap">Ago 2006</td>
+            <td class="redFont">232.00</td>
+            <td>239.75</td>
+            <td>248.75</td>
+            <td>216.75</td>
+            <td data-real-value="1073813">1,07M</td>            <td class="bold redFont">-2.93%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1151712000" class="first left bold noWrap">Jul 2006</td>
+            <td class="greenFont">239.00</td>
+            <td>239.25</td>
+            <td>259.50</td>
+            <td>235.25</td>
+            <td data-real-value="618473">618,47K</td>            <td class="bold greenFont">1.49%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1149120000" class="first left bold noWrap">Jun 2006</td>
+            <td class="redFont">235.50</td>
+            <td>251.25</td>
+            <td>260.00</td>
+            <td>221.00</td>
+            <td data-real-value="1806302">1,81M</td>            <td class="bold redFont">-6.27%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1146441600" class="first left bold noWrap">May 2006</td>
+            <td class="greenFont">251.25</td>
+            <td>237.25</td>
+            <td>264.25</td>
+            <td>225.75</td>
+            <td data-real-value="1167528">1,17M</td>            <td class="bold greenFont">5.46%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1143849600" class="first left bold noWrap">Abr 2006</td>
+            <td class="greenFont">238.25</td>
+            <td>235.25</td>
+            <td>244.00</td>
+            <td>228.75</td>
+            <td data-real-value="1244929">1,24M</td>            <td class="bold greenFont">0.95%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1141171200" class="first left bold noWrap">Mar 2006</td>
+            <td class="greenFont">236.00</td>
+            <td>227.25</td>
+            <td>243.00</td>
+            <td>217.00</td>
+            <td data-real-value="1110415">1,11M</td>            <td class="bold greenFont">3.51%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1138752000" class="first left bold noWrap">Feb 2006</td>
+            <td class="greenFont">228.00</td>
+            <td>217.75</td>
+            <td>228.75</td>
+            <td>215.25</td>
+            <td data-real-value="1594028">1,59M</td>            <td class="bold greenFont">4.23%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1136073600" class="first left bold noWrap">Ene 2006</td>
+            <td class="greenFont">218.75</td>
+            <td>215.25</td>
+            <td>222.00</td>
+            <td>203.50</td>
+            <td data-real-value="1575621">1,58M</td>            <td class="bold greenFont">1.39%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1133395200" class="first left bold noWrap">Dic 2005</td>
+            <td class="greenFont">215.75</td>
+            <td>188.00</td>
+            <td>217.00</td>
+            <td>186.00</td>
+            <td data-real-value="659543">659,54K</td>            <td class="bold greenFont">15.07%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1130803200" class="first left bold noWrap">Nov 2005</td>
+            <td class="redFont">187.50</td>
+            <td>196.25</td>
+            <td>199.50</td>
+            <td>185.75</td>
+            <td data-real-value="1370702">1,37M</td>            <td class="bold redFont">-4.46%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1128124800" class="first left bold noWrap">Oct 2005</td>
+            <td class="redFont">196.25</td>
+            <td>205.25</td>
+            <td>209.50</td>
+            <td>196.00</td>
+            <td data-real-value="965885">965,89K</td>            <td class="bold redFont">-4.50%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1125532800" class="first left bold noWrap">Sep 2005</td>
+            <td class="greenFont">205.50</td>
+            <td>201.50</td>
+            <td>210.00</td>
+            <td>195.00</td>
+            <td data-real-value="578308">578,31K</td>            <td class="bold greenFont">1.99%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1122854400" class="first left bold noWrap">Ago 2005</td>
+            <td class="redFont">201.50</td>
+            <td>238.00</td>
+            <td>239.50</td>
+            <td>200.00</td>
+            <td data-real-value="837659">837,66K</td>            <td class="bold redFont">-14.80%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1120176000" class="first left bold noWrap">Jul 2005</td>
+            <td class="greenFont">236.50</td>
+            <td>215.00</td>
+            <td>263.25</td>
+            <td>213.25</td>
+            <td data-real-value="489126">489,13K</td>            <td class="bold greenFont">11.43%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1117584000" class="first left bold noWrap">Jun 2005</td>
+            <td class="redFont">212.25</td>
+            <td>221.25</td>
+            <td>237.50</td>
+            <td>209.00</td>
+            <td data-real-value="1495365">1,50M</td>            <td class="bold redFont">-4.39%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1114905600" class="first left bold noWrap">May 2005</td>
+            <td class="greenFont">222.00</td>
+            <td>205.00</td>
+            <td>228.00</td>
+            <td>195.25</td>
+            <td data-real-value="920136">920,14K</td>            <td class="bold greenFont">8.42%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1112313600" class="first left bold noWrap">Abr 2005</td>
+            <td class="redFont">204.75</td>
+            <td>213.75</td>
+            <td>215.00</td>
+            <td>203.00</td>
+            <td data-real-value="1007004">1,01M</td>            <td class="bold redFont">-3.87%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1109635200" class="first left bold noWrap">Mar 2005</td>
+            <td class="redFont">213.00</td>
+            <td>211.50</td>
+            <td>231.00</td>
+            <td>203.75</td>
+            <td data-real-value="773536">773,54K</td>            <td class="bold redFont">-0.70%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1107216000" class="first left bold noWrap">Feb 2005</td>
+            <td class="greenFont">214.50</td>
+            <td>197.25</td>
+            <td>216.50</td>
+            <td>194.00</td>
+            <td data-real-value="988136">988,14K</td>            <td class="bold greenFont">8.88%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1104537600" class="first left bold noWrap">Ene 2005</td>
+            <td class="redFont">197.00</td>
+            <td>203.50</td>
+            <td>209.75</td>
+            <td>195.00</td>
+            <td data-real-value="905622">905,62K</td>            <td class="bold redFont">-3.79%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1101859200" class="first left bold noWrap">Dic 2004</td>
+            <td class="greenFont">204.75</td>
+            <td>192.50</td>
+            <td>208.75</td>
+            <td>191.00</td>
+            <td data-real-value="362294">362,29K</td>            <td class="bold greenFont">6.36%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1099267200" class="first left bold noWrap">Nov 2004</td>
+            <td class="redFont">192.50</td>
+            <td>202.00</td>
+            <td>208.50</td>
+            <td>192.25</td>
+            <td data-real-value="1211090">1,21M</td>            <td class="bold redFont">-4.94%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1096588800" class="first left bold noWrap">Oct 2004</td>
+            <td class="redFont">202.50</td>
+            <td>205.50</td>
+            <td>209.50</td>
+            <td>197.00</td>
+            <td data-real-value="923637">923,64K</td>            <td class="bold redFont">-1.46%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1093996800" class="first left bold noWrap">Sep 2004</td>
+            <td class="redFont">205.50</td>
+            <td>230.50</td>
+            <td>234.00</td>
+            <td>204.00</td>
+            <td data-real-value="517103">517,10K</td>            <td class="bold redFont">-9.77%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1091318400" class="first left bold noWrap">Ago 2004</td>
+            <td class="greenFont">227.75</td>
+            <td>218.75</td>
+            <td>235.00</td>
+            <td>215.25</td>
+            <td data-real-value="408888">408,89K</td>            <td class="bold greenFont">4.83%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1088640000" class="first left bold noWrap">Jul 2004</td>
+            <td class="redFont">217.25</td>
+            <td>257.50</td>
+            <td>259.25</td>
+            <td>216.50</td>
+            <td data-real-value="249513">249,51K</td>            <td class="bold redFont">-15.63%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1086048000" class="first left bold noWrap">Jun 2004</td>
+            <td class="redFont">257.50</td>
+            <td>307.50</td>
+            <td>327.50</td>
+            <td>254.50</td>
+            <td data-real-value="673087">673,09K</td>            <td class="bold redFont">-15.30%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1083369600" class="first left bold noWrap">May 2004</td>
+            <td class="redFont">304.00</td>
+            <td>315.75</td>
+            <td>319.75</td>
+            <td>283.50</td>
+            <td data-real-value="295857">295,86K</td>            <td class="bold redFont">-3.95%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1080777600" class="first left bold noWrap">Abr 2004</td>
+            <td class="redFont">316.50</td>
+            <td>319.75</td>
+            <td>335.25</td>
+            <td>296.50</td>
+            <td data-real-value="756089">756,09K</td>            <td class="bold redFont">-1.09%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1078099200" class="first left bold noWrap">Mar 2004</td>
+            <td class="greenFont">320.00</td>
+            <td>296.00</td>
+            <td>321.75</td>
+            <td>285.00</td>
+            <td data-real-value="652048">652,05K</td>            <td class="bold greenFont">8.02%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1075593600" class="first left bold noWrap">Feb 2004</td>
+            <td class="greenFont">296.25</td>
+            <td>274.75</td>
+            <td>297.75</td>
+            <td>268.75</td>
+            <td data-real-value="930525">930,53K</td>            <td class="bold greenFont">7.24%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1072915200" class="first left bold noWrap">Ene 2004</td>
+            <td class="greenFont">276.25</td>
+            <td>246.00</td>
+            <td>281.50</td>
+            <td>245.75</td>
+            <td data-real-value="1106659">1,11M</td>            <td class="bold greenFont">12.30%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1070236800" class="first left bold noWrap">Dic 2003</td>
+            <td class="greenFont">246.00</td>
+            <td>247.00</td>
+            <td>255.00</td>
+            <td>229.00</td>
+            <td data-real-value="600819">600,82K</td>            <td class="bold greenFont">0.41%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1067644800" class="first left bold noWrap">Nov 2003</td>
+            <td class="redFont">245.00</td>
+            <td>246.00</td>
+            <td>247.25</td>
+            <td>229.00</td>
+            <td data-real-value="986552">986,55K</td>            <td class="bold redFont">-0.91%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1064966400" class="first left bold noWrap">Oct 2003</td>
+            <td class="greenFont">247.25</td>
+            <td>220.25</td>
+            <td>251.00</td>
+            <td>213.25</td>
+            <td data-real-value="1362309">1,36M</td>            <td class="bold greenFont">12.26%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1062374400" class="first left bold noWrap">Sep 2003</td>
+            <td class="redFont">220.25</td>
+            <td>230.25</td>
+            <td>243.50</td>
+            <td>220.00</td>
+            <td data-real-value="578014">578,01K</td>            <td class="bold redFont">-5.57%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1059696000" class="first left bold noWrap">Ago 2003</td>
+            <td class="greenFont">233.25</td>
+            <td>206.00</td>
+            <td>234.50</td>
+            <td>206.00</td>
+            <td data-real-value="493687">493,69K</td>            <td class="bold greenFont">13.23%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1057017600" class="first left bold noWrap">Jul 2003</td>
+            <td class="redFont">206.00</td>
+            <td>228.75</td>
+            <td>233.00</td>
+            <td>204.50</td>
+            <td data-real-value="310946">310,95K</td>            <td class="bold redFont">-9.85%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1054425600" class="first left bold noWrap">Jun 2003</td>
+            <td class="redFont">228.50</td>
+            <td>243.25</td>
+            <td>248.25</td>
+            <td>228.00</td>
+            <td data-real-value="935121">935,12K</td>            <td class="bold redFont">-6.45%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1051747200" class="first left bold noWrap">May 2003</td>
+            <td class="greenFont">244.25</td>
+            <td>232.50</td>
+            <td>262.00</td>
+            <td>232.50</td>
+            <td data-real-value="543250">543,25K</td>            <td class="bold greenFont">4.94%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1049155200" class="first left bold noWrap">Abr 2003</td>
+            <td class="redFont">232.75</td>
+            <td>236.25</td>
+            <td>245.25</td>
+            <td>230.25</td>
+            <td data-real-value="724515">724,52K</td>            <td class="bold redFont">-1.59%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1046476800" class="first left bold noWrap">Mar 2003</td>
+            <td class="greenFont">236.50</td>
+            <td>231.75</td>
+            <td>240.75</td>
+            <td>227.25</td>
+            <td data-real-value="413438">413,44K</td>            <td class="bold greenFont">2.05%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1044057600" class="first left bold noWrap">Feb 2003</td>
+            <td class="redFont">231.75</td>
+            <td>237.25</td>
+            <td>243.00</td>
+            <td>229.75</td>
+            <td data-real-value="778555">778,56K</td>            <td class="bold redFont">-2.73%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1041379200" class="first left bold noWrap">Ene 2003</td>
+            <td class="greenFont">238.25</td>
+            <td>235.75</td>
+            <td>246.00</td>
+            <td>228.50</td>
+            <td data-real-value="799248">799,25K</td>            <td class="bold greenFont">1.06%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1038700800" class="first left bold noWrap">Dic 2002</td>
+            <td class="redFont">235.75</td>
+            <td>240.25</td>
+            <td>243.50</td>
+            <td>231.25</td>
+            <td data-real-value="316908">316,91K</td>            <td class="bold redFont">-1.87%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1036108800" class="first left bold noWrap">Nov 2002</td>
+            <td class="redFont">240.25</td>
+            <td>247.75</td>
+            <td>249.50</td>
+            <td>234.00</td>
+            <td data-real-value="964738">964,74K</td>            <td class="bold redFont">-2.93%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1033430400" class="first left bold noWrap">Oct 2002</td>
+            <td class="redFont">247.50</td>
+            <td>251.75</td>
+            <td>261.75</td>
+            <td>243.25</td>
+            <td data-real-value="1016302">1,02M</td>            <td class="bold redFont">-1.59%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1030838400" class="first left bold noWrap">Sep 2002</td>
+            <td class="redFont">251.50</td>
+            <td>258.75</td>
+            <td>285.50</td>
+            <td>249.50</td>
+            <td data-real-value="695432">695,43K</td>            <td class="bold redFont">-3.08%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1028160000" class="first left bold noWrap">Ago 2002</td>
+            <td class="greenFont">259.50</td>
+            <td>247.75</td>
+            <td>277.00</td>
+            <td>244.00</td>
+            <td data-real-value="561556">561,56K</td>            <td class="bold greenFont">4.95%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1025481600" class="first left bold noWrap">Jul 2002</td>
+            <td class="greenFont">247.25</td>
+            <td>225.00</td>
+            <td>250.00</td>
+            <td>212.50</td>
+            <td data-real-value="358098">358,10K</td>            <td class="bold greenFont">9.65%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1022889600" class="first left bold noWrap">Jun 2002</td>
+            <td class="greenFont">225.50</td>
+            <td>212.00</td>
+            <td>230.00</td>
+            <td>204.00</td>
+            <td data-real-value="832420">832,42K</td>            <td class="bold greenFont">5.37%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1020211200" class="first left bold noWrap">May 2002</td>
+            <td class="greenFont">214.00</td>
+            <td>193.50</td>
+            <td>216.75</td>
+            <td>191.50</td>
+            <td data-real-value="514315">514,32K</td>            <td class="bold greenFont">10.59%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1017619200" class="first left bold noWrap">Abr 2002</td>
+            <td class="redFont">193.50</td>
+            <td>202.50</td>
+            <td>205.00</td>
+            <td>192.25</td>
+            <td data-real-value="736657">736,66K</td>            <td class="bold redFont">-4.44%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1014940800" class="first left bold noWrap">Mar 2002</td>
+            <td class="greenFont">202.50</td>
+            <td>200.00</td>
+            <td>208.50</td>
+            <td>198.75</td>
+            <td data-real-value="341034">341,03K</td>            <td class="bold greenFont">1.00%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1012521600" class="first left bold noWrap">Feb 2002</td>
+            <td class="redFont">200.50</td>
+            <td>205.75</td>
+            <td>209.75</td>
+            <td>198.50</td>
+            <td data-real-value="754065">754,07K</td>            <td class="bold redFont">-2.67%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1009843200" class="first left bold noWrap">Ene 2002</td>
+            <td class="greenFont">206.00</td>
+            <td>199.75</td>
+            <td>216.25</td>
+            <td>199.25</td>
+            <td data-real-value="380427">380,43K</td>            <td class="bold greenFont">3.13%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1007164800" class="first left bold noWrap">Dic 2001</td>
+            <td class="redFont">199.75</td>
+            <td>208.50</td>
+            <td>213.00</td>
+            <td>199.25</td>
+            <td data-real-value="46802">46,80K</td>            <td class="bold redFont">-4.20%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1004572800" class="first left bold noWrap">Nov 2001</td>
+            <td class="greenFont">208.50</td>
+            <td>199.50</td>
+            <td>210.00</td>
+            <td>198.25</td>
+            <td data-real-value="479430">479,43K</td>            <td class="bold greenFont">3.86%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="1001894400" class="first left bold noWrap">Oct 2001</td>
+            <td class="redFont">200.75</td>
+            <td>207.75</td>
+            <td>212.25</td>
+            <td>197.50</td>
+            <td data-real-value="8814">8,81K</td>            <td class="bold redFont">-4.29%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="999302400" class="first left bold noWrap">Sep 2001</td>
+            <td class="redFont">209.75</td>
+            <td>219.00</td>
+            <td>219.40</td>
+            <td>209.25</td>
+            <td data-real-value="42819">42,82K</td>            <td class="bold redFont">-4.22%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="996624000" class="first left bold noWrap">Ago 2001</td>
+            <td class="greenFont">219.00</td>
+            <td>218.50</td>
+            <td>225.50</td>
+            <td>208.60</td>
+            <td data-real-value="512894">512,89K</td>            <td class="bold greenFont">0.11%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="993945600" class="first left bold noWrap">Jul 2001</td>
+            <td class="greenFont">218.75</td>
+            <td>188.25</td>
+            <td>230.50</td>
+            <td>185.75</td>
+            <td data-real-value="345155">345,16K</td>            <td class="bold greenFont">15.89%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="991353600" class="first left bold noWrap">Jun 2001</td>
+            <td class="redFont">188.75</td>
+            <td>192.25</td>
+            <td>201.50</td>
+            <td>184.00</td>
+            <td data-real-value="797738">797,74K</td>            <td class="bold redFont">-2.08%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="988675200" class="first left bold noWrap">May 2001</td>
+            <td class="redFont">192.75</td>
+            <td>199.00</td>
+            <td>204.00</td>
+            <td>187.75</td>
+            <td data-real-value="417623">417,62K</td>            <td class="bold redFont">-3.26%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="986083200" class="first left bold noWrap">Abr 2001</td>
+            <td class="redFont">199.25</td>
+            <td>205.00</td>
+            <td>214.75</td>
+            <td>193.25</td>
+            <td data-real-value="648940">648,94K</td>            <td class="bold redFont">-1.97%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="983404800" class="first left bold noWrap">Mar 2001</td>
+            <td class="redFont">203.25</td>
+            <td>214.00</td>
+            <td>219.00</td>
+            <td>202.50</td>
+            <td data-real-value="534183">534,18K</td>            <td class="bold redFont">-5.24%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="980985600" class="first left bold noWrap">Feb 2001</td>
+            <td class="greenFont">214.50</td>
+            <td>209.00</td>
+            <td>215.50</td>
+            <td>208.50</td>
+            <td data-real-value="559956">559,96K</td>            <td class="bold greenFont">2.63%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="978307200" class="first left bold noWrap">Ene 2001</td>
+            <td class="redFont">209.00</td>
+            <td>224.00</td>
+            <td>224.00</td>
+            <td>206.50</td>
+            <td data-real-value="479948">479,95K</td>            <td class="bold redFont">-7.01%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="975628800" class="first left bold noWrap">Dic 2000</td>
+            <td class="greenFont">224.75</td>
+            <td>208.25</td>
+            <td>225.00</td>
+            <td>204.25</td>
+            <td data-real-value="64213">64,21K</td>            <td class="bold greenFont">7.66%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="973036800" class="first left bold noWrap">Nov 2000</td>
+            <td class="greenFont">208.75</td>
+            <td>201.50</td>
+            <td>213.50</td>
+            <td>201.00</td>
+            <td data-real-value="422599">422,60K</td>            <td class="bold greenFont">3.21%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="970358400" class="first left bold noWrap">Oct 2000</td>
+            <td class="greenFont">202.25</td>
+            <td>193.50</td>
+            <td>206.75</td>
+            <td>193.25</td>
+            <td data-real-value="10844">10,84K</td>            <td class="bold greenFont">4.66%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="967766400" class="first left bold noWrap">Sep 2000</td>
+            <td class="greenFont">193.25</td>
+            <td>182.75</td>
+            <td>194.75</td>
+            <td>179.00</td>
+            <td data-real-value="75128">75,13K</td>            <td class="bold greenFont">5.17%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="965088000" class="first left bold noWrap">Ago 2000</td>
+            <td class="greenFont">183.75</td>
+            <td>180.25</td>
+            <td>185.00</td>
+            <td>174.00</td>
+            <td data-real-value="462485">462,49K</td>            <td class="bold greenFont">1.94%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="962409600" class="first left bold noWrap">Jul 2000</td>
+            <td class="redFont">180.25</td>
+            <td>189.50</td>
+            <td>189.50</td>
+            <td>174.00</td>
+            <td data-real-value="241358">241,36K</td>            <td class="bold redFont">-3.87%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="959817600" class="first left bold noWrap">Jun 2000</td>
+            <td class="redFont">187.50</td>
+            <td>229.00</td>
+            <td>232.75</td>
+            <td>186.50</td>
+            <td data-real-value="887057">887,06K</td>            <td class="bold redFont">-16.67%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="957139200" class="first left bold noWrap">May 2000</td>
+            <td class="greenFont">225.00</td>
+            <td>227.75</td>
+            <td>249.50</td>
+            <td>222.50</td>
+            <td data-real-value="638626">638,63K</td>            <td class="bold greenFont">0.56%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="954547200" class="first left bold noWrap">Abr 2000</td>
+            <td class="redFont">223.75</td>
+            <td>236.00</td>
+            <td>239.50</td>
+            <td>222.50</td>
+            <td data-real-value="651757">651,76K</td>            <td class="bold redFont">-5.19%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="951868800" class="first left bold noWrap">Mar 2000</td>
+            <td class="greenFont">236.00</td>
+            <td>215.00</td>
+            <td>241.75</td>
+            <td>214.25</td>
+            <td data-real-value="613498">613,50K</td>            <td class="bold greenFont">9.77%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="949363200" class="first left bold noWrap">Feb 2000</td>
+            <td class="redFont">215.00</td>
+            <td>219.75</td>
+            <td>226.50</td>
+            <td>211.50</td>
+            <td data-real-value="755043">755,04K</td>            <td class="bold redFont">-2.27%</td>
+        </tr>
+                <tr>
+            <td  data-real-value="946684800" class="first left bold noWrap">Ene 2000</td>
+            <td class="greenFont">220.00</td>
+            <td>204.50</td>
+            <td>228.25</td>
+            <td>200.50</td>
+            <td data-real-value="980795">980,80K</td>            <td class="bold greenFont">7.58%</td>
+        </tr>
+            </tbody>
+</table>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $.tablesorter.addParser({
+        // set a unique id
+        id: 'smartFilter',
+        is: function(s) {
+            return false;
+        },
+        format: function(s, table, cell, cellIndex) {
+            return $(cell).attr('data-real-value');
+        },
+        // set type, either numeric or text
+        type: 'numeric'
+    });
+    $('table[tablesorter]').tablesorter({
+        headers: {
+            0: { sorter: "smartFilter" },
+            5: { sorter: "smartFilter" }        }
+	});
+ });
+</script>
+
+<table class="genTbl closedTbl historicalTblFooter" id="placehereresult2">
+    <tbody>
+        <tr>
+            <td class="noBold noWrap">Más alto: <span class="bold inlineblock dirLtr">843.75</span></td>
+            <td class="noWrap">Más bajo: <span class="bold inlineblock dirLtr">174.00</span></td>
+            <td class="noWrap">Diferencia: <span class="bold inlineblock dirLtr">669.75</span></td>
+            <td class="noWrap">Promedio: <span class="bold inlineblock dirLtr">377.42</span></td>
+            <td class="noWrap">Var. %: <span class="bold inlineblock dirLtr">76.04</span></td>
+        </tr>
+    </tbody>
+</table>
+</div>
+	

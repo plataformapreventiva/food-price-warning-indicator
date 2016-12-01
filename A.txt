@@ -1,0 +1,23 @@
+# Random walk time series model
+model {
+  #Likelihood
+  for(i in 2:n) {
+    y[i] ~ dnorm(mu, tau)
+    mu <-
+    y_1[i] <- y[i-1]
+    y_2[i] <- y[i-2]
+  }
+
+# Priors
+  mu ~ dnorm(0, 0.01)
+  tau ~ dgamma(0.1,0.1)
+  sd <- 1/sqrt(tau)
+
+#Prediction 1
+for (i in 2:n) { yf1[i] ~ dnorm(y_1[i], tau) }
+}
+
+}
+
+
+
