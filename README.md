@@ -14,6 +14,7 @@ La primera sección de este documento describe la generación de la base de dato
 
 ## PRECIOS NACIONALES
 - Información scrappeada del Sistema Nacional de Información e Integración de Mercados (SNIIM)
+- Se utiliza precio mínimo por kilogramo (vendido por tonelada)
 - Fuente:
  http://www.economia-sniim.gob.mx/
 
