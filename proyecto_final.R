@@ -16,7 +16,7 @@ prob<-function(x){
   out
 }
 
-setwd("/home/baco/workspace/food-price-warning-indicator")
+#setwd("/home/baco/workspace/food-price-warning-indicator")
 
 ##################################################
 #### 1. PRECIOS INTERNACIONALES####
