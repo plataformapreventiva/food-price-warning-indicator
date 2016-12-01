@@ -16,19 +16,19 @@ prob<-function(x){
   out
 }
 
-
+setwd("/home/baco/workspace/food-price-warning-indicator")
 
 ##################################################
 #### 1. PRECIOS INTERNACIONALES####
 ##################################################
 # tipo de cambio
-tipo_cambio <-read_csv("./FINAL/data/tipo_de_cambio.csv") %>%
+tipo_cambio <-read_csv("./data/tipo_de_cambio.csv") %>%
   mutate(fecha = dmy(fecha)) %>%
   mutate(año = year(fecha))  %>%
   mutate(mes = month(fecha)) %>%
   select(año,mes,tipo_cambio)
 
-internacional <- read_csv("./FINAL/data/precio_internacional_dolares.csv") %>% 
+internacional <- read_csv("./data/precio_internacional_dolares.csv") %>% 
   separate(Month, c("mes", "año"), " ")  %>%
   mutate(año = as.numeric(año))  %>%
   filter(año>2000) %>%
@@ -52,7 +52,7 @@ internacional %>% ggplot() + geom_line(aes(make_date(year=año,month=mes,day=1),
 #### 2. PRECIOS NACIONALES####
 ##################################################
 #Análisis descriptivo y limpieza de base
-nacional <- read_csv("./FINAL/data/precios_granos_semanales.csv")
+nacional <- read_csv("./data/precios_granos_semanales.csv")
 problems(nacional)
 glimpse(nacional)
 summary(nacional)
@@ -68,7 +68,7 @@ filter(nacional,precio_min > 15)
 # Vemos que ese outlier no tiene observaciones en la columna obs. 
 # quitamos esa observación para que no perjudique el promedio nacional
 
-maiz_nacional <- read_csv("./FINAL/data/precios_granos_semanales.csv") %>%
+maiz_nacional <- read_csv("./data/precios_granos_semanales.csv") %>%
   select(producto,fecha,edo_destino,precio_min,obs) %>% 
   #definimos variable de fecha
   mutate(fecha=dmy(fecha)) %>%
