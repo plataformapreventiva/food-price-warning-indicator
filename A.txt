@@ -2,10 +2,8 @@
 model {
   #Likelihood
   for(i in 2:n) {
-    y[i] ~ dnorm(mu, tau)
-    mu <-
+    y[i] ~ dnorm(y_1[i], tau)
     y_1[i] <- y[i-1]
-    y_2[i] <- y[i-2]
   }
 
 # Priors
