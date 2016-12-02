@@ -150,11 +150,11 @@ data<-list("n"=n,"y"=c(semantic$precio_promedio[1:(n-6)],rep(NA,6)))
 inits<-function(){list(mu=0,tau=1)}
 parameters<-c("mu","yf1")
 
-if (Sys.info()[['sysname']] == "Windows") {
-  ejA.sim<-bugs(data,inits,parameters,model.file="A.txt",
+if (Sys.info()[['sysname']] == "Darwin") {
+  ejA.sim <- jags(data,inits,parameters,model.file="A.txt",
                 n.iter=5000,n.chains=1,n.burnin=500)
 } else {
-  ejA.sim<-jags(data,inits,parameters,model.file="A.txt",
+  ejA.sim <- bugs(data,inits,parameters,model.file="A.txt",
                 n.iter=5000,n.chains=1,n.burnin=500)
 }
 
