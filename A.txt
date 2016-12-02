@@ -15,7 +15,5 @@ model {
 for (i in 2:n) { yf1[i] ~ dnorm(y_1[i], tau) }
 }
 
-}
-
 
 

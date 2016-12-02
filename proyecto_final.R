@@ -1,14 +1,14 @@
 library("tsbugs")
 library("curl")
-library(tidyverse)
-library(lubridate)
-library(stringr)
-library(ggplot2)
-library(readr)
-#library(XML)
-#library(xml2)
-library(R2OpenBUGS)
-library(R2jags)
+library("tidyverse")
+library("lubridate")
+library("stringr")
+library("ggplot2")
+library("readr")
+#library("XML")
+#library("xml2")
+library("R2OpenBUGS")
+library("R2jags")
 
 ##### Herramientas ####
 prob<-function(x){
@@ -16,7 +16,7 @@ prob<-function(x){
   out
 }
 
-#setwd("/home/baco/workspace/food-price-warning-indicator")
+#setwd("./")
 
 ##################################################
 #### 1. PRECIOS INTERNACIONALES####
@@ -150,8 +150,13 @@ data<-list("n"=n,"y"=c(semantic$precio_promedio[1:(n-6)],rep(NA,6)))
 inits<-function(){list(mu=0,tau=1)}
 parameters<-c("mu","yf1")
 
-ejA.sim<-bugs(data,inits,parameters,model.file="A.txt",
-              n.iter=5000,n.chains=1,n.burnin=500)
+if (Sys.info()[['sysname']] == "Windows") {
+  ejA.sim<-bugs(data,inits,parameters,model.file="A.txt",
+                n.iter=5000,n.chains=1,n.burnin=500)
+} else {
+  ejA.sim<-jags(data,inits,parameters,model.file="A.txt",
+                n.iter=5000,n.chains=1,n.burnin=500)
+}
 
 #Traza de la cadena
 #traceplot(ejA.sim)
