@@ -110,26 +110,44 @@ semantic <- left_join(nacional,estatal)
 
 
 ##################################################
-#### Análisis econométrico [Este no cuenta]
+#### Análisis econométrico (Seasonal-Trend Decomposition)
 ##################################################
 #
 mts <- ts(semantic$precio_promedio, start=c(2001, 1), end=c(2016, 11), frequency=12) 
 start(mts)
 end(mts)
 plot(mts)
-abline(reg=lm(mts~time(mts)))
-cycle(mts)
+
+#Seasonal Trend Decomposition 
+fit = stl(mts, s.window="periodic",t.window=6)
+fit = stl(mts, s.window="periodic")
+plot(fit)
+
+#The four graphs are the original data, seasonal component, trend component and the remainder 
+#and this shows the periodic seasonal pattern extracted out from the original data and the trend 
+#that moves around between 47 and 51 degrees Fahrenheit. There is a bar at the right hand side of 
+#each graph to allow a relative comparison of the magnitudes of each component. For this data the 
+#achange in trend is less than the variation doing to the monthly variation.
+
+#correlation function
+acf(mts)
+#partial autocorrelations
+pacf(mts)
+
+
+#abline(reg=lm(mts~time(mts)))
+#cycle(mts)
 #year on year trend
-plot(aggregate(mts,FUN=mean))
-boxplot(mts~cycle(mts))
-acf(log(mts))
-acf(diff(log(mts)))
-pacf(diff(log(mts)))
-(fit <- arima(log(mts), c(0, 1, 1),seasonal = list(order = c(1, 3, 2), period = 12)))
-pred <- predict(fit, n.ahead = 5*12)
-ts.plot(mts,2.718^pred$pred, log = "y", lty = c(1,3))
-abline(h = 0, v =2017, col = "red", lty = 100)
-abline(h = 0, v =2019, col = "red", lty = 100)
+#plot(aggregate(mts,FUN=mean))
+#boxplot(mts~cycle(mts))
+#acf(log(mts))
+#acf(diff(log(mts)))
+#pacf(diff(log(mts)))
+#(fit <- arima(log(mts), c(0, 1, 1),seasonal = list(order = c(1, 3, 2), period = 12)))
+#pred <- predict(fit, n.ahead = 5*12)
+#ts.plot(mts,2.718^pred$pred, log = "y", lty = c(1,3))
+#abline(h = 0, v =2017, col = "red", lty = 100)
+#abline(h = 0, v =2019, col = "red", lty = 100)
 
 
 
@@ -138,48 +156,94 @@ abline(h = 0, v =2019, col = "red", lty = 100)
 #### 4. Modelo Serie de tiempo Nacional ####
 ##################################################
 #Leer data
-semantic
-n<-nrow(semantic)
+semantic_nacional <- semantic %>% filter(complete.cases(int_price))
+
+n<-nrow(semantic_nacional)
 
 #puedes hacer algunas gráficas exploratorias de la variable de interés
-plot(semantic$precio_promedio,type="l")
-hist(semantic$precio_promedio,freq=FALSE)
+plot(semantic_nacional$precio_promedio,type="l")
+hist(semantic_nacional$precio_promedio,freq=FALSE)
 
-#-Definir la estuctura de los datos-
-data<-list("n"=n,"y"=c(semantic$precio_promedio[1:(n-6)],rep(NA,6)))
+
+#-Definir la estuctura de los datos depediendo del modelo
+# Modelo A
+data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-6)],rep(NA,6)))
 inits<-function(){list(mu=0,tau=1)}
 parameters<-c("mu","yf1")
+model="A.txt"
+
+#Modelo B 
+# AR(1) Model
+data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-6)],rep(NA,6)))
+inits<-function(){list(mu=0,tau=1)}
+parameters<-c("mu","yf1")
+model="B.txt"
+
+#Modelo C 
+# AR(4) Model
+# [Estos Modelos solo autorregresivos son muy malos porque como vimos en el acf
+# la variable depende mucho de el primer lag y poco de los demás, para que funcione
+# tendría que tener un ponderador en las betas - más importancia en la primera, etc
+data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-6)],rep(NA,6)))
+inits<-function(){list(mu=0,tau=1,beta=rep(0,4),eta=rep(0,n))}
+parameters<-c("beta","mu","yf1")
+model = "C.txt"
+
+# Modelo D  [CON COVARIABLES]
+#[Modelo dinámico covariable Futuro de precios]
+data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-3)],rep(NA,3)),"x"=semantic_nacional$int_price)
+#inits<-function(){list(beta=rep(0,n),tau.y=1,tau.b=1,yf1=rep(0,n))}
+inits<-function(){list(beta=rep(0,n),tau.y=1,tau.b=1,yf1=rep(0,n),g=0)}
+#parameters<-c("beta","tau.y","tau.b","yf1")
+parameters<-c("beta","tau.y","tau.b","yf1","g")
+model = "D.txt"
+
+
+
+
+
 
 if (Sys.info()[['sysname']] == "Darwin") {
-  ejA.sim <- jags(data,inits,parameters,model.file="A.txt",
+  mod.sim <- jags(data,inits,parameters,model.file=model,
                 n.iter=5000,n.chains=1,n.burnin=500)
 } else {
-  ejA.sim <- bugs(data,inits,parameters,model.file="A.txt",
+  mod.sim <- bugs(data,inits,parameters,model.file=model,
                 n.iter=5000,n.chains=1,n.burnin=500)
 }
 
+
 #Traza de la cadena
 #traceplot(ejA.sim)
-out<-ejA.sim$sims.list
-
+out<-mod.sim$sims.list
 
 #sacas las predicciones
-out.sum<-ejA.sim$summary
+out.sum<-mod.sim$summary
 #obten subset todas las rows con yf
 out.yf<-out.sum[grep("yf",rownames(out.sum)),]
 
 #establece rango del eje y [mean,2.5 y 97.5]
-ymin<-min(semantic$precio_promedio,out.yf[,c(1,3,7)])
-ymax<-max(semantic$precio_promedio,out.yf[,c(1,3,7)])
-xmin<-min(semantic$fecha)
-xmax<-max(semantic$fecha)
+ymin<-min(semantic_nacional$precio_promedio,out.yf[,c(1,3,7)])
+ymax<-max(semantic_nacional$precio_promedio,out.yf[,c(1,3,7)])
+xmin<-min(semantic_nacional$fecha)
+xmax<-max(semantic_nacional$fecha)
 par(mfrow=c(1,1))
 
-#t vs y
-plot(tail(semantic$fecha,-1),tail(semantic$precio_promedio,-1),type="b",col="grey80",ylim=c(ymin,ymax),xlim=c(xmin,xmax))
-lines(tail(semantic$fecha,-1),out.yf[,3],col=2,lty=2)
-lines(tail(semantic$fecha,-1),out.yf[,7],col=2,lty=2)
-lines(tail(semantic$fecha,-1),out.yf[,1],col=2,lty=2)
+#t vs y 
+#Si estás haciendo un autorregresivo tienes que quitarle observaciones al semantic
+plot(semantic_nacional$fecha,semantic_nacional$precio_promedio,type="b",col="grey80",ylim=c(ymin,ymax),xlim=c(xmin,xmax))
+lines(semantic_nacional$fecha,out.yf[,3],col=2,lty=2)
+lines(semantic_nacional$fecha,out.yf[,7],col=2,lty=2)
+lines(semantic_nacional$fecha,out.yf[,1],col=2,lty=2)
+
+#t vs y (usar si es autorregresivo - pierdes observaciones)
+#define el orden del autorregresivo
+i = nrow(semantic) - nrow(out.yf) -1
+plot(tail(semantic_nacional$fecha,-i),tail(semantic_nacional$precio_promedio,-i),type="b",col="grey80",ylim=c(ymin,ymax),xlim=c(xmin,xmax))
+lines(tail(semantic_nacional$fecha,-i),out.yf[,3],col=2,lty=2)
+lines(tail(semantic_nacional$fecha,-i),out.yf[,7],col=2,lty=2)
+lines(tail(semantic_nacional$fecha,-i),out.yf[,1],col=2,lty=2)
+
+
 
 
 ##################################################

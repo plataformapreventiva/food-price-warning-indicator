@@ -1,4 +1,4 @@
-# Random walk time series model
+
 model {
   #Likelihood
   for(i in 2:n) {

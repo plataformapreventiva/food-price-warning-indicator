@@ -1,0 +1,21 @@
+# AR(1) Model
+model {
+  #Likelihood
+  for(i in 2:n) {
+    y[i] ~ dnorm(eta[i], tau)
+    eta[i] <- beta[1] + beta[2]*y[i-1]
+  }
+  
+  # Priors
+  for(i in 1:2){
+    beta[i] ~ dnorm(0, 0.01)
+  }
+  mu ~ dnorm(0, 0.01)
+  tau ~ dgamma(0.1,0.1)
+  sd <- 1/sqrt(tau)
+  
+  #Prediction 1
+  for (i in 2:n) { 
+    yf1[i] ~ dnorm(eta[i], tau) 
+  }
+}

@@ -1,0 +1,26 @@
+model
+{
+  #Likelihood
+  #Space eq.
+  for (i in 1:n) {
+    y[i] ~ dnorm(mu[i],tau.y)
+    mu[i] <- beta[i]*x[i]
+  }
+
+  #State eq.
+  for (i in 2:n) {
+    beta[i] ~ dnorm(mu.b[i],tau.b)
+    mu.b[i] <- g*beta[i-1]
+  }
+
+  #Priors 
+  beta[1] ~ dnorm(0,0.001)
+  tau.y ~ dgamma(0.001,0.001)
+  tau.b ~ dgamma(0.001,0.001)
+  g ~ dnorm(0,1)
+  #g<-1
+  
+  #Prediction 1
+  for (i in 1:n) { yf1[i] ~ dnorm(mu[i],tau.y) }
+  
+}
