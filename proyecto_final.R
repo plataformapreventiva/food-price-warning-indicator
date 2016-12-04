@@ -51,11 +51,18 @@ internacional %>% ggplot() + geom_line(aes(make_date(year=año,month=mes,day=1),
 ##################################################
 #### 2. PRECIOS NACIONALES####
 ##################################################
+estados_dic <- read_csv("./data/estados_dic.csv") %>% 
+  mutate(NOM_ENT = str_to_lower(NOM_ENT)) %>%
+  mutate(CVE_ENT = sprintf("%02d", CVE_ENT)) %>%
+  rename(edo_destino=NOM_ENT)
+
+
 #Análisis descriptivo y limpieza de base
 nacional <- read_csv("./data/precios_granos_semanales.csv")
 problems(nacional)
 glimpse(nacional)
 summary(nacional)
+
 # EL análisis se hará con precios máxico, que es el precio del kilogramo vendido por tonelada.
 nacional <-select(nacional,producto,precio_min,fecha,edo_destino,obs) %>% 
   #definimos variable de fecha
@@ -78,7 +85,13 @@ maiz_nacional <- read_csv("./data/precios_granos_semanales.csv") %>%
   mutate(mes = month(fecha)) %>% 
   mutate(año = year(fecha)) %>% 
   mutate(fecha = make_datetime(year=año,month=mes,1)) %>% 
-  mutate(fecha = ymd (fecha))
+  mutate(fecha = ymd (fecha)) %>%
+  left_join(estados_dic,by = "edo_destino") %>%
+  mutate(CVE_ENT = ifelse(edo_destino== "michoacán", "16", 
+                    ifelse(edo_destino== "veracruz","30",
+                      ifelse(edo_destino=="df","09",
+                             ifelse(edo_destino=="coahuila","05",CVE_ENT)))))
+
 
 ggplot(maiz_nacional) + geom_line(aes(fecha,precio_min,color=edo_destino))
 
