@@ -1,0 +1,18 @@
+---
+title: "Indicador Alerta Temprana en Precio de Alimentos"
+author: "Roberto Sanchez, Amaury Gutiérrez"
+output: pdf_document
+bibliography: references.bib
+---
+
+# Introducción
+
+Como se señala en [@Baquedano]
+
+# Descripción de la Información
+
+# Modelado e Implementación
+
+# Interpretación de resultados
+
+# Referencias
