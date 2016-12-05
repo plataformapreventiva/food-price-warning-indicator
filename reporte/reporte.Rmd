@@ -45,6 +45,10 @@ Podemos observar en la figura, una comparación entre las tendencias de los prec
 
 ![Precio nacional del Maiz.](./images/internacional_nacional.png)
 
+Como era de esperarse, existe una alta correlación ($0.9472937$) entre los precios nacionales e internacionales.
+
+![Precio nacional contra precio internacional.](./images/correlation.png)
+
 ## TIPO DE CAMBIO 
 - Usamos tipo de cambio para hacer comparable el precio de futuros 
  (CF86) - Tipo de cambio promedio del periodo	
