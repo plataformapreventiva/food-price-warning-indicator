@@ -142,25 +142,15 @@ Para construirlo se calcula la diferencia entre el CGR (anual y trimestral) y el
 
 Es importante considerar ambos CGR ya que se debe de tomar en cuenta la presencia de variabilidad estacional, ya que en muchos mercados los precios se determinan por las cosechas y se observa regularmente precios más altos pasada la cosecha.
 
+Finalmente con el vector histórico de precios y la estimación se puede construir la siguiente gráfica, que muestra la serie de tiempo del precio frente al análisis de anomalía. La primera linea horizontal amarilla en el .5 muestra variaciones que son diferentes en media desviación estandar al promedio histórico y la roja representan las anomalías que ya están a una desviación estandar de lo considerado normal.
 
-```{r}
-library(tidyverse)
-IPA_Q %>% write.csv("IPA_Q.csv")
-IPA_Q <- read_csv("IPA_Q.csv")
-IPA_Q %>% ggplot() + geom_bar(aes(fecha,abs(IPA_Q)),stat="identity") + 
-  geom_line(aes(fecha,precio_promedio),color="green") + 
-  geom_hline(yintercept = .5,col="yellow") +
-  geom_hline(yintercept = 1,col="red")
+![Precio semanal del maiz en la Ciudad de México](./images/alerta.png)
 
-```
 
 # Conclusión
 
-"La volatilidad, entendida como cambios significativos y frecuentes en el sentido y magnitud en los precios de los alimentos1 , puede representar efectos perjudiciales para gran parte de los productores, consumidores y estados. Éste fenómeno, cuando se produce de forma excesiva y provoca que los precios se incrementen, hace que las decisiones de los productores sobre cómo y qué producir estén sujetas a mayor riesgo. Las poblaciones con limitados ingresos a su vez ven como su poder adquisitivo disminuye drásticamente y las desigualdades se amplian." [@fao2]
+"La volatilidad, entendida como cambios significativos y frecuentes en el sentido y magnitud en los precios de los alimentos , puede representar efectos perjudiciales para gran parte de los productores, consumidores y estados. Éste fenómeno, cuando se produce de forma excesiva y provoca que los precios se incrementen, hace que las decisiones de los productores sobre cómo y qué producir estén sujetas a mayor riesgo. Las poblaciones con limitados ingresos a su vez ven como su poder adquisitivo disminuye drásticamente y las desigualdades se amplian." [@fao2] para tratar de enfrentar la volatilidad de los precios de los alimentos, cada vez parece más evidente que la solución pasa por una gobernanza más eficiente del sistema alimentario y una coordinación interinstitucional para promover políticas integrales que tomen en cuenta desde el aumento de la productividad, la seguridad alimentaria o la complejidad productiva. 
 
-
-"para tratar de enfrentar la volatilidad de los precios de los alimentos, cada vez parece más evidente que la solución pasa por una gobernanza más eficiente del sistema alimentario. 
-
-Es precisamente en éste ámbito donde el enfoque la estadística y el análisis de datos tiene mayor valor. No sólo porque contribuye a proteger a los más vulnerables e incrementa la eficacia y sostenibilidad de las políticas y programas de seguridad alimentaria.
+Es precisamente en éste ámbito donde el enfoque la estadística y el análisis de datos tiene mayor valor ya que contribuye a proteger a los más vulnerables e incrementa la eficacia y sostenibilidad de las políticas y programas de seguridad alimentaria.
 
 # Referencias
