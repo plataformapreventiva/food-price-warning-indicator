@@ -14,8 +14,7 @@ El mercado alimentario mexicano se debe analizar desde el ámbito de la oferta y
 
 El objetivo de este proyecto es analizar el nivel de precios y estimar mediante métodos bayesianos el movimiento de los precios del maiz a nivel estatal en periodos de 3 y 6 meses. Con el vector de precios se utiliza la metodología del indicador IPA (Indicator of price anomalies) [@Baquedano] desarrollado por la fao para para generar un indicador de alerta temprana de crecimiento anómalo en precios de alimentos básicos que pueden impactar en la seguridad alimentaria de la población en situación de pobreza, en esta primera etapa se implementa el análisis para el maíz por la importancia que tiene en el mercado de consumo mexicano especialmente en la población de alta vulnerabilidad y se hace el análisis a nivel nacional.
 
-La primera sección de este documento describe la generación de la base de datos, la segunda la metodología y los modelos utilizados, la tercera resultados y , implementación del "Indicator of price anomalies" y conclusiones.
-
+La primera sección de este documento describe la generación de la base de datos, la segunda plantea el modelado y la implementación, la tercera sección presenta los resultados y realiza análisis de la precisión de los modelos, la cuarta sección realiza la implementación del "Indicator of price anomalies" y se presentan conclusiones y pasos a seguir.
 
 
 # Descripción de la Información

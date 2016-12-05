@@ -15,6 +15,12 @@ prob<-function(x){
   out<-min(length(x[x>0])/length(x),length(x[x<0])/length(x))
   out
 }
+#FORECAST ACCURACY:  as described by Hyndman et al in "Another look at measures of forecast accuracy" (2006).
+calculateMASE <- function(f,y) { # f = vector with forecasts, y = vector with actuals
+  if(length(f)!=length(y)){ stop("Vector length is not equal") }
+  n <- length(f)
+  return(mean(abs((y - f) / ((1/(n-1)) * sum(abs(y[2:n]-y[1:n-1]))))))
+}
 
 #setwd("./")
 
@@ -225,6 +231,11 @@ data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-6)],rep(NA,6)))
 inits<-function(){list(mu=0,tau=1,beta=rep(0,4),eta=rep(0,n))}
 parameters<-c("beta","mu","yf1")
 model = "C.txt"
+
+
+
+
+
 
 # Modelo D  [CON COVARIABLES]
 #[Modelo dinámico covariable Futuro de precios]
