@@ -1,3 +1,4 @@
+library(rstan)
 library("tsbugs")
 library("curl")
 library("tidyverse")
@@ -202,6 +203,62 @@ n<-nrow(semantic_nacional)
 plot(semantic_nacional$precio_promedio,type="l")
 #hist(semantic_nacional$precio_promedio,freq=FALSE)
 
+
+
+
+##################################################
+#### STAN (Seasonal-Trend Decomposition)
+##################################################
+
+
+dat <- semantic_nacional 
+semantic_nacional<- mutate(semantic_nacional,l_int_price=dplyr::lag(int_price,n=1))
+# Modelo D  [Time series with seasonality]
+# La temporada dura 12 meses
+dat<-list(N=n,y=semantic_nacional$precio_promedio,x1=semantic_nacional$int_price)
+fit2<-stan(file='hb_ts2.stan',data=dat,iter=1000,chains=1)
+
+
+#stan code
+fit2.smp <- rstan::extract(fit2, permuted = TRUE)
+dens2_a<-density(fit2.smp$a)
+dens2_d<-density(fit2.smp$d)
+a_est2<-dens2_a$x[dens2_a$y==max(dens2_a$y)]
+d_est2<-dens2_d$x[dens2_d$y==max(dens2_d$y)]
+
+trend_est2<-rep(0,n)
+
+for (i in 1:n) {
+  tmp<-density(fit2.smp$trend[,i])
+  trend_est2[i]<-tmp$x[tmp$y==max(tmp$y)]
+}
+
+week_est2<-rep(0,n)
+
+for (i in 1:n) {
+  tmp<-density(fit2.smp$season[,i])
+  week_est2[i]<-tmp$x[tmp$y==max(tmp$y)] 
+}
+
+pred2<-a_est2*semantic_nacional$int_price+d_est2+cumsum(trend_est2)+week_est2
+
+matplot(cbind(semantic_nacional$precio_promedio,pred2),type='l',lty=1,lwd=c(2,3),col=c(1,2))
+
+legend('topleft',c('Data','Predicted'),col=c(1,2),lty=1,lwd=c(2,3),cex=1.5,ncol=2)
+cor(semantic_nacional$precio_promedio,pred2)
+plot(week_est2,type='l')
+plot(trend_est2,type='l')
+
+matplot(
+  cbind(semantic_nacional$precio_promedio,
+        pred2,
+        cumsum(trend_est2),
+        week_est2+cumsum(trend_est2)),
+  type='l',lty=1,lwd=c(2,3,2,2),col=c('black','red','blue','green'))
+legend('topleft',c('Data','Predicted','Seasonality + Trend','Trend'),col=c('black','red','blue','green'),lty=1,lwd=c(2,3,2,2),cex=.8,ncol=2)
+
+
+
 #-Definir la estuctura de los datos depediendo del modelo
 
   # Modelo Autorregresivo
@@ -238,7 +295,6 @@ data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-3)],rep(NA,3)),"x1
 inits<-function(){list(alpha=rep(0,n),beta=rep(0,n),tau=1,yf1=rep(1,n))}
 parameters<-c("alpha","beta","tau","yf1")
 model = "C.txt"
-
 
 
 
@@ -327,55 +383,6 @@ calculateMASE(tail(semantic_nacional$precio_promedio,6),tail(out.yf[,3],6))
 
 
 
-##################################################
-####¿EXTRA? STAN ####
-##################################################
-
-
-library(rstan)
-dat <- semantic_nacional 
-semantic_nacional<- mutate(semantic_nacional,l_int_price=dplyr::lag(int_price,n=1))
-# Modelo D  [Time series with seasonality]
-# La temporada dura 12 meses
-dat<-list(N=n,y=semantic_nacional$precio_promedio,x1=semantic_nacional$int_price)
-fit2<-stan(file='hb_ts2.stan',data=dat,iter=1000,chains=1)
-
-
-#stan code
-fit2.smp <- rstan::extract(fit2, permuted = TRUE)
-dens2_a<-density(fit2.smp$a)
-dens2_d<-density(fit2.smp$d)
-a_est2<-dens2_a$x[dens2_a$y==max(dens2_a$y)]
-d_est2<-dens2_d$x[dens2_d$y==max(dens2_d$y)]
-
-trend_est2<-rep(0,n)
-
-for (i in 1:n) {
-  tmp<-density(fit2.smp$trend[,i])
-  trend_est2[i]<-tmp$x[tmp$y==max(tmp$y)]
-}
-
-week_est2<-rep(0,n)
-
-for (i in 1:n) {
-  tmp<-density(fit2.smp$season[,i])
-  week_est2[i]<-tmp$x[tmp$y==max(tmp$y)] 
-}
-
-pred2<-a_est2*semantic_nacional$int_price+d_est2+cumsum(trend_est2)+week_est2
-
-matplot(cbind(semantic_nacional$precio_promedio,pred2),type='l',lty=1,lwd=c(2,3),col=c(1,2))
-
-legend('topleft',c('Data','Predicted'),col=c(1,2),lty=1,lwd=c(2,3),cex=1.5,ncol=2)
-cor(semantic_nacional$precio_promedio,pred2)
-plot(week_est2,type='l')
-plot(trend_est2,type='l')
-
-matplot(
-  cbind(semantic_nacional$precio_promedio,
-        pred2,cumsum(trend_est2)+d_est2,
-        week_est2+cumsum(trend_est2)+d_est2),type='l',lty=1,lwd=c(2,3,2,2),col=c('black','red','blue','green'))
-legend('topleft',c('Data','Predicted','Trend','Seasonality + Trend'),col=c('black','red','blue','green'),lty=1,lwd=c(2,3,2,2),cex=1.2,ncol=2)
 
 
 
