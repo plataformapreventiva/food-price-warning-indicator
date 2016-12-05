@@ -117,18 +117,16 @@ nacional %>% ggplot() + geom_line(aes(fecha,precio_promedio),color="green") + ge
 
 # Obtener una base tipo panel para cada estado del precio por mes del maiz blanco
 estatal <- maiz_nacional %>%
-  group_by(CVE_ENT,fecha,año,mes) %>%
-  #group_by(edo_destino,fecha,año,mes) %>%
+  #group_by(CVE_ENT,fecha,año,mes) %>%
+  group_by(edo_destino,fecha,año,mes) %>%
   summarise(precio_promedio = mean(precio_min,na.rm=TRUE)) %>%
-  spread(key = CVE_ENT, value = precio_promedio)
-  #spread(key = edo_destino, value = precio_promedio)
+  #spread(key = CVE_ENT, value = precio_promedio)
+  spread(key = edo_destino, value = precio_promedio)
 
 
 semantic <- left_join(nacional,estatal) 
 
 # X_IPA
-
-
 semantic$lag_3 = lag(semantic$aguascalientes,3)
 semantic$lag_12 = lag(semantic$aguascalientes,12)
 semantic<-mutate(semantic, CQGR=(aguascalientes/lag_3)^(1/3)-1)
@@ -140,12 +138,7 @@ temp_A <- semantic %>% group_by(año) %>% summarise(CAGR_year_mean = mean(CAGR,n
                                                    CAGR_year_std = sd(CAGR,na.rm=TRUE))
 
 IPA_Q <- semantic %>% left_join(temp_Q) %>% mutate(IPA_Q = (CQGR -CQGR_month_mean)/CQGR_month_std) 
-IPA_A <- semantic %>% left_join(temp_A) %>% mutate(IPA_A = (CAGR -CAGR_month_mean)/CAGR_month_std) 
-ggplot() + geom_bar(aes())
-
-abline(h = 1,col="red")
-abline(h = .5,col="gold")
-
+IPA_A <- semantic %>% left_join(temp_A) %>% mutate(IPA_A = (CAGR -CAGR_year_mean)/CAGR_year_std) 
 IPA_Q %>% ggplot() + geom_bar(aes(fecha,abs(IPA_Q)),stat="identity") + 
   geom_line(aes(fecha,precio_promedio),color="green") + 
   geom_hline(yintercept = .5,col="yellow") +
