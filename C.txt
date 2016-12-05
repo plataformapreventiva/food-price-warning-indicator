@@ -1,28 +1,28 @@
 model
 {
   #Likelihood
-  #Space eq.
   for (i in 1:n) {
-    y[i] ~ dnorm(mu[i],tau.y)
-    mu[i] <- beta[i]*x[i]
+    y[i] ~ dnorm(mu[i],tau)
+    mu[i]<-alpha+beta[i]*x1[i]
   }
 
   #State eq.
   for (i in 2:n) {
-    beta[i] ~ dnorm(mu.b[i],tau.b)
-    mu.b[i] <- g*beta[i-1]
+    beta[i] ~ dnorm(beta[i-1],tau.b)
   }
-
+  
   #Priors 
+  #distribuciones iniciales para alpha, las betas y tao son muy chiquitas
+  alpha ~ dnorm(0,0.001)
+
   beta[1] ~ dnorm(0,0.001)
-  tau.b <- lam*tau.y
-  lam<-1
-  tau.y ~ dgamma(0.001,0.001)
-  #tau.b ~ dgamma(0.001,0.001)
-  g ~ dnorm(0,1)
-  #g<- 1
+  tau ~ dgamma(0.01,0.01)
+  tau.b <- lam*tau
+  #lam <- 1
+  lam <- 10
   
   #Prediction 1
-  for (i in 1:n) { yf1[i] ~ dnorm(mu[i],tau.y) }
+  for (i in 1:n) { yf1[i] ~ dnorm(mu[i],tau) }
   
 }
+

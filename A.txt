@@ -1,20 +1,19 @@
-# AR(1) Model
-model {
-  #Likelihood
-  for(i in 2:n) {
-    y[i] ~ dnorm(eta[i], tau)
-    eta[i] <- beta[1] + beta[2]*y[i-1]
-  }
-  
-  # Priors
-  for(i in 1:2){
-    beta[i] ~ dnorm(0, 0.01)
-  }
-  tau ~ dgamma(0.1,0.1)
-  sd <- 1/sqrt(tau)
-  
-  #Prediction 1
-  for (i in 2:n) { 
-    yf1[i] ~ dnorm(eta[i], tau) 
-  }
+model
+#modelo estático
+#polinomio 
+#agrego x y tiempo [parte de variable explicativa]
+{
+#Likelihood
+for (i in 1:n) {
+	y[i] ~ dnorm(mu[i],tau)
+	mu[i]<-beta[1]+beta[2]*x[i]+beta[3]*pow(x[i],2)+beta[4]*t[i]+beta[5]*pow(t[i],2)
+	}
+
+#Priors 
+for (j in 1:5) { beta[j] ~ dnorm(0,0.001) }
+tau ~ dgamma(0.001,0.001)
+
+#Prediction 1
+for (i in 1:n) { yf1[i] ~ dnorm(mu[i],tau) }
+
 }

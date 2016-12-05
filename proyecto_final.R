@@ -1,3 +1,4 @@
+library(rstan)
 library("tsbugs")
 library("curl")
 library("tidyverse")
@@ -193,6 +194,8 @@ pacf(mts)
 ##################################################
 #Leer data
 semantic_nacional <- semantic %>% filter(complete.cases(int_price))
+semantic_nacional$int_price_lag <- lag(semantic_nacional$int_price)
+semantic_nacional <- semantic_nacional %>% filter(complete.cases(int_price_lag))
 
 n<-nrow(semantic_nacional)
 
@@ -200,114 +203,15 @@ n<-nrow(semantic_nacional)
 plot(semantic_nacional$precio_promedio,type="l")
 #hist(semantic_nacional$precio_promedio,freq=FALSE)
 
-#-Definir la estuctura de los datos depediendo del modelo
-
-# Modelo A
-# AR(1) Model Autoregressive AR(1) time series models
-data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-3)],rep(NA,3)))
-inits<-function(){list(tau=1)}
-parameters<-c("yf1")
-model="A.txt"
-
-
-# Modelo B  [Modelo Dinámico sin covariable]
-#Le hicimos un suavizamiento al modelo metiendo una lambda en la varianza de las betas
-#tau.b<- lam * tau.y suvizamos más
-data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-3)],rep(NA,3)))
-#inits<-function(){list(beta=rep(0,n),tau.y=1,tau.b=1,yf1=rep(0,n))}
-inits<-function(){list(beta=rep(0,n),tau.y=1,yf1=rep(0,n))}
-#parameters<-c("beta","tau.y","tau.b","yf1")
-parameters<-c("beta","tau.y","tau.b","yf1")
-model = "B.txt"
-
-
-# Modelo C  [CON COVARIABLES]
-#[Modelo dinámico covariable Futuro de precios]
-data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-3)],rep(NA,3)),"x"=semantic_nacional$int_price)
-inits<-function(){list(beta=rep(0,n),tau.y=1,tau.b=1,yf1=rep(0,n))}
-inits<-function(){list(beta=rep(0,n),tau.y=1,tau.b=1,yf1=rep(0,n),g=0)}
-#parameters<-c("beta","tau.y","tau.b","yf1")
-parameters<-c("beta","tau.y","tau.b","yf1","g")
-model = "C.txt"
-
-
-
-
-if (Sys.info()[['sysname']] == "Darwin") {
-  mod.sim <- jags(data,inits,parameters,model.file=model,
-                  n.iter=5000,n.chains=1,n.burnin=500)
-} else {
-  mod.sim <- bugs(data,inits,parameters,model.file=model,
-                  n.iter=5000,n.chains=1,n.burnin=500)
-}
-
-
-#Traza de la cadena
-#traceplot(ejA.sim)
-out<-mod.sim$sims.list
-
-#sacas las predicciones
-out.sum<-mod.sim$summary
-#obten subset todas las rows con yf
-out.yf<-out.sum[grep("yf",rownames(out.sum)),]
-
-#establece rango del eje y [mean,2.5 y 97.5]
-ymin<-min(semantic_nacional$precio_promedio,out.yf[,c(1,3,7)])
-ymax<-max(semantic_nacional$precio_promedio,out.yf[,c(1,3,7)])
-xmin<-min(semantic_nacional$fecha)
-xmax<-max(semantic_nacional$fecha)
-par(mfrow=c(1,1))
-
-#t vs y 
-#Si estás haciendo un autorregresivo tienes que quitarle observaciones al semantic
-plot(semantic_nacional$fecha,semantic_nacional$precio_promedio,type="b",col="grey80",ylim=c(ymin,ymax),xlim=c(xmin,xmax))
-lines(semantic_nacional$fecha,out.yf[,3],col=2,lty=2)
-lines(semantic_nacional$fecha,out.yf[,7],col=2,lty=2)
-lines(semantic_nacional$fecha,out.yf[,1],col=2,lty=2)
-
-#t vs y (usar si es autorregresivo - pierdes observaciones)
-#define el orden del autorregresivo
-i = nrow(semantic) - nrow(out.yf) -1
-plot(tail(semantic_nacional$fecha,-i),tail(semantic_nacional$precio_promedio,-i),type="b",col="grey80",ylim=c(ymin,ymax),xlim=c(xmin,xmax))
-lines(tail(semantic_nacional$fecha,-i),out.yf[,3],col=2,lty=2)
-lines(tail(semantic_nacional$fecha,-i),out.yf[,7],col=2,lty=2)
-lines(tail(semantic_nacional$fecha,-i),out.yf[,1],col=2,lty=2)
-
-
-
-calculateMASE(tail(semantic_nacional$precio_promedio,6),tail(out.yf[,3],6))
-calculateMASE(out.yf[,3],semantic_nacional$precio_promedio[2:190])
-
-Another look at measures of forecast accuracy
-##################################################
-####¿EXTRA? 5. Modelo Serie de tiempo por Estado ####
-##################################################
-# No tenemos todos los estados pero podemos hacer el análisis para los que tengamos.
-# Podemos correr los mismos modelos de 4. pero separado para cada estado
-# ALgunos estados tienen muchos missing values, podemos hacer el modelo con los estados completos y 
-# con matching hacer algún argumento sobre por qué tendrían un precio parecido. 
-
-
 
 
 
 ##################################################
-####¿EXTRA? 6. Modelo Serie de tiempo por Estado ####
-##################################################
-# No tenemos todos los estados pero podemos hacer el análisis para los que tengamos.
-# ¿Dependencia espacial?
-
-
-
-##################################################
-####¿EXTRA? STAN ####
+#### STAN (Seasonal-Trend Decomposition)
 ##################################################
 
 
-dat <- semantic_nacional %>% group_by(, name)
-mutate(dat, lag_time = lag(time))
-
-
+dat <- semantic_nacional 
 semantic_nacional<- mutate(semantic_nacional,l_int_price=dplyr::lag(int_price,n=1))
 # Modelo D  [Time series with seasonality]
 # La temporada dura 12 meses
@@ -328,6 +232,7 @@ for (i in 1:n) {
   tmp<-density(fit2.smp$trend[,i])
   trend_est2[i]<-tmp$x[tmp$y==max(tmp$y)]
 }
+
 week_est2<-rep(0,n)
 
 for (i in 1:n) {
@@ -346,9 +251,138 @@ plot(trend_est2,type='l')
 
 matplot(
   cbind(semantic_nacional$precio_promedio,
-        pred2,cumsum(trend_est2)+d_est2,
-        week_est2+cumsum(trend_est2)+d_est2),type='l',lty=1,lwd=c(2,3,2,2),col=c('black','red','blue','green'))
-legend('topleft',c('Data','Predicted','Trend','Seasonality + Trend'),col=c('black','red','blue','green'),lty=1,lwd=c(2,3,2,2),cex=1.2,ncol=2)
+        pred2,
+        cumsum(trend_est2),
+        week_est2+cumsum(trend_est2)),
+  type='l',lty=1,lwd=c(2,3,2,2),col=c('black','red','blue','green'))
+  legend('topleft',c('Data','Predicted','Seasonality + Trend','Trend'),col=c('black','red','blue','green'),lty=1,lwd=c(2,3,2,2),cex=.8,ncol=2)
+
+
+
+#-Definir la estuctura de los datos depediendo del modelo
+
+  # Modelo Autorregresivo
+  # AR(1) Model Autoregressive AR(1) time series models
+  # data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-3)],rep(NA,3)))
+  # inits<-function(){list(tau=1)}
+  # parameters<-c("yf1")
+  # model="A.txt"
+
+cor(semantic_nacional$precio_promedio,semantic_nacional$int_price)
+
+
+# Modelo A  [Modelo estático]
+semantic_nacional$t <- 1:n
+data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-3)],rep(NA,3)),"x"=semantic_nacional$int_price,"t"=semantic_nacional$t/max(semantic_nacional$t))
+inits<-function(){list(beta=rep(0,5),tau=1,yf1=rep(1,n))}
+parameters<-c("beta","tau","yf1")
+model = "A.txt"
+
+
+# Modelo B  [Modelo Dinámico sin covariable]
+#Le hicimos un suavizamiento al modelo metiendo una lambda en la varianza de las betas
+#tau.b<- lam * tau.y suvizamos más
+data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-6)],rep(NA,6)))
+#inits<-function(){list(beta=rep(0,n),tau.y=1,tau.b=1,yf1=rep(0,n))}
+inits<-function(){list(beta=rep(0,n),tau.y=1,yf1=rep(0,n))}
+#parameters<-c("beta","tau.y","tau.b","yf1")
+parameters<-c("beta","tau.y","tau.b","yf1")
+model = "B.txt"
+
+
+# Modelo C  [Modelo Dinámico con covariables]
+data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-3)],rep(NA,3)),"x1"=semantic_nacional$int_price)
+inits<-function(){list(alpha=rep(0,n),beta=rep(0,n),tau=1,yf1=rep(1,n))}
+parameters<-c("alpha","beta","tau","yf1")
+model = "C.txt"
+
+
+
+
+if (Sys.info()[['sysname']] == "Darwin") {
+  mod.sim <- jags(data,inits,parameters,model.file=model,
+                  n.iter=5000,n.chains=1,n.burnin=500)
+} else {
+  mod.sim <- bugs(data,inits,parameters,model.file=model,
+                  n.iter=5000,n.chains=1,n.burnin=500)
+}
+
+
+#Traza de la cadena
+#traceplot(mod.sim)
+
+  #Graficas el comportamiento de la variable 
+  #z<-out$mu #Variable a Analizar
+  #Define el espacio de la gráfica
+#par(mfrow=c(2,2))
+  #plotea la cadena
+# plot(z,type="l")
+  #ve si en el tiempo converge
+# plot(cumsum(z)/(1:length(z)),type="l")
+  #histograma - ver media y varianza
+# hist(z,freq=FALSE)
+  #correlación con los lags
+  #Auto- and Cross- Covariance and -Correlation Function Estimation
+  #acf(z)
+
+
+out<-mod.sim$sims.list
+
+#sacas las predicciones
+out.sum<-mod.sim$summary
+#obten subset todas las rows con yf
+out.yf<-out.sum[grep("yf",rownames(out.sum)),]
+out.mu<-out.sum[grep("mu.b",rownames(out.sum)),]
+out.beta<-out.sum[grep("beta",rownames(out.sum)),]
+
+#establece rango del eje y [mean,2.5 y 97.5]
+ymin<-min(semantic_nacional$precio_promedio,out.yf[,c(1,3,7)])
+ymax<-max(semantic_nacional$precio_promedio,out.yf[,c(1,3,7)])
+xmin<-min(semantic_nacional$fecha)
+xmax<-max(semantic_nacional$fecha)
+par(mfrow=c(1,1))
+
+#t vs y 
+#Si estás haciendo un autorregresivo tienes que quitarle observaciones al semantic
+plot(semantic_nacional$fecha,semantic_nacional$precio_promedio,type="b",col="grey80",ylim=c(ymin,ymax),xlim=c(xmin,xmax))
+lines(semantic_nacional$fecha,out.yf[,3],col=2,lty=2)
+lines(semantic_nacional$fecha,out.yf[,7],col=2,lty=2)
+lines(semantic_nacional$fecha,out.yf[,1],col=2,lty=2)
+
+#t vs y (usar si es autorregresivo - pierdes observaciones)
+#define el orden del autorregresivo
+i = nrow(semantic_nacional) - nrow(out.yf) 
+plot(tail(semantic_nacional$fecha,-i),tail(semantic_nacional$precio_promedio,-i),type="b",col="grey80",ylim=c(ymin,ymax),xlim=c(xmin,xmax))
+lines(tail(semantic_nacional$fecha,-i),out.yf[,3],col=2,lty=2)
+lines(tail(semantic_nacional$fecha,-i),out.yf[,7],col=2,lty=2)
+lines(tail(semantic_nacional$fecha,-i),out.yf[,1],col=2,lty=2)
+
+
+out.dic<-mod.sim$DIC
+
+calculateMASE(tail(semantic_nacional$precio_promedio,6),tail(out.yf[,3],6))
+
+#Another look at measures of forecast accuracy
+##################################################
+####¿EXTRA? 5. Modelo Serie de tiempo por Estado ####
+##################################################
+# No tenemos todos los estados pero podemos hacer el análisis para los que tengamos.
+# Podemos correr los mismos modelos de 4. pero separado para cada estado
+# ALgunos estados tienen muchos missing values, podemos hacer el modelo con los estados completos y 
+# con matching hacer algún argumento sobre por qué tendrían un precio parecido. 
+
+
+
+
+
+##################################################
+####¿EXTRA? 6. Modelo Serie de tiempo por Estado ####
+##################################################
+# No tenemos todos los estados pero podemos hacer el análisis para los que tengamos.
+# ¿Dependencia espacial?
+
+
+
 
 
 
