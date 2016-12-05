@@ -140,6 +140,8 @@ temp_A <- semantic %>% group_by(año) %>% summarise(CAGR_year_mean = mean(CAGR,n
 
 IPA_Q <- semantic %>% left_join(temp_Q) %>% mutate(IPA_Q = (CQGR -CQGR_month_mean)/CQGR_month_std) 
 IPA_A <- semantic %>% left_join(temp_A) %>% mutate(IPA_A = (CAGR -CAGR_year_mean)/CAGR_year_std) 
+IPA_Q %>% write.csv("IPA_Q.csv")
+IPA_Q <- read_csv("IPA_Q.csv")
 IPA_Q %>% ggplot() + geom_bar(aes(fecha,abs(IPA_Q)),stat="identity") + 
   geom_line(aes(fecha,precio_promedio),color="green") + 
   geom_hline(yintercept = .5,col="yellow") +

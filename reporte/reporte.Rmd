@@ -130,6 +130,9 @@ Es importante considerar ambos CGR ya que se debe de tomar en cuenta la presenci
 
 
 ```{r}
+library(tidyverse)
+IPA_Q %>% write.csv("IPA_Q.csv")
+IPA_Q <- read_csv("IPA_Q.csv")
 IPA_Q %>% ggplot() + geom_bar(aes(fecha,abs(IPA_Q)),stat="identity") + 
   geom_line(aes(fecha,precio_promedio),color="green") + 
   geom_hline(yintercept = .5,col="yellow") +
