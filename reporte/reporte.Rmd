@@ -41,6 +41,16 @@ La primera sección de este documento describe la generación de la base de dato
 
 # Modelado e Implementación
 
+## Modelo 1 Model Autoregressive AR(1) time series models
+A first-order autoregressive model (AR(1)) with normal noise takes each point yn in a sequence y to be generated according to
+
+$$y_n ∼ Normal(α + βy_n−1, σ ).$$
+
+  This model introduces a coefficient, which we’ll call β. The parameter φ controlls the degree to
+  which the random walk reverts to the mean – when β = 1, the model is identical to the random walk, but
+  at smaller values, the model will revert back to the mean (which in this case is zero). Also, φ can take on
+  negative values
+
 
 
 # Interpretación de resultados
