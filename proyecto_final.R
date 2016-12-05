@@ -15,8 +15,8 @@ prob<-function(x){
   out<-min(length(x[x>0])/length(x),length(x[x<0])/length(x))
   out
 }
-#FORECAST ACCURACY:  as described by Hyndman et al in "Another look at measures of forecast accuracy" (2006).
 calculateMASE <- function(f,y) { # f = vector with forecasts, y = vector with actuals
+#FORECAST ACCURACY:  as described by Hyndman et al in "Another look at measures of forecast accuracy" (2006).
   if(length(f)!=length(y)){ stop("Vector length is not equal") }
   n <- length(f)
   return(mean(abs((y - f) / ((1/(n-1)) * sum(abs(y[2:n]-y[1:n-1]))))))
@@ -203,42 +203,33 @@ plot(semantic_nacional$precio_promedio,type="l")
 #-Definir la estuctura de los datos depediendo del modelo
 
 # Modelo A
-# AR(1) Model
-data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-6)],rep(NA,6)))
+# AR(1) Model Autoregressive AR(1) time series models
+data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-3)],rep(NA,3)))
 inits<-function(){list(tau=1)}
 parameters<-c("yf1")
 model="A.txt"
 
-#Modelo B 
-# AR(1) Model
-data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-6)],rep(NA,6)))
-inits<-function(){list(mu=0,tau=1)}
-parameters<-c("mu","yf1")
-model="B.txt"
 
-#Modelo C 
-# AR(4) Model
-# [Estos Modelos solo autorregresivos son muy malos porque como vimos en el acf
-# la variable depende mucho de el primer lag y poco de los demás, para que funcione
-# tendría que tener un ponderador en las betas - más importancia en la primera, etc
-data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-6)],rep(NA,6)))
-inits<-function(){list(mu=0,tau=1,beta=rep(0,4),eta=rep(0,n))}
-parameters<-c("beta","mu","yf1")
-model = "C.txt"
+# Modelo B  [Modelo Dinámico sin covariable]
+#Le hicimos un suavizamiento al modelo metiendo una lambda en la varianza de las betas
+#tau.b<- lam * tau.y suvizamos más
+data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-3)],rep(NA,3)))
+#inits<-function(){list(beta=rep(0,n),tau.y=1,tau.b=1,yf1=rep(0,n))}
+inits<-function(){list(beta=rep(0,n),tau.y=1,yf1=rep(0,n))}
+#parameters<-c("beta","tau.y","tau.b","yf1")
+parameters<-c("beta","tau.y","tau.b","yf1")
+model = "B.txt"
 
 
-
-
-
-
-# Modelo D  [CON COVARIABLES]
+# Modelo C  [CON COVARIABLES]
 #[Modelo dinámico covariable Futuro de precios]
 data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-3)],rep(NA,3)),"x"=semantic_nacional$int_price)
-#inits<-function(){list(beta=rep(0,n),tau.y=1,tau.b=1,yf1=rep(0,n))}
+inits<-function(){list(beta=rep(0,n),tau.y=1,tau.b=1,yf1=rep(0,n))}
 inits<-function(){list(beta=rep(0,n),tau.y=1,tau.b=1,yf1=rep(0,n),g=0)}
 #parameters<-c("beta","tau.y","tau.b","yf1")
 parameters<-c("beta","tau.y","tau.b","yf1","g")
-model = "D.txt"
+model = "C.txt"
+
 
 
 
@@ -284,7 +275,10 @@ lines(tail(semantic_nacional$fecha,-i),out.yf[,1],col=2,lty=2)
 
 
 
+calculateMASE(tail(semantic_nacional$precio_promedio,6),tail(out.yf[,3],6))
+calculateMASE(out.yf[,3],semantic_nacional$precio_promedio[2:190])
 
+Another look at measures of forecast accuracy
 ##################################################
 ####¿EXTRA? 5. Modelo Serie de tiempo por Estado ####
 ##################################################
