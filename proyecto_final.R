@@ -68,6 +68,12 @@ filter(nacional,precio_min > 15)
 # Vemos que ese outlier no tiene observaciones en la columna obs. 
 # quitamos esa observación para que no perjudique el promedio nacional
 
+estados_dic<- read_csv("./data/estados_dic.csv") %>%
+  rename(edo_destino=NOM_ENT) %>% 
+  mutate(edo_destino = str_to_lower(edo_destino)) %>%
+  mutate(CVE_ENT = str_pad(CVE_ENT, 2, pad = "0"))
+  
+
 maiz_nacional <- read_csv("./data/precios_granos_semanales.csv") %>%
   select(producto,fecha,edo_destino,precio_min,obs) %>% 
   #definimos variable de fecha
@@ -78,8 +84,15 @@ maiz_nacional <- read_csv("./data/precios_granos_semanales.csv") %>%
   mutate(mes = month(fecha)) %>% 
   mutate(año = year(fecha)) %>% 
   mutate(fecha = make_datetime(year=año,month=mes,1)) %>% 
-  mutate(fecha = ymd (fecha))
-
+  mutate(fecha = ymd (fecha)) %>%
+  left_join(estados_dic,by = "edo_destino") %>%
+    mutate(CVE_ENT = ifelse(edo_destino== "michoacán", "16", 
+                          ifelse(edo_destino== "veracruz","30",
+                                 ifelse(edo_destino=="df","09",
+                                        ifelse(edo_destino=="coahuila","05",CVE_ENT))))) 
+  
+  
+  
 ggplot(maiz_nacional) + geom_line(aes(fecha,precio_min,color=edo_destino))
 
 
@@ -92,28 +105,36 @@ nacional <- maiz_nacional %>%
   group_by(fecha,año,mes) %>% 
   summarise(precio_promedio = mean(precio_min, na.rm = TRUE)) %>% 
   left_join(internacional,by = c("fecha", "año", "mes")) 
-
+  
 nacional %>% ggplot() + geom_line(aes(fecha,precio_promedio),color="green") + geom_line(aes(fecha,int_price),colour="blue") 
   
+
 # Obtener una base tipo panel para cada estado del precio por mes del maiz blanco
 estatal <- maiz_nacional %>%
-  group_by(edo_destino,fecha,año,mes) %>%
+  group_by(CVE_ENT,fecha,año,mes) %>%
+  #group_by(edo_destino,fecha,año,mes) %>%
   summarise(precio_promedio = mean(precio_min,na.rm=TRUE)) %>%
-  spread(key = edo_destino, value = precio_promedio)
+  spread(key = CVE_ENT, value = precio_promedio)
+  #spread(key = edo_destino, value = precio_promedio)
 
+
+semantic <- left_join(nacional,estatal) 
 
 # X_IPA
-semantic <- left_join(nacional,estatal) 
-semantic$lag_3 = lag(semantic$precio_promedio,3)
-semantic$lag_12 = lag(semantic$precio_promedio,12)
-semantic<-mutate(semantic, CQGR=(precio_promedio/lag_3)^(1/3)-1)
-semantic<-mutate(semantic, CAGR=(precio_promedio/lag_12)^(1/12)-1)
+
+
+semantic$lag_3 = lag(semantic$aguascalientes,3)
+semantic$lag_12 = lag(semantic$aguascalientes,12)
+semantic<-mutate(semantic, CQGR=(aguascalientes/lag_3)^(1/3)-1)
+semantic<-mutate(semantic, CAGR=(aguascalientes/lag_12)^(1/12)-1)
+
 temp_Q <- semantic %>% group_by(mes) %>% summarise(CQGR_month_mean = mean(CQGR,na.rm=TRUE),
                                                    CQGR_month_std = sd(CQGR,na.rm=TRUE))
-temp_A <- semantic %>% group_by(año) %>% summarise(CQGR_year_mean = mean(CQGR,na.rm=TRUE),
-                                                   CQGR_year_std = sd(CQGR,na.rm=TRUE))
-IPA_Q <- semantic %>% left_join(temp_Q) %>% mutate(IPA_Q = (CQGR -CQGR_month_mean)/CQGR_month_std) 
+temp_A <- semantic %>% group_by(año) %>% summarise(CAGR_year_mean = mean(CAGR,na.rm=TRUE),
+                                                   CAGR_year_std = sd(CAGR,na.rm=TRUE))
 
+IPA_Q <- semantic %>% left_join(temp_Q) %>% mutate(IPA_Q = (CQGR -CQGR_month_mean)/CQGR_month_std) 
+IPA_A <- semantic %>% left_join(temp_A) %>% mutate(IPA_A = (CAGR -CAGR_month_mean)/CAGR_month_std) 
 ggplot() + geom_bar(aes())
 
 abline(h = 1,col="red")
@@ -213,9 +234,6 @@ inits<-function(){list(beta=rep(0,n),tau.y=1,tau.b=1,yf1=rep(0,n),g=0)}
 #parameters<-c("beta","tau.y","tau.b","yf1")
 parameters<-c("beta","tau.y","tau.b","yf1","g")
 model = "D.txt"
-
-
-
 
 
 
