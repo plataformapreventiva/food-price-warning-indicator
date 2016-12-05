@@ -297,7 +297,7 @@ model = "B.txt"
 
 # Modelo C  [Modelo Dinámico con covariables]
 data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-3)],rep(NA,3)),"x1"=semantic_nacional$int_price)
-inits<-function(){list(alpha=rep(0,n),beta=rep(0,n),tau=1,yf1=rep(1,n))}
+inits<-function(){list(alpha=0,beta=rep(0,n),tau=1,yf1=rep(1,n))}
 parameters<-c("alpha","beta","tau","yf1")
 model = "C.txt"
 
