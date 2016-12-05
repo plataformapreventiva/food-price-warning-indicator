@@ -213,7 +213,8 @@ plot(semantic_nacional$precio_promedio,type="l")
 
 dat <- semantic_nacional 
 semantic_nacional<- mutate(semantic_nacional,l_int_price=dplyr::lag(int_price,n=1))
-# Modelo D  [Time series with seasonality]
+
+# Modelo STAN  [Time series with seasonality]
 # La temporada dura 12 meses
 dat<-list(N=n,y=semantic_nacional$precio_promedio,x1=semantic_nacional$int_price)
 fit2<-stan(file='hb_ts2.stan',data=dat,iter=1000,chains=1)

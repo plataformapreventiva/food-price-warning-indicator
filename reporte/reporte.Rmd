@@ -63,16 +63,21 @@ Como era de esperarse, existe una alta correlación ($0.9472937$) entre los prec
 
 # Modelado e Implementación
 
-## Modelo 1 Model Autoregressive AR(1) time series models
-A first-order autoregressive model (AR(1)) with normal noise takes each point $y_n$ in a sequence y to be generated according to
+## Modelo de tendencia de segundo orden con componente estacional 
 
-$$y_n \sim Normal(\alpha + \beta y_{n-1}, \sigma )$$
 
-  This model introduces a coefficient, which we'll call $\beta$. The parameter $\phi$ controlls the degree to
-  which the random walk reverts to the mean – when $\beta=1$, the model is identical to the random walk, but
-  at smaller values, the model will revert back to the mean (which in this case is zero). Also, $\phi$ can take on
-  negative values
+$$
+CV_t = Q_t + \sum trend_t + season_{mod(t,12)} \\
+trend_t - trend_{t-1} = trend_{t-1} - trend_{t-2} + \epsilon_t \\
+\sum _k ^7 season_k \sim N(0,\sigma_{season}) \\
+Q_t = ax_{1t} + d + \epsilon_t
+$$
 
+## Modelo estático
+
+## Modelo Dinámico sin covariables
+
+## Modelo Dinámico con covariable
 
 
 # Interpretación de resultados
