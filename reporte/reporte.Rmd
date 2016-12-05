@@ -68,29 +68,39 @@ Como era de esperarse, existe una alta correlación ($0.9472937$) entre los prec
 
 
 $$
-CV_t = Q_t + \sum trend_t + season_{mod(t,12)} \\
-trend_t - trend_{t-1} = trend_{t-1} - trend_{t-2} + \epsilon_t \\
-\sum _k ^7 season_k \sim N(0,\sigma_{season}) \\
-Q_t = \alpha + \beta * PrecioFuturo_{1t} + \epsilon_t
+\begin{aligned}
+CV_t                  &= Q_t + \sum T_t + S_{mod(t,12)} \\
+Q_t                   &=\alpha + \beta f_{1t} + \varepsilon_t \\
+T_t - T_{t-1}         &= T_{t-1} - T_{t-2} + \varepsilon_t \\
+\sum _k ^7 S_k        &\sim N(0,\sigma_{S}) 
+\end{aligned}
 $$
+
 
 ## Modelo estático con Covariable
 
 $$ 
-PrecioMaiz_i \sim N(mu_i,tau)  \\
-mu_i <- \alpha + \beta_1 PrecioFuturo_i +\beta_2*PrecioFuturos_i^2+\beta_3*t_i+\beta_4*t_i^2 \\
-\beta \sim N(0,0.001) \\
-tau \sim Gamma(0.001,0.001)
+\begin{aligned}
+p_i   &\sim N(\mu_i,\tau)  \\
+\beta        &\sim N(0,0.001) \\
+\tau         &\sim \gamma(0.001,0.001)\\
+\mu_i        &= \alpha + \beta_1 f_i +\beta_2f_i^2+\beta_3t_i+\beta_4t_i^2 \\
+\end{aligned}
 $$
 
 ## Modelo Dinámico sin covariables
 
 $$ 
-PrecioMaiz_i \sim N(mu_i,tau)  \\
-mu_i <- \alpha_i \\
-\alpha_i \sim N(mu.b,tau.b) \\
-mu.b_i <- g*\alpha_{i-1} \\
-tau <- lam*tau
+\begin{aligned}
+p_i          &\sim N(\mu_i,\tilde{\tau})  \\
+\mu_i        &= \beta_i \\ 
+\beta_i      &\sim N(\tilde{\mu},\tau) \\
+\tilde{\mu}          &= g \beta_{i-1} \\
+\beta_1      &\sim N(0,0.001) \\
+\tau         &= \lambda\tilde{\tau} \\
+\tilde{\tau} &\sim \gamma(0,0.001) \\
+g            &\sim N(0,0.001)
+\end{aligned}
 $$
 
 
@@ -98,11 +108,15 @@ $$
 ## Modelo Dinámico con covariable
 
 $$
-PrecioMaiz_i \sim N(mu_i,tau)  \\
-mu_i <- \alpha + \beta_i*PrecioFuturo_i \\
-\beta_i \sim N(mu.b,tau.b) \\
-mu.b_i <- g*\beta_{i-1} \\
-tau <- lam*tau
+\begin{aligned}
+p_i         &\sim N(\mu_i,\tau)  \\
+\mu_i       &= \alpha + \beta_i f_i \\
+\beta_i     &\sim N(\beta_{i-1},\hat{\tau}) \\
+\beta_1     &\sim N(0,0.001) \\
+\hat{\tau}  &= \lambda\tau \\
+\tau        &\sim \gamma(0.001,0.001) \\
+\lambda     &=10
+\end{aligned}
 $$
 
 
