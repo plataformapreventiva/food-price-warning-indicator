@@ -23,8 +23,7 @@ La primera sección de este documento describe la generación de la base de dato
 ## PRECIOS NACIONALES
 - Información scrappeada del Sistema Nacional de Información e Integración de Mercados (SNIIM)
 - Se utiliza precio mínimo por kilogramo (vendido por tonelada)
-- Fuente:
- http://www.economia-sniim.gob.mx/
+- Fuente:  http://www.economia-sniim.gob.mx/
  
 Para los datos nacionales se cuenta con información semanal sobre los precios más frecuentes, así como el precio mínimo y el precio máximo. Adicionalmente conocemos el origen y el destino del producto. El desglose por estado permitirá crear una alerta estatal, en vez de nacional.
 
@@ -57,7 +56,6 @@ Como era de esperarse, existe una alta correlación ($0.9472937$) entre los prec
 - Fuente:
  http://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?accion=consultarCuadro&idCuadro=CF86
  
-![Descomposición de serie de tiempo en estacional y tendencia.](./images/ts_decomposition.png) 
 
 
 ![Medida de alerta frente a cambios bruscos en el precio.](./images/ts_decomposition.png) 
@@ -65,6 +63,23 @@ Como era de esperarse, existe una alta correlación ($0.9472937$) entre los prec
 # Modelado e Implementación
 
 ## Modelo de tendencia de segundo orden con componente estacional 
+
+"En México existen dos ciclos productivos en el cultivo del maíz: el de primavera-verano (PV) y el de otoño-invierno (OI). La época de siembra del maíz, tanto de riego como de temporal, se concentra en los meses de junio y julio para el ciclo PV y de noviembre a enero para el ciclo OI." 
+
+![Descomposición de serie de tiempo en estacional y tendencia.](./images/ts_decomposition.png) 
+
+
+"Aproximadamente entre 90 y 95% de la producción nacional se cultiva en el ciclo primavera-verano que se cosecha en los meses de octubre a diciembre. La producción del ciclo otoño-invierno se concentra básicamente en los estados del norte del país como Sinaloa, Sonora y Chihuahua, la cosecha de este ciclo se realiza durante los meses de marzo y julio, particularmente durante este ciclo casi 40% de la superficie sembrada cuenta con sistemas de riego."[@Economista]
+
+
+Como primera aproximación se desarrollo un modelo de tendencia de segundo orden con componente  estacional. 
+
+Esto se hizo dado que observamos que existe un componente estacional importante en los movimientos de los precios de los granos nacionales que se puede explicar por las temporadas de siembra y cosecha en el país. 
+
+
+
+
+
 
 
 $$
