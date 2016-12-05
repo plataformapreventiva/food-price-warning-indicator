@@ -24,12 +24,30 @@ La primera sección de este documento describe la generación de la base de dato
 - Se utiliza precio mínimo por kilogramo (vendido por tonelada)
 - Fuente:
  http://www.economia-sniim.gob.mx/
+ 
+Para los datos nacionales se cuenta con información semanal sobre los precios más frecuentes, así como el precio mínimo y el precio máximo. Adicionalmente conocemos el origen y el destino del producto. El desglose por estado permitirá crear una alerta estatal, en vez de nacional.
+
+![Precio semanal del maiz en la Ciudad de México](./images/df_semanal.png)
+
 
 ## MERCADO INTERNACIONAL [Future Market]
 - Maize (corn) Monthly Price - US Dollars per Metric Ton
 - Fuente:
  http://www.indexmundi.com/commodities/?commodity=corn&months=240&currency=mxn
  http://www.indexmundi.com/commodities/?commodity=corn&months=240
+ 
+Se cuenta con la información comprendida entre el 1 de Enero de 2001 y el 1 de Octubre de 2016 sobr el precio de la tonelada métrica en miles de pesos mexicanos. El valor desde entonces se ha incrementado aproximadamente por un factor de 4.
+
+![Precio internacional del maiz.](./images/internacional.png)
+
+
+Podemos observar en la figura, una comparación entre las tendencias de los precios nacionales e internacionales.
+
+![Precio nacional del Maiz.](./images/internacional_nacional.png)
+
+Como era de esperarse, existe una alta correlación ($0.9472937$) entre los precios nacionales e internacionales.
+
+![Precio nacional contra precio internacional.](./images/correlation.png)
 
 ## TIPO DE CAMBIO 
 - Usamos tipo de cambio para hacer comparable el precio de futuros 
@@ -38,17 +56,21 @@ La primera sección de este documento describe la generación de la base de dato
 - Fuente:
  http://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?accion=consultarCuadro&idCuadro=CF86
  
+![Descomposición de serie de tiempo en estacional y tendencia.](./images/ts_decomposition.png) 
+
+
+![Medida de alerta frente a cambios bruscos en el precio.](./images/ts_decomposition.png) 
 
 # Modelado e Implementación
 
 ## Modelo 1 Model Autoregressive AR(1) time series models
-A first-order autoregressive model (AR(1)) with normal noise takes each point yn in a sequence y to be generated according to
+A first-order autoregressive model (AR(1)) with normal noise takes each point $y_n$ in a sequence y to be generated according to
 
-$$y_n ∼ Normal(α + βy_n−1, σ ).$$
+$$y_n \sim Normal(\alpha + \beta y_{n-1}, \sigma )$$
 
-  This model introduces a coefficient, which we’ll call β. The parameter φ controlls the degree to
-  which the random walk reverts to the mean – when β = 1, the model is identical to the random walk, but
-  at smaller values, the model will revert back to the mean (which in this case is zero). Also, φ can take on
+  This model introduces a coefficient, which we'll call $\beta$. The parameter $\phi$ controlls the degree to
+  which the random walk reverts to the mean – when $\beta=1$, the model is identical to the random walk, but
+  at smaller values, the model will revert back to the mean (which in this case is zero). Also, $\phi$ can take on
   negative values
 
 
