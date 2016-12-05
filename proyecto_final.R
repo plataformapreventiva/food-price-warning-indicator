@@ -198,14 +198,15 @@ n<-nrow(semantic_nacional)
 
 #puedes hacer algunas gráficas exploratorias de la variable de interés
 plot(semantic_nacional$precio_promedio,type="l")
-hist(semantic_nacional$precio_promedio,freq=FALSE)
-
+#hist(semantic_nacional$precio_promedio,freq=FALSE)
 
 #-Definir la estuctura de los datos depediendo del modelo
+
 # Modelo A
+# AR(1) Model
 data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-6)],rep(NA,6)))
-inits<-function(){list(mu=0,tau=1)}
-parameters<-c("mu","yf1")
+inits<-function(){list(tau=1)}
+parameters<-c("yf1")
 model="A.txt"
 
 #Modelo B 
@@ -292,11 +293,21 @@ lines(tail(semantic_nacional$fecha,-i),out.yf[,1],col=2,lty=2)
 # ALgunos estados tienen muchos missing values, podemos hacer el modelo con los estados completos y 
 # con matching hacer algún argumento sobre por qué tendrían un precio parecido. 
 
+
+
+
+
 ##################################################
 ####¿EXTRA? 6. Modelo Serie de tiempo por Estado ####
 ##################################################
 # No tenemos todos los estados pero podemos hacer el análisis para los que tengamos.
 # ¿Dependencia espacial?
+
+
+
+##################################################
+####¿EXTRA? STAN ####
+##################################################
 
 
 dat <- semantic_nacional %>% group_by(, name)
