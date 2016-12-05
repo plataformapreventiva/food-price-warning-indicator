@@ -109,26 +109,38 @@ $$
 # Interpretación de resultados
 
 
-IFPA: “The indicator aims at capturing the occurrence of episodes of abrupt price increases that could be indicative of malfunctioning food commodity markets, and as such can be used to monitor the “proper functioning” of food markets, as expressed by the Target”
+
+| Modelo | ME         | RMSE       | MAE        | MPE       | MAPE     |
+|--------|------------|------------|------------|-----------|----------|
+| 1      | 0.02611729 | 0.1148428  | 0.07487815 | 1.00967   | 2.08551  |
+| 2      | 0.01395216 | 0.3103673  | 0.2325069  | 0.3629005 | 6.196993 |
+| 3      | 0.01166075 | 0.09974116 | 0.05556027 | 0.4142679 | 1.446658 |
+| 4      | 0.014214   | 0.1189785  | 0.07556355 | 0.537999  | 1.996587 |
 
 
-La volatilidad de la materia prima es medida en función de las tasa de crecimiento compuesto (Compound growth rate) anual (CAGR) y trimestral (CQGR).
-
-El promedio y la desviación estándar define lo que se considerará volatilidad “normal”. Una anomalía para un mes en específico se da cuando la CGR es mayor que el promedio histórico mensual de ese mes por más de una desviación estandar.
-
-The importance to consider both CQGR and CAGR derives from the need to take into account the presence of marked seasonal variability in many agricultural prices, with prices growing more or less steadily over the year from their minimum, occurring at harvest period. 
+Una vez que se ha obtenido el vector de precios con la estimación a 3 meses procedemos a construir el IPA (Indicator of price anomalies) [@Baquedano] que es un indicador de anomalía de precios basado en la tasa de crecimiento compuesto. Las tasas de crecimiento compuesto son una media geométrica de una variable que se asume presenta u crecimiento constante durante un periodo delimitado, esto simula un crecimiento suave y periódico que sirve como referencia para distinguir cambios abruptos en los precios.
 
 $$
 CQuarterGR_{tn} = (P_{tn}/P_{t0})^{1/(t_n-t_0)} - 1
 $$
 
-First, the difference between the monthly CGR and the historic average CGR is computed for each month and then normalized with respect to the historic standard deviation. Based on the results, a price anomaly is recorded in each month for which the normalized difference is equal or greater than one. Then, the frequency of price anomalies is computed for both the quarterly and the annual CGRs and the final indicator of price anomalies for month t (IPAt) is computed as a weighted average of the frequency of price anomalies in the quarterly CGR and the frequency of price anomalies based on the annual CGR. 
+Para construirlo se calcula la diferencia entre el CGR (anual y trimestral) y el promedio histórico para cada mes, posteriormente se normaliza respecto a la desviación estandar histórica. El promedio y la desviación estándar definen lo que se considerará volatilidad “normal”, una anomalía para un mes en específico se da cuando la CGR es mayor que una desviación estandar. 
+
+Es importante considerar ambos CGR ya que se debe de tomar en cuenta la presencia de variabilidad estacional, ya que en muchos mercados los precios se determinan por las cosechas y se observa regularmente precios más altos pasada la cosecha.
 
 
+```{r}
+IPA_Q %>% ggplot() + geom_bar(aes(fecha,abs(IPA_Q)),stat="identity") + 
+  geom_line(aes(fecha,precio_promedio),color="green") + 
+  geom_hline(yintercept = .5,col="yellow") +
+  geom_hline(yintercept = 1,col="red")
+
+```
 
 # Conclusión
 
 "La volatilidad, entendida como cambios significativos y frecuentes en el sentido y magnitud en los precios de los alimentos1 , puede representar efectos perjudiciales para gran parte de los productores, consumidores y estados. Éste fenómeno, cuando se produce de forma excesiva y provoca que los precios se incrementen, hace que las decisiones de los productores sobre cómo y qué producir estén sujetas a mayor riesgo. Las poblaciones con limitados ingresos a su vez ven como su poder adquisitivo disminuye drásticamente y las desigualdades se amplian." [@fao2]
+
 
 "para tratar de enfrentar la volatilidad de los precios de los alimentos, cada vez parece más evidente que la solución pasa por una gobernanza más eficiente del sistema alimentario. 
 
