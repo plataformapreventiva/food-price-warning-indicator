@@ -125,4 +125,13 @@ $$
 First, the difference between the monthly CGR and the historic average CGR is computed for each month and then normalized with respect to the historic standard deviation. Based on the results, a price anomaly is recorded in each month for which the normalized difference is equal or greater than one. Then, the frequency of price anomalies is computed for both the quarterly and the annual CGRs and the final indicator of price anomalies for month t (IPAt) is computed as a weighted average of the frequency of price anomalies in the quarterly CGR and the frequency of price anomalies based on the annual CGR. 
 
 
+
+# Conclusión
+
+"La volatilidad, entendida como cambios significativos y frecuentes en el sentido y magnitud en los precios de los alimentos1 , puede representar efectos perjudiciales para gran parte de los productores, consumidores y estados. Éste fenómeno, cuando se produce de forma excesiva y provoca que los precios se incrementen, hace que las decisiones de los productores sobre cómo y qué producir estén sujetas a mayor riesgo. Las poblaciones con limitados ingresos a su vez ven como su poder adquisitivo disminuye drásticamente y las desigualdades se amplian." [@fao2]
+
+"para tratar de enfrentar la volatilidad de los precios de los alimentos, cada vez parece más evidente que la solución pasa por una gobernanza más eficiente del sistema alimentario. 
+
+Es precisamente en éste ámbito donde el enfoque la estadística y el análisis de datos tiene mayor valor. No sólo porque contribuye a proteger a los más vulnerables e incrementa la eficacia y sostenibilidad de las políticas y programas de seguridad alimentaria.
+
 # Referencias
