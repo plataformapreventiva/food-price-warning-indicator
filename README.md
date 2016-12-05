@@ -39,3 +39,5 @@ http://www.fao.org/giews/food-prices/research/detail/es/c/235685/
 - http://www.fao.org/giews/food-prices/home/en/
 - http://www.fao.org/giews/food-prices/price-warnings/en/
 -http://www.fao.org/giews/food-prices/research/detail/es/c/235685/
+- Duncan Lee. CARBayes: An R Package for Bayesian Spatial Modeling with Conditional Autoregressive Priors. https://www.jstatsoft.org/article/view/v055i13
+

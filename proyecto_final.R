@@ -60,13 +60,19 @@ summary(nacional)
 nacional <-select(nacional,producto,precio_min,fecha,edo_destino,obs) %>% 
   #definimos variable de fecha
   mutate(fecha=dmy(fecha)) 
-  # Observemos más a fondo el precio por kilogramo vendido en bulto
-  # identificamos un outlier
+# Observemos más a fondo el precio por kilogramo vendido en bulto
+# identificamos un outlier
 quantile(nacional$precio_min,c(.7,.8, .9,.98,.9999,1) ,na.rm = TRUE)
 ggplot(nacional) + geom_point(aes(fecha,precio_min))
 filter(nacional,precio_min > 15)
 # Vemos que ese outlier no tiene observaciones en la columna obs. 
 # quitamos esa observación para que no perjudique el promedio nacional
+
+estados_dic<- read_csv("./data/estados_dic.csv") %>%
+  rename(edo_destino=NOM_ENT) %>% 
+  mutate(edo_destino = str_to_lower(edo_destino)) %>%
+  mutate(CVE_ENT = str_pad(CVE_ENT, 2, pad = "0"))
+  
 
 maiz_nacional <- read_csv("./data/precios_granos_semanales.csv") %>%
   select(producto,fecha,edo_destino,precio_min,obs) %>% 
@@ -78,8 +84,15 @@ maiz_nacional <- read_csv("./data/precios_granos_semanales.csv") %>%
   mutate(mes = month(fecha)) %>% 
   mutate(año = year(fecha)) %>% 
   mutate(fecha = make_datetime(year=año,month=mes,1)) %>% 
-  mutate(fecha = ymd (fecha))
-
+  mutate(fecha = ymd (fecha)) %>%
+  left_join(estados_dic,by = "edo_destino") %>%
+    mutate(CVE_ENT = ifelse(edo_destino== "michoacán", "16", 
+                          ifelse(edo_destino== "veracruz","30",
+                                 ifelse(edo_destino=="df","09",
+                                        ifelse(edo_destino=="coahuila","05",CVE_ENT))))) 
+  
+  
+  
 ggplot(maiz_nacional) + geom_line(aes(fecha,precio_min,color=edo_destino))
 
 
@@ -92,21 +105,45 @@ nacional <- maiz_nacional %>%
   group_by(fecha,año,mes) %>% 
   summarise(precio_promedio = mean(precio_min, na.rm = TRUE)) %>% 
   left_join(internacional,by = c("fecha", "año", "mes")) 
-
-nacional %>% ggplot() + geom_line(aes(fecha,precio_promedio),color="green") 
-  #+ geom_line(aes(fecha,int_price),colour="blue") +  
   
+nacional %>% ggplot() + geom_line(aes(fecha,precio_promedio),color="green") + geom_line(aes(fecha,int_price),colour="blue") 
+  
+
 # Obtener una base tipo panel para cada estado del precio por mes del maiz blanco
 estatal <- maiz_nacional %>%
-  group_by(edo_destino,fecha,año,mes) %>%
+  group_by(CVE_ENT,fecha,año,mes) %>%
+  #group_by(edo_destino,fecha,año,mes) %>%
   summarise(precio_promedio = mean(precio_min,na.rm=TRUE)) %>%
-  spread(key = edo_destino, value = precio_promedio)
+  spread(key = CVE_ENT, value = precio_promedio)
+  #spread(key = edo_destino, value = precio_promedio)
 
 
 semantic <- left_join(nacional,estatal) 
-#semantic %>% View()
+
+# X_IPA
 
 
+semantic$lag_3 = lag(semantic$aguascalientes,3)
+semantic$lag_12 = lag(semantic$aguascalientes,12)
+semantic<-mutate(semantic, CQGR=(aguascalientes/lag_3)^(1/3)-1)
+semantic<-mutate(semantic, CAGR=(aguascalientes/lag_12)^(1/12)-1)
+
+temp_Q <- semantic %>% group_by(mes) %>% summarise(CQGR_month_mean = mean(CQGR,na.rm=TRUE),
+                                                   CQGR_month_std = sd(CQGR,na.rm=TRUE))
+temp_A <- semantic %>% group_by(año) %>% summarise(CAGR_year_mean = mean(CAGR,na.rm=TRUE),
+                                                   CAGR_year_std = sd(CAGR,na.rm=TRUE))
+
+IPA_Q <- semantic %>% left_join(temp_Q) %>% mutate(IPA_Q = (CQGR -CQGR_month_mean)/CQGR_month_std) 
+IPA_A <- semantic %>% left_join(temp_A) %>% mutate(IPA_A = (CAGR -CAGR_month_mean)/CAGR_month_std) 
+ggplot() + geom_bar(aes())
+
+abline(h = 1,col="red")
+abline(h = .5,col="gold")
+
+IPA_Q %>% ggplot() + geom_bar(aes(fecha,abs(IPA_Q)),stat="identity") + 
+  geom_line(aes(fecha,precio_promedio),color="green") + 
+  geom_hline(yintercept = .5,col="yellow") +
+  geom_hline(yintercept = 1,col="red")
 
 
 ##################################################
@@ -200,15 +237,12 @@ model = "D.txt"
 
 
 
-
-
-
 if (Sys.info()[['sysname']] == "Darwin") {
   mod.sim <- jags(data,inits,parameters,model.file=model,
-                n.iter=5000,n.chains=1,n.burnin=500)
+                  n.iter=5000,n.chains=1,n.burnin=500)
 } else {
   mod.sim <- bugs(data,inits,parameters,model.file=model,
-                n.iter=5000,n.chains=1,n.burnin=500)
+                  n.iter=5000,n.chains=1,n.burnin=500)
 }
 
 
@@ -259,5 +293,53 @@ lines(tail(semantic_nacional$fecha,-i),out.yf[,1],col=2,lty=2)
 ##################################################
 # No tenemos todos los estados pero podemos hacer el análisis para los que tengamos.
 # ¿Dependencia espacial?
+
+
+dat <- semantic_nacional %>% group_by(, name)
+mutate(dat, lag_time = lag(time))
+
+
+semantic_nacional<- mutate(semantic_nacional,l_int_price=dplyr::lag(int_price,n=1))
+# Modelo D  [Time series with seasonality]
+# La temporada dura 12 meses
+dat<-list(N=n,y=semantic_nacional$precio_promedio,x1=semantic_nacional$int_price)
+fit2<-stan(file='hb_ts2.stan',data=dat,iter=1000,chains=1)
+
+
+#stan code
+fit2.smp <- rstan::extract(fit2, permuted = TRUE)
+dens2_a<-density(fit2.smp$a)
+dens2_d<-density(fit2.smp$d)
+a_est2<-dens2_a$x[dens2_a$y==max(dens2_a$y)]
+d_est2<-dens2_d$x[dens2_d$y==max(dens2_d$y)]
+
+trend_est2<-rep(0,n)
+
+for (i in 1:n) {
+  tmp<-density(fit2.smp$trend[,i])
+  trend_est2[i]<-tmp$x[tmp$y==max(tmp$y)]
+}
+week_est2<-rep(0,n)
+
+for (i in 1:n) {
+  tmp<-density(fit2.smp$season[,i])
+  week_est2[i]<-tmp$x[tmp$y==max(tmp$y)] 
+}
+
+pred2<-a_est2*semantic_nacional$int_price+d_est2+cumsum(trend_est2)+week_est2
+
+matplot(cbind(semantic_nacional$precio_promedio,pred2),type='l',lty=1,lwd=c(2,3),col=c(1,2))
+
+legend('topleft',c('Data','Predicted'),col=c(1,2),lty=1,lwd=c(2,3),cex=1.5,ncol=2)
+cor(semantic_nacional$precio_promedio,pred2)
+plot(week_est2,type='l')
+plot(trend_est2,type='l')
+
+matplot(
+  cbind(semantic_nacional$precio_promedio,
+        pred2,cumsum(trend_est2)+d_est2,
+        week_est2+cumsum(trend_est2)+d_est2),type='l',lty=1,lwd=c(2,3,2,2),col=c('black','red','blue','green'))
+legend('topleft',c('Data','Predicted','Trend','Seasonality + Trend'),col=c('black','red','blue','green'),lty=1,lwd=c(2,3,2,2),cex=1.2,ncol=2)
+
 
 
