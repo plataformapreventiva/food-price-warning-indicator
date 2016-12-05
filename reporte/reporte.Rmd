@@ -12,7 +12,8 @@ La ingesta de alimentos nutritivos es el indicador más básico de la calidad de
 
 El mercado alimentario mexicano se debe analizar desde el ámbito de la oferta y de la demanda. El seguimiento de la oferta se realiza mediante predicción de producción agrícola y los movimientos de importación y exportación de alimentos en el territorio nacional. Por otro lado, el análisis de la demanda tiene como objetivo principal medir las fuerzas que afectan los requerimientos del mercado con respecto a un bien o servicio dado un nivel de precios. 
 
-El objetivo de este proyecto es analizar el nivel de precios y estimar mediante métodos bayesianos el movimiento de los precios del maiz a nivel estatal en periodos de 3 y 6 meses. Con el vector de precios se utiliza la metodología del indicador IPA (Indicator of price anomalies) [@Baquedano] desarrollado por la fao para para generar un indicador de alerta temprana de crecimiento anómalo en precios de alimentos básicos que pueden impactar en la seguridad alimentaria de la población en situación de pobreza, en esta primera etapa se implementa el análisis para el maíz por la importancia que tiene en el mercado de consumo mexicano especialmente en la población de alta vulnerabilidad y se hace el análisis a nivel nacional.
+"Las fluctuaciones de precios son una característica normal de los mercados agrícolas que funcionan debidamente. Sin embargo, cuando éstas se magnifican y se tornan impredecibles – volátiles – las mismas pueden tener un efecto negativo en la seguridad alimentaria de los consumidores, los productores rurales y países enteros." [@FAO] El objetivo de este proyecto es analizar el nivel de precios y estimar mediante métodos bayesianos el movimiento de los precios del maiz a nivel estatal en periodos de 3 y 6 meses. Con el vector de precios se utiliza la metodología del indicador IPA (Indicator of
+price anomalies) [@Baquedano] desarrollado por la fao para para generar un indicador de alerta temprana de crecimiento anómalo en precios de alimentos básicos que pueden impactar en la seguridad alimentaria de la población en situación de pobreza, en esta primera etapa se implementa el análisis para el maíz por la importancia que tiene en el mercado de consumo mexicano especialmente en la población de alta vulnerabilidad y se hace el análisis a nivel nacional.
 
 La primera sección de este documento describe la generación de la base de datos, la segunda plantea el modelado y la implementación, la tercera sección presenta los resultados y realiza análisis de la precisión de los modelos, la cuarta sección realiza la implementación del "Indicator of price anomalies" y se presentan conclusiones y pasos a seguir.
 
@@ -76,8 +77,8 @@ $$
 ## Modelo estático con Covariable
 
 $$ 
-PrecioMaiz_t \sim N(mu_t,tau)  \\
-mu_t <- \alpha + \beta_1 PrecioFuturo_t +\beta_2*PrecioFuturos_t^2+\beta_3*t_t+\beta_4*t_t^2 \\
+PrecioMaiz_i \sim N(mu_i,tau)  \\
+mu_i <- \alpha + \beta_1 PrecioFuturo_i +\beta_2*PrecioFuturos_i^2+\beta_3*t_i+\beta_4*t_i^2 \\
 \beta \sim N(0,0.001) \\
 tau \sim Gamma(0.001,0.001)
 $$
@@ -85,10 +86,10 @@ $$
 ## Modelo Dinámico sin covariables
 
 $$ 
-PrecioMaiz_t \sim N(mu_t,tau)  \\
-mu_t <- \beta_i \\
-\beta_i \sim N(mu.b,tau.b) \\
-mu.b_i <- g*\beta_{i-1} \\
+PrecioMaiz_i \sim N(mu_i,tau)  \\
+mu_i <- \alpha_i \\
+\alpha_i \sim N(mu.b,tau.b) \\
+mu.b_i <- g*\alpha_{i-1} \\
 tau <- lam*tau
 $$
 
@@ -96,7 +97,32 @@ $$
 
 ## Modelo Dinámico con covariable
 
+$$
+PrecioMaiz_i \sim N(mu_i,tau)  \\
+mu_i <- \alpha + \beta_i*PrecioFuturo_i \\
+\beta_i \sim N(mu.b,tau.b) \\
+mu.b_i <- g*\beta_{i-1} \\
+tau <- lam*tau
+$$
+
 
 # Interpretación de resultados
+
+
+IFPA: “The indicator aims at capturing the occurrence of episodes of abrupt price increases that could be indicative of malfunctioning food commodity markets, and as such can be used to monitor the “proper functioning” of food markets, as expressed by the Target”
+
+
+La volatilidad de la materia prima es medida en función de las tasa de crecimiento compuesto (Compound growth rate) anual (CAGR) y trimestral (CQGR).
+
+El promedio y la desviación estándar define lo que se considerará volatilidad “normal”. Una anomalía para un mes en específico se da cuando la CGR es mayor que el promedio histórico mensual de ese mes por más de una desviación estandar.
+
+The importance to consider both CQGR and CAGR derives from the need to take into account the presence of marked seasonal variability in many agricultural prices, with prices growing more or less steadily over the year from their minimum, occurring at harvest period. 
+
+$$
+CQuarterGR_{tn} = (P_{tn}/P_{t0})^{1/(t_n-t_0)} - 1
+$$
+
+First, the difference between the monthly CGR and the historic average CGR is computed for each month and then normalized with respect to the historic standard deviation. Based on the results, a price anomaly is recorded in each month for which the normalized difference is equal or greater than one. Then, the frequency of price anomalies is computed for both the quarterly and the annual CGRs and the final indicator of price anomalies for month t (IPAt) is computed as a weighted average of the frequency of price anomalies in the quarterly CGR and the frequency of price anomalies based on the annual CGR. 
+
 
 # Referencias
