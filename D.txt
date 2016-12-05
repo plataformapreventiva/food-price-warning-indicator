@@ -1,3 +1,4 @@
+# Dinámico con relación en mu.b
 model
 {
 
