@@ -272,6 +272,9 @@ matplot(
 cor(semantic_nacional$precio_promedio,semantic_nacional$int_price)
 
 
+accuracy(mts, pred2)
+
+
 # Modelo A  [Modelo estático]
 semantic_nacional$t <- 1:n
 data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-3)],rep(NA,3)),"x"=semantic_nacional$int_price,"t"=semantic_nacional$t/max(semantic_nacional$t))
@@ -303,10 +306,15 @@ model = "C.txt"
 if (Sys.info()[['sysname']] == "Darwin") {
   mod.sim <- jags(data,inits,parameters,model.file=model,
                   n.iter=5000,n.chains=1,n.burnin=500)
+  out<-mod.sim$BUGSoutput$sims.list
+  out.sum<-mod.sim$BUGSoutput$summary
 } else {
   mod.sim <- bugs(data,inits,parameters,model.file=model,
                   n.iter=5000,n.chains=1,n.burnin=500)
+  out<-mod.sim$sims.list
+  out.sum<-mod.sim$summary
 }
+
 
 
 #Traza de la cadena
@@ -327,10 +335,10 @@ if (Sys.info()[['sysname']] == "Darwin") {
   #acf(z)
 
 
-out<-mod.sim$sims.list
+#out<-mod.sim$sims.list
 
 #sacas las predicciones
-out.sum<-mod.sim$summary
+#out.sum<-mod.sim$summary
 #obten subset todas las rows con yf
 out.yf<-out.sum[grep("yf",rownames(out.sum)),]
 out.mu<-out.sum[grep("mu.b",rownames(out.sum)),]
@@ -345,7 +353,7 @@ par(mfrow=c(1,1))
 
 #t vs y 
 #Si estás haciendo un autorregresivo tienes que quitarle observaciones al semantic
-plot(semantic_nacional$fecha,semantic_nacional$precio_promedio,type="b",col="grey80",ylim=c(ymin,ymax),xlim=c(xmin,xmax))
+plot(semantic_nacional$fecha,semantic_nacional$precio_promedio,type="b",col="grey80",xlab="Fecha",ylab="Precio por kilo",ylim=c(ymin,ymax),xlim=c(xmin,xmax))
 lines(semantic_nacional$fecha,out.yf[,3],col=2,lty=2)
 lines(semantic_nacional$fecha,out.yf[,7],col=2,lty=2)
 lines(semantic_nacional$fecha,out.yf[,1],col=2,lty=2)
