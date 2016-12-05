@@ -254,6 +254,7 @@ matplot(
         pred2,
         cumsum(trend_est2),
         week_est2+cumsum(trend_est2)),
+  xlab="Fecha",ylab="Precio por kilo",
   type='l',lty=1,lwd=c(2,3,2,2),col=c('black','red','blue','green'))
   legend('topleft',c('Data','Predicted','Seasonality + Trend','Trend'),col=c('black','red','blue','green'),lty=1,lwd=c(2,3,2,2),cex=.8,ncol=2)
 
