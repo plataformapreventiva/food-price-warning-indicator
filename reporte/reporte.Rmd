@@ -70,12 +70,29 @@ $$
 CV_t = Q_t + \sum trend_t + season_{mod(t,12)} \\
 trend_t - trend_{t-1} = trend_{t-1} - trend_{t-2} + \epsilon_t \\
 \sum _k ^7 season_k \sim N(0,\sigma_{season}) \\
-Q_t = ax_{1t} + d + \epsilon_t
+Q_t = \alpha + \beta * PrecioFuturo_{1t} + \epsilon_t
 $$
 
-## Modelo estático
+## Modelo estático con Covariable
+
+$$ 
+PrecioMaiz_t \sim N(mu_t,tau)  \\
+mu_t <- \alpha + \beta_1 PrecioFuturo_t +\beta_2*PrecioFuturos_t^2+\beta_3*t_t+\beta_4*t_t^2 \\
+\beta \sim N(0,0.001) \\
+tau \sim Gamma(0.001,0.001)
+$$
 
 ## Modelo Dinámico sin covariables
+
+$$ 
+PrecioMaiz_t \sim N(mu_t,tau)  \\
+mu_t <- \beta_i \\
+\beta_i \sim N(mu.b,tau.b) \\
+mu.b_i <- g*\beta_{i-1} \\
+tau <- lam*tau
+$$
+
+
 
 ## Modelo Dinámico con covariable
 
