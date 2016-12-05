@@ -27,7 +27,7 @@ La primera sección de este documento describe la generación de la base de dato
  
 Para los datos nacionales se cuenta con información semanal sobre los precios más frecuentes, así como el precio mínimo y el precio máximo. Adicionalmente conocemos el origen y el destino del producto. El desglose por estado permitirá crear una alerta estatal, en vez de nacional.
 
-![Precio semanal del maiz en la Ciudad de México](/Users/agutierrez/Documents/maestria/lineal-generalized-models/food-price-warning-indicator/images/df_semanal.png)
+![Precio semanal del maiz en la Ciudad de México](./images/df_semanal.png)
 
 
 ## MERCADO INTERNACIONAL [Future Market]
@@ -38,12 +38,12 @@ Para los datos nacionales se cuenta con información semanal sobre los precios m
  
 Se cuenta con la información comprendida entre el 1 de Enero de 2001 y el 1 de Octubre de 2016 sobr el precio de la tonelada métrica en miles de pesos mexicanos. El valor desde entonces se ha incrementado aproximadamente por un factor de 4.
 
-![Precio Internacional del Maiz](/Users/agutierrez/Documents/maestria/lineal-generalized-models/food-price-warning-indicator/images/internacional.png)
+![Precio internacional del maiz.](./images/internacional.png)
 
 
 Podemos observar en la figura, una comparación entre las tendencias de los precios nacionales e internacionales.
 
-![Precio Internacional del Maiz](/Users/agutierrez/Documents/maestria/lineal-generalized-models/food-price-warning-indicator/images/internacional_nacional.png)
+![Precio nacional del Maiz.](./images/internacional_nacional.png)
 
 ## TIPO DE CAMBIO 
 - Usamos tipo de cambio para hacer comparable el precio de futuros 
@@ -52,6 +52,10 @@ Podemos observar en la figura, una comparación entre las tendencias de los prec
 - Fuente:
  http://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?accion=consultarCuadro&idCuadro=CF86
  
+![Descomposición de serie de tiempo en estacional y tendencia.](./images/ts_decomposition.png) 
+
+
+![Medida de alerta frente a cambios bruscos en el precio.](./images/ts_decomposition.png) 
 
 # Modelado e Implementación
 
