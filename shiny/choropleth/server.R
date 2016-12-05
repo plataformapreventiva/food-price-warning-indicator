@@ -8,22 +8,27 @@
 #
 
 library(shiny)
+library(GISTools)
+library(stringr)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
   
-  mexico <- readShapeSpatial("/Users/agutierrez/Documents/maestria/lineal-generalized-models/food-price-warning-indicator/shape/final.shp")
+  mexico <- readShapeSpatial("./shape/final.shp")
   output$distPlot <- renderPlot({
     
       
-      n <- input$n
-
-    
-    
-    
-    
-      array <- names(mexico)[seq(3,length(names(mexico)))]
-      interest <- mexico[[array[n]]]
+      year <- input$year
+      month <- input$month
+      
+      if(year==2016 && month > 10)
+      {
+        month <- 10
+      }
+      array <- paste('X',year,".",str_pad(month, 2, pad = "0"),".01",sep="")
+      print(array)
+      
+      interest <- mexico[[array]]
       print(interest)
       col.min <- min(interest, na.rm=TRUE)
       col.max <- max(interest, na.rm=TRUE)
