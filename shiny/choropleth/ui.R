@@ -18,12 +18,22 @@ shinyUI(fluidPage(
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
     sidebarPanel(
-       sliderInput("n",
-                   "Number of bins:",
+       sliderInput("year",
+                   "Año:",
+                   min = 2001,
+                   max = 2016,
+                   value = 2001),
+       sliderInput("month",
+                   "Mes:",
                    min = 1,
-                   max = 190,
+                   max = 12,
                    value = 1)
     ),
+  
+
+ 
+        
+
     
     # Show a plot of the generated distribution
     mainPanel(
