@@ -76,8 +76,8 @@ $$
 ## Modelo estático con Covariable
 
 $$ 
-PrecioMaiz_t \sim N(mu_t,tau)  \\
-mu_t <- \alpha + \beta_1 PrecioFuturo_t +\beta_2*PrecioFuturos_t^2+\beta_3*t_t+\beta_4*t_t^2 \\
+PrecioMaiz_i \sim N(mu_i,tau)  \\
+mu_i <- \alpha + \beta_1 PrecioFuturo_i +\beta_2*PrecioFuturos_i^2+\beta_3*t_i+\beta_4*t_i^2 \\
 \beta \sim N(0,0.001) \\
 tau \sim Gamma(0.001,0.001)
 $$
@@ -85,16 +85,24 @@ $$
 ## Modelo Dinámico sin covariables
 
 $$ 
-PrecioMaiz_t \sim N(mu_t,tau)  \\
-mu_t <- \beta_i \\
-\beta_i \sim N(mu.b,tau.b) \\
-mu.b_i <- g*\beta_{i-1} \\
+PrecioMaiz_i \sim N(mu_i,tau)  \\
+mu_i <- \alpha_i \\
+\alpha_i \sim N(mu.b,tau.b) \\
+mu.b_i <- g*\alpha_{i-1} \\
 tau <- lam*tau
 $$
 
 
 
 ## Modelo Dinámico con covariable
+
+$$
+PrecioMaiz_i \sim N(mu_i,tau)  \\
+mu_i <- \alpha + \beta_i*PrecioFuturo_i \\
+\beta_i \sim N(mu.b,tau.b) \\
+mu.b_i <- g*\beta_{i-1} \\
+tau <- lam*tau
+$$
 
 
 # Interpretación de resultados

@@ -289,7 +289,7 @@ model = "A.txt"
 #tau.b<- lam * tau.y suvizamos más
 data<-list("n"=n,"y"=c(semantic_nacional$precio_promedio[1:(n-6)],rep(NA,6)))
 #inits<-function(){list(beta=rep(0,n),tau.y=1,tau.b=1,yf1=rep(0,n))}
-inits<-function(){list(beta=rep(0,n),tau.y=1,yf1=rep(0,n))}
+inits<-function(){list(beta=0,tau.y=1,yf1=rep(0,n))}
 #parameters<-c("beta","tau.y","tau.b","yf1")
 parameters<-c("beta","tau.y","tau.b","yf1")
 model = "B.txt"
