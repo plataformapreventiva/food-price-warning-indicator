@@ -14,13 +14,34 @@ El mercado alimentario mexicano se debe analizar desde el ámbito de la oferta y
 
 El objetivo de este proyecto es analizar el nivel de precios y estimar mediante métodos bayesianos el movimiento de los precios del maiz a nivel estatal en periodos de 3 y 6 meses. Con el vector de precios se utiliza la metodología del indicador IPA (Indicator of price anomalies) [@Baquedano] desarrollado por la fao para para generar un indicador de alerta temprana de crecimiento anómalo en precios de alimentos básicos que pueden impactar en la seguridad alimentaria de la población en situación de pobreza, en esta primera etapa se implementa el análisis para el maíz por la importancia que tiene en el mercado de consumo mexicano especialmente en la población de alta vulnerabilidad y se hace el análisis a nivel nacional.
 
-La primera sección de este documento describe la generación de la base de datos, la segunda la metodología y los modelos utilizados, la tercera resultados y , implementación del "Indicator of price anomalies" y conclusiones.
-
+La primera sección de este documento describe la generación de la base de datos, la segunda plantea el modelado y la implementación, la tercera sección presenta los resultados y realiza análisis de la precisión de los modelos, la cuarta sección realiza la implementación del "Indicator of price anomalies" y se presentan conclusiones y pasos a seguir.
 
 
 # Descripción de la Información
 
+## PRECIOS NACIONALES
+- Información scrappeada del Sistema Nacional de Información e Integración de Mercados (SNIIM)
+- Se utiliza precio mínimo por kilogramo (vendido por tonelada)
+- Fuente:
+ http://www.economia-sniim.gob.mx/
+
+## MERCADO INTERNACIONAL [Future Market]
+- Maize (corn) Monthly Price - US Dollars per Metric Ton
+- Fuente:
+ http://www.indexmundi.com/commodities/?commodity=corn&months=240&currency=mxn
+ http://www.indexmundi.com/commodities/?commodity=corn&months=240
+
+## TIPO DE CAMBIO 
+- Usamos tipo de cambio para hacer comparable el precio de futuros 
+ (CF86) - Tipo de cambio promedio del periodo	
+- Tipo de cambio Pesos por dólar E.U.A., Para solventar obligaciones denominadas en moneda extranjera, Fecha de liquidación Cotizaciones promedio
+- Fuente:
+ http://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?accion=consultarCuadro&idCuadro=CF86
+ 
+
 # Modelado e Implementación
+
+
 
 # Interpretación de resultados
 
