@@ -1,5 +1,5 @@
 ---
-title: "Indicador Alerta Temprana en Precio de Alimentos"
+title: "Indicador de Alerta Temprana de Anomalías en Precios de Alimentos"
 author: "Roberto Sanchez, Amaury Gutiérrez"
 output: pdf_document
 bibliography: references.bib
@@ -57,29 +57,18 @@ Como era de esperarse, existe una alta correlación ($0.9472937$) entre los prec
  http://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?accion=consultarCuadro&idCuadro=CF86
  
 
-
-![Medida de alerta frente a cambios bruscos en el precio.](./images/ts_decomposition.png) 
-
 # Modelado e Implementación
 
 ## Modelo de tendencia de segundo orden con componente estacional 
 
-"En México existen dos ciclos productivos en el cultivo del maíz: el de primavera-verano (PV) y el de otoño-invierno (OI). La época de siembra del maíz, tanto de riego como de temporal, se concentra en los meses de junio y julio para el ciclo PV y de noviembre a enero para el ciclo OI." 
+En México existen dos ciclos productivos en el cultivo del maíz: el de primavera-verano (PV) y el de otoño-invierno (OI). La época de siembra, tanto para riego como de temporal, para el ciclo Privamera-Verano se concentra durante los meses de Junio y Julio y de noviembre a enero para el ciclo OI. 
+"Aproximadamente entre 90 y 95% de la producción nacional se cultiva en el ciclo primavera-verano que se cosecha en los meses de octubre a diciembre. La producción del ciclo otoño-invierno se concentra básicamente en los estados del norte del país como Sinaloa, Sonora y Chihuahua, la cosecha de este ciclo se realiza durante los meses de marzo y julio, particularmente durante este ciclo casi 40% de la superficie sembrada cuenta con sistemas de riego."[@Economista]
+
+Por esta razón esperamos que el componente estacional sea anual y bimodal con cima de octubre a diciembre y con el otro pico durante los meses de marzo y Julio. 
 
 ![Descomposición de serie de tiempo en estacional y tendencia.](./images/ts_decomposition.png) 
 
-
-"Aproximadamente entre 90 y 95% de la producción nacional se cultiva en el ciclo primavera-verano que se cosecha en los meses de octubre a diciembre. La producción del ciclo otoño-invierno se concentra básicamente en los estados del norte del país como Sinaloa, Sonora y Chihuahua, la cosecha de este ciclo se realiza durante los meses de marzo y julio, particularmente durante este ciclo casi 40% de la superficie sembrada cuenta con sistemas de riego."[@Economista]
-
-
-Como primera aproximación se desarrollo un modelo de tendencia de segundo orden con componente  estacional. 
-
-Esto se hizo dado que observamos que existe un componente estacional importante en los movimientos de los precios de los granos nacionales que se puede explicar por las temporadas de siembra y cosecha en el país. 
-
-
-
-
-
+Como primera aproximación se desarrolló un modelo de tendencia de segundo orden con componente  estacional. Aunque fue muy interesante observar los resultados de esta aproximación y que pudimos estimar el componente de tendencia y estacionalidad y proyectarlo individualmente el fit no fue lo que estábamos esperando.
 
 
 $$
@@ -94,6 +83,8 @@ $$
 
 ## Modelo estático con Covariable
 
+El siguiente modelo ejecutado fue un modelo estático pero al que se le agregó una especificación polinomial del efecto de la covariable (precios de futuros) y del efecto temporal. Sin embargo no había un proceso de aprendizaje del lag en las covariables y por esta razón se considera estático.
+
 $$ 
 \begin{aligned}
 p_i   &\sim N(\mu_i,\tau)  \\
@@ -103,7 +94,12 @@ p_i   &\sim N(\mu_i,\tau)  \\
 \end{aligned}
 $$
 
+![Modelo estático con Covariable](./images/model_A.png)
+
+
 ## Modelo Dinámico sin covariables
+
+El siguiente modelo ya es un modelo dinámico en donde las betas se definen con base en su lag y dependen de la variable g que funciona para suavizar el apredizaje.  En este modelo no se utiliza la covariable futuros dentro del modelo.
 
 $$ 
 \begin{aligned}
@@ -118,9 +114,12 @@ g            &\sim N(0,0.001)
 \end{aligned}
 $$
 
+![Modelo dinámico sin Covariable](./images/model_B.png)
 
 
 ## Modelo Dinámico con covariable
+
+Este último modelo es muy parecido al anterior pero incorpora a la variable de precios de futuros de maiz a la ecuación. 
 
 $$
 \begin{aligned}
@@ -134,9 +133,12 @@ p_i         &\sim N(\mu_i,\tau)  \\
 \end{aligned}
 $$
 
+![Modelo Dinámico con Covariable](./images/model_C.png)
+
 
 # Interpretación de resultados
-
+Ya que estamos empleando distintas especificaciones no podemos utilizar un método como el DIC por esa razón estimamos varias medidas de error para poder discutir el ajuste. Entre las que se emplearon se encuentran el "Mean absolute error", "Root mean squared error" y "Mean absolute percentage error".
+Todas ellas contabilizan los errores del vector estimado frente al vector real. Según estas medidas el modelo que mejor ajusta es el modelo 3 que es el modelo dinámico sin covariable. Sin embargo, cuando el objetivo es predecir no siempre quieres el modelo que haga mejor fit. Por esta razón, y después de analizar el caso de estudio, consideramos que a reserva de seguir experimentando con las especificaciones el modelo que utilizaremos en esta investigación será el último modelo, Modelo Dinámico con covariable.
 
 
 | Modelo | ME         | RMSE       | MAE        | MPE       | MAPE     |
@@ -157,9 +159,11 @@ Para construirlo se calcula la diferencia entre el CGR (anual y trimestral) y el
 
 Es importante considerar ambos CGR ya que se debe de tomar en cuenta la presencia de variabilidad estacional, ya que en muchos mercados los precios se determinan por las cosechas y se observa regularmente precios más altos pasada la cosecha.
 
+![Precio semanal del maiz en la Ciudad de México](./images/alerta.png)
+
+
 Finalmente con el vector histórico de precios y la estimación se puede construir la siguiente gráfica, que muestra la serie de tiempo del precio frente al análisis de anomalía. La primera linea horizontal amarilla en el .5 muestra variaciones que son diferentes en media desviación estandar al promedio histórico y la roja representan las anomalías que ya están a una desviación estandar de lo considerado normal.
 
-![Precio semanal del maiz en la Ciudad de México](./images/alerta.png)
 
 
 # Conclusión

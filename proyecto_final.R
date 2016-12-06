@@ -338,10 +338,10 @@ if (Sys.info()[['sysname']] == "Darwin") {
   #acf(z)
 
 
-#out<-mod.sim$sims.list
+out<-mod.sim$sims.list
 
 #sacas las predicciones
-#out.sum<-mod.sim$summary
+out.sum<-mod.sim$summary
 #obten subset todas las rows con yf
 out.yf<-out.sum[grep("yf",rownames(out.sum)),]
 out.mu<-out.sum[grep("mu.b",rownames(out.sum)),]

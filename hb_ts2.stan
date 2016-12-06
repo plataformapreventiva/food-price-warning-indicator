@@ -32,5 +32,5 @@ model {
 		q[i]=y[i]-cum_trend[i]-season[i];
 
 	for (i in 1:N)
-		q[i]~normal(a*x1[i] + d,s_q);
+		q[i]~normal(a*x1[i] + +,s_q);
 }
