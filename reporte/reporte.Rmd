@@ -66,6 +66,7 @@ En México existen dos ciclos productivos en el cultivo del maíz: el de primave
 
 Por esta razón esperamos que el componente estacional sea anual y bimodal con cima de octubre a diciembre y con el otro pico durante los meses de marzo y Julio. 
 
+
 ![Descomposición de serie de tiempo en estacional y tendencia.](./images/ts_decomposition.png) 
 
 Como primera aproximación se desarrolló un modelo de tendencia de segundo orden con componente  estacional. Aunque fue muy interesante observar los resultados de esta aproximación y que pudimos estimar el componente de tendencia y estacionalidad y proyectarlo individualmente el fit no fue lo que estábamos esperando.
@@ -168,7 +169,7 @@ Finalmente con el vector histórico de precios y la estimación se puede constru
 
 # Conclusión
 
-"La volatilidad, entendida como cambios significativos y frecuentes en el sentido y magnitud en los precios de los alimentos , puede representar efectos perjudiciales para gran parte de los productores, consumidores y estados. Éste fenómeno, cuando se produce de forma excesiva y provoca que los precios se incrementen, hace que las decisiones de los productores sobre cómo y qué producir estén sujetas a mayor riesgo. Las poblaciones con limitados ingresos a su vez ven como su poder adquisitivo disminuye drásticamente y las desigualdades se amplian." [@fao2] para tratar de enfrentar la volatilidad de los precios de los alimentos, cada vez parece más evidente que la solución pasa por una gobernanza más eficiente del sistema alimentario y una coordinación interinstitucional para promover políticas integrales que tomen en cuenta desde el aumento de la productividad, la seguridad alimentaria o la complejidad productiva. 
+"La volatilidad, entendida como cambios significativos y frecuentes en el sentido y magnitud en los precios de los alimentos , puede representar efectos perjudiciales para gwran parte de los productores, consumidores y estados. Éste fenómeno, cuando se produce de forma excesiva y provoca que los precios se incrementen, hace que las decisiones de los productores sobre cómo y qué producir estén sujetas a mayor riesgo. Las poblaciones con limitados ingresos a su vez ven como su poder adquisitivo disminuye drásticamente y las desigualdades se amplian." [@fao2] para tratar de enfrentar la volatilidad de los precios de los alimentos, cada vez parece más evidente que la solución pasa por una gobernanza más eficiente del sistema alimentario y una coordinación interinstitucional para promover políticas integrales que tomen en cuenta desde el aumento de la productividad, la seguridad alimentaria o la complejidad productiva. 
 
 Es precisamente en éste ámbito donde el enfoque la estadística y el análisis de datos tiene mayor valor ya que contribuye a proteger a los más vulnerables e incrementa la eficacia y sostenibilidad de las políticas y programas de seguridad alimentaria.
 
