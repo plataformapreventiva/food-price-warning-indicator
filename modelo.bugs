@@ -1,0 +1,29 @@
+
+model
+{
+  #Likelihood
+  # Space eq
+  for(i in 1:obs){
+    p[i] ~ dnorm(mu[i],tau.p)
+    mu[i] <- alpha[fn[i]] + beta[j[i]] + gamma[fn[i]] * f[fn[i]]
+  }
+  #state eq
+  for(i in 2:n){
+    alpha[i] ~ dnorm(mu.a[i],tau.a)
+    mu.a[i] <- mu[j[i-1]]
+  }
+  #priors
+  alpha[1] ~ dnorm(0,0.001)
+  tau.p ~ dgamma(0.001,0.001)
+  tau.a ~ dgamma(0.001,0.001)
+  for(i in 1:n){
+    gamma[i] ~ dnorm(0,0.001)
+  }
+  for(k in 1:m){
+    beta[k] ~ dnorm(0,0.001)
+  }
+  # prediccion 1
+  for(i in 1:obs){
+    yf1[i] ~ dnorm(mu[i],tau.p)
+  }
+}
