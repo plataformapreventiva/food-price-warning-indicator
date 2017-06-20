@@ -26,4 +26,11 @@ model
   for(i in 1:obs){
     yf1[i] ~ dnorm(mu[i],tau.p)
   }
+  # prediccion2
+  for(i in (obs+1):(obs+pred)){
+    yf2[i-obs] ~ dnorm(mu[i],tau.p)
+    mu[i] <- alpha[fn[i]] + beta[j[i]] + gamma[fn[i]] * f[fn[i]]
+    #alpha[i] ~ dnorm(mu.a[i],tau.a)
+    #mu.a[i] <- mu[j[i-1]]
+  }
 }
