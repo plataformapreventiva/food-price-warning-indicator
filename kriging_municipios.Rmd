@@ -1,7 +1,15 @@
 ---
-title: "R Notebook"
-output: html_notebook
+title: "Los precios del maíz en México"
+output: hmtl_document
 ---
+
+
+
+```{r opts, echo = FALSE}
+knitr::opts_chunk$set(
+  fig.path = "images/"
+)
+```
 
  
 ```{r, message=FALSE, warning=FALSE, comment=NA, results='hide'}
@@ -107,10 +115,11 @@ semantic2 <- maiz_nacional %>%
   select(fecha,`01`,`03`:`11`,`13`:`26`,`28`:int_price) %>%
   ungroup %>% as.data.frame() %>%
   gather(key = CVE_ENT, value = precio_promedio, -fecha, -int_price) %>%
-  mutate(CVE_ENT = as.integer(CVE_ENT))
+  mutate(CVE_ENT = as.integer(CVE_ENT)) %>%
+  rename(cve_ent = CVE_ENT, precio_internacional=int_price, precio_ent = precio_promedio)
 ```
 
-
+<!-- 
 ```{r, message=FALSE, warning=FALSE}
 library(R2jags)
 library(gridExtra)
@@ -142,51 +151,50 @@ $$
 
 Parámetros iniciales:
 ```{r}
-n <- length(unique(semantic2$fecha))
-fecha_num <- 1:n
-fn <- data.frame(fn=fecha_num, fecha=unique(semantic2$fecha))
+fn <- data.frame(fn=1:length(unique(semantic2$fecha)), fecha=unique(semantic2$fecha))
 semantic <- semantic2 %>% left_join(fn, by = "fecha")
 m <- length(unique(semantic$CVE_ENT))
 entidad_recode <- data.frame(CVE_ENT=unique(semantic$CVE_ENT),rec = 1:m)
 semantic <- semantic %>% left_join(entidad_recode, by = "CVE_ENT")
 r <- 6
-semantic_obs <- semantic %>% filter(fn <= n - r)
-entidad <- semantic_obs$rec
-precio <- semantic_obs$precio_promedio
-pint <- semantic_obs$int_price
+semantic_obs <- semantic %>% filter(fn <= length(unique(semantic2$fecha)) - r)
+n <- length(unique(semantic_obs$fecha))
+j1 <- semantic_obs$rec
+p <- semantic_obs$precio_promedio
+f1 <- unique(semantic_obs$int_price)
 fn1 <- semantic_obs$fn
-semantic_pred <- semantic %>% filter(fn > n - r)
+semantic_pred <- semantic %>% filter(fn > n)
 semantic_pred_2 <- semantic_pred %>%
   select(fn,int_price) %>%
   distinct(fn,int_price) %>%
   arrange(fn)
-entidad2 <- unique(semantic_pred$rec)
-fn2 <- unique(semantic_pred$fn)
-grd <- expand.grid(rec = entidad2, fn = fn2) %>%
+grd <- expand.grid(rec = unique(semantic_pred$rec), fn = unique(semantic_pred$fn)) %>%
   left_join(semantic_pred_2, by = "fn")
-pint2 <- grd$int_price
-entidad2 <- grd$rec
-fn2 <- grd$fn
-j <- c(entidad,entidad2)
-f <- c(pint,pint2)
-fn <- c(fn1,fn2)
-obs <- length(precio)
+f2 <- unique(grd$int_price)
+j2 <- grd$rec
+fn2 <- grd$fn - n
+obs <- length(p)
 pred <- m*r
 data <- list("n" = n, "m" = m, "r" = r,
-             "j" = j, 
-             "p" = precio, 
-             "f" = f, 
+             "j1" = j1,
+             "j2" = j2,
+             "p" = p,
+             "f1" = f1,
+             "f2" = f2,
              "obs" = obs, "pred" = pred,
-             "fn" = fn)
+             "fn1" = fn1,
+             "fn2" = fn2)
 inits <- function(){list(alpha=rep(0,n),
+                         alpha2=rep(0,r),
                          tau.p=0.01,
                          tau.a=0.01,
                          yf1=rep(0,obs),
                          beta=rep(0,m),
-                         gamma=rep(0,n),
+                         gamma1=rep(0,n),
+                         gamma2=rep(0,r),
                          yf2=rep(0,pred)
                     )}
-parameters <- c('alpha','beta','gamma','tau.p','tau.a','yf1','yf2')
+parameters <- c('alpha','alpha2','beta','gamma1','gamma2','tau.p','tau.a','yf1','yf2')
 ```
 
 ```{r}
@@ -198,19 +206,20 @@ model
   # Space eq
   for(i in 1:obs){
     p[i] ~ dnorm(mu[i],tau.p)
-    mu[i] <- alpha[fn[i]] + beta[j[i]] + gamma[fn[i]] * f[fn[i]]
+    mu[i] <- alpha[fn1[i]] + beta[j1[i]] + gamma1[fn1[i]] * f1[fn1[i]]
   }
   #state eq
   for(i in 2:n){
     alpha[i] ~ dnorm(mu.a[i],tau.a)
-    mu.a[i] <- mu[j[i-1]]
+    mu.a[i] <- mu.a[j1[i-1]]
   }
   #priors
-  alpha[1] ~ dnorm(0,0.001)
+  alpha[1] ~ dnorm(mu.a[1],0.001)
+  mu.a[1] <- 0
   tau.p ~ dgamma(0.001,0.001)
   tau.a ~ dgamma(0.001,0.001)
   for(i in 1:n){
-    gamma[i] ~ dnorm(0,0.001)
+    gamma1[i] ~ dnorm(0,0.001)
   }
   for(k in 1:m){
     beta[k] ~ dnorm(0,0.001)
@@ -219,12 +228,19 @@ model
   for(i in 1:obs){
     yf1[i] ~ dnorm(mu[i],tau.p)
   }
-  # prediccion2
-  for(i in (obs+1):(obs+pred)){
-    yf2[i-obs] ~ dnorm(mu[i],tau.p)
-    mu[i] <- alpha[fn[i]] + beta[j[i]] + gamma[fn[i]] * f[fn[i]]
-    #alpha[i] ~ dnorm(mu.a[i],tau.a)
-    #mu.a[i] <- mu[j[i-1]]
+  #prediccion2
+  for(i in 1:pred){
+    yf2[i] ~ dnorm(mu2[i],tau.p)
+    mu2[i] <- alpha2[fn2[i]] + beta[j2[i]] + gamma2[fn2[i]] * f2[fn2[i]]
+  }
+  for(i in 2:r){
+    alpha2[i] ~ dnorm(mu.a2[i],tau.a)
+    mu.a2[i] <-  mu.a2[i-1]
+  }
+  alpha2[1] ~ dnorm(mu.a2[1],tau.a)
+  mu.a2[1] <- alpha[n]
+  for(i in 1:r){
+    gamma2[i] ~ dnorm(0,0.001)
   }
 }
 '
@@ -240,15 +256,14 @@ jags_fit <- jags(
   data = data,    # lista con los datos
   parameters.to.save = parameters,  # parámetros por guardar
   n.chains = 5,   # número de cadenas
-  n.iter = 10000,    # número de pasos
-  n.burnin = 1000,   # calentamiento de la cadena
-  n.thin = 20
+  n.iter = 2500,    # número de pasos
+  n.burnin = 250,   # calentamiento de la cadena
+  n.thin = 7
 )
 ```
 
 
 Ahora vamos a evaluar los resultados. Lo primero que tenemos que hacer es revisar la convergencia de la cadena. Para esto vemos la siguiente gráfica para la devianza:
-
 
 ```{r,echo=FALSE,cache=TRUE}
 analisis_estimacion <- function(z,title){
@@ -258,9 +273,9 @@ analisis_estimacion <- function(z,title){
               y=cumsum(z)/(1:length(z))))+
     geom_line(color='hotpink') + ylab('')
   g3 <- ggplot(data.frame(z),aes(x=z))+
-  geom_histogram(aes(y=..density..),colour = 'darkviolet', fill = 'lightpink',bins=30) +
+    geom_histogram(aes(y=..density..),colour = 'darkviolet', fill = 'lightpink',bins=30) +
     geom_density() +
-    geom_vline(xintercept = c(quantile(z,0.025),quantile(z,0.975),mean(z)),
+    geom_vline(xintercept = c(quantile(z,0.01),quantile(z,0.99),mean(z)),
                size = 1.2,color = c('hotpink4','hotpink4','deeppink')) +
     scale_x_continuous(limits = c(quantile(z,0.02),quantile(z,0.98)))
   lag <- (1:round(+10*log(length(z),10)))-1
@@ -292,8 +307,6 @@ El DIC es
 jags_fit$BUGSoutput$DIC
 ```
 
-
-
 Analicemos los precios ajustados para la entidad 1:
 
 ```{r,echo=FALSE,fig.width=5,fig.height=3, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
@@ -324,3 +337,257 @@ ggplot(semantic_2) +
   #geom_line(data=semantic_3, aes(x=fn, y=inf), color = "darkslateblue", linetype = 2) +
   #geom_line(data=semantic_3, aes(x=fn, y=sup), color = "darkslateblue", linetype = 2)
 ```
+
+
+# Análisis espacial
+
+Esto lo queremos hacer con el fin únicamente de interpolar utilizando un método estadístico simple
+
+ -->
+
+Contamos con los precios del maíz para el tiempo $i$ y el estado $j$ que denotamos por $p_{ij}$. También contamos con los precios internacionales en el tiempo $i$, que denotamos por $f_i$.
+
+El modelo propuesto es:
+$$
+p_{ij} \sim N(\mu_{ij}, \tau_p)
+$$
+donde 
+$$
+\mu_{ij} = g(f_i, i, j) = h_1(f_i) + h_2(i) + h_3(j), 
+$$
+donde $h_1,h_2,h_3$ son funciones lineales y proponemos que
+$$
+h_1(f_i) = \alpha_0 + \alpha_1 f_{i-1} + \alpha_2 f_{i-2} + \alpha_3 f_{i-3}
+$$
+$$
+h_2(i) = \gamma_i
+$$
+$$
+h_3(j) = \beta_j
+$$
+
+
+```{r, message=FALSE, warning=FALSE}
+library(R2jags)
+library(gridExtra)
+```
+
+# Datos
+
+```{r}
+semantic_ancha = semantic2 %>%
+  spread(key = cve_ent, value = precio_ent)
+head(semantic_ancha)
+```
+
+```{r}
+f <- semantic_ancha %>% select(precio_internacional)
+f <- as.numeric(f$precio_internacional)
+head(f)
+```
+
+```{r}
+length(f)
+```
+
+```{r}
+precios <- semantic_ancha %>% 
+  select(-precio_internacional) %>%
+  arrange(fecha)
+head(precios)
+```
+
+```{r}
+P <- as.matrix(select(diferencias, -fecha))
+head(P)
+```
+
+```{r}
+dim(P)
+```
+
+# Modelo
+
+```{r}
+modelo_ar.txt <-
+'
+model
+{
+  #Likelihood
+  # Space eq
+  for(i in 4:(n-r-5)){
+    for(j in 1:m){
+      P[i,j] ~ dnorm(mu[i,j], tau.p)
+      mu[i,j] <- alpha0 + alpha1*f[i-1] + alpha2*f[i-2] + alpha3*f[i-3] + gamma[i] + beta[j]
+    }
+  }
+  #priors
+  alpha0 ~ dnorm(0,0.001)
+  alpha1 ~ dnorm(0,0.001)
+  alpha2 ~ dnorm(0,0.001)
+  alpha3 ~ dnorm(0,0.001)
+  for(i in 1:n){
+    gamma[i] ~ dnorm(0, 0.001)
+  }
+  for(j in 1:m){
+    beta[j] ~ dnorm(0,0.001)
+  }
+  tau.p ~ dgamma(0.001,0.001)
+  #prediccion 1
+  for(i in 1:(n-3-r-5)){
+    for(j in 1:m){
+      yf[i,j] ~ dnorm(mu[i+3,j], tau.p)
+    }
+  }
+  #prediccion 2
+  for(i in 1:r){
+    for(j in 1:m){
+      yp[i,j] ~ dnorm(mup[i,j], tau.p)
+      mup[i,j] <- alpha0 + alpha1*f[n-5+i-1] + alpha2*f[n-5+i-2] + alpha3*f[n-5+i-3] + gamma[n-r-5+i] + beta[j]
+    }
+  }
+}
+'
+cat(modelo_ar.txt, file = 'modelo_ar.bugs')
+```
+
+Parámetros iniciales:
+
+```{r}
+n <- length(f)
+m <- dim(P)[2]
+r <- 6
+data <- list("n" = n, "m" = m, "r" = r,
+             "P" = P,
+             "f" = f)
+inits <- function(){list(alpha0 = 0,
+                         alpha1 = 0,
+                         alpha2 = 0,
+                         alpha3 = 0,
+                         tau.p = 0.01,
+                         gamma = rep(0,n),
+                         beta = rep(0,m),
+                         yf = matrix(rep(0, (n-3-r-5)*m), ncol = m),
+                         yp = matrix(rep(0, r*m), ncol = m)
+                    )}
+parameters <- c('alpha0','alpha1','alpha2','alpha3','beta','gamma','tau.p','yf','yp')
+```
+
+
+Ajuste del modelo:
+
+```{r,warning=FALSE,message=FALSE}
+jags_fit <- jags(
+  model.file = "modelo_ar.bugs",    # modelo de JAGS
+  inits = inits,   # valores iniciales
+  data = data,    # lista con los datos
+  parameters.to.save = parameters,  # parámetros por guardar
+  n.chains = 1,   # número de cadenas
+  n.iter = 10000,  # número de pasos
+  n.burnin = 1000, # calentamiento de la cadena
+  n.thin = 1,
+  jags.seed = 1234
+)
+```
+
+
+Ahora vamos a evaluar los resultados. Lo primero que tenemos que hacer es revisar la convergencia de la cadena. Para esto vemos la siguiente gráfica para la devianza:
+
+```{r,echo=FALSE,cache=TRUE}
+analisis_estimacion <- function(z,title){
+  g1 <- ggplot(data.frame(est=1:length(z),z=z),aes(x=est,y=z))+
+    geom_line(color='hotpink') 
+  g2 <- ggplot(data.frame(est=1:length(z),z=z),aes(x=est,
+              y=cumsum(z)/(1:length(z))))+
+    geom_line(color='hotpink') + ylab('')
+  g3 <- ggplot(data.frame(z),aes(x=z))+
+    geom_histogram(aes(y=..density..),colour = 'darkviolet', fill = 'lightpink',bins=30) +
+    geom_density() +
+    geom_vline(xintercept = c(quantile(z,0.01),quantile(z,0.99),mean(z)),
+               size = 1.2,color = c('hotpink4','hotpink4','deeppink')) +
+    scale_x_continuous(limits = c(quantile(z,0.02),quantile(z,0.98)))
+  lag <- (1:round(+10*log(length(z),10)))-1
+  bacf <- acf(z, plot = FALSE)
+  bacfdf <- data.frame(lag=bacf$lag,acf=bacf$acf)
+  ciline <- qnorm((1 - 0.95)/2)/sqrt(length(z))
+  g4 <- ggplot(data = bacfdf, mapping = aes(x = lag, y = acf)) +
+        geom_hline(aes(yintercept = 0)) +
+        geom_segment(mapping = aes(xend = lag, yend = 0),color='navyblue') +
+          geom_hline(yintercept = -ciline, color = "mediumorchid",size = 0.2) +
+          geom_hline(yintercept = ciline, color = "mediumorchid", size = 0.2) +
+          theme(title=element_text(size=10))
+  grid.arrange(g1,g2,g3,g4,ncol=2,nrow=2,top=title)
+}
+```
+
+
+```{r,echo=FALSE, echo=FALSE, message=FALSE, warning=FALSE}
+out <- jags_fit$BUGSoutput$sims.list
+z <- out$deviance
+analisis_estimacion(z,'deviance')
+```
+
+
+# Predicciones
+
+```{r}
+#Predicciones
+out.sum <- jags_fit$BUGSoutput$summary
+out.yf <- out.sum[grep("yf",rownames(out.sum)),]
+out.yp <- out.sum[grep("yp",rownames(out.sum)),]
+```
+
+
+# Entidad 1
+
+```{r, message=FALSE, warning=FALSE}
+yf_1 <- as.data.frame(out.yf[1:(n-3-r-5),])
+yp_1 <- as.data.frame(out.yp[1:r,])
+semantic_1 <- semantic2 %>% filter(cve_ent == 1)
+yf <- bind_rows(yf_1, yp_1)
+yf$fecha <- semantic_1$fecha[4:(n-5)]
+semantic_1 <- semantic_1 %>% left_join(yf, by = 'fecha')
+ggplot(subset(semantic_1, fecha <= ymd('2015-11-01'))) +
+  geom_point(aes(x=fecha, y = precio_ent), color = "grey80", size = 2) + 
+  geom_line(aes(x=fecha, y=mean), color = "navyblue", linetype = 1) +
+  geom_line(aes(x=fecha, y=`2.5%`), color = "navyblue", linetype = 2) +
+  geom_line(aes(x=fecha, y=`97.5%`), color = "navyblue", linetype = 2) + 
+  geom_line(data = subset(semantic_1, fecha>ymd('2015-11-01')), 
+            aes(x=fecha, y=mean), color = 'red') +
+  geom_point(data = subset(semantic_1, fecha>ymd('2015-11-01')), 
+            aes(x=fecha, y=precio_ent), color = 'black') +
+  scale_x_date(date_breaks = "6 months", date_labels = "%b %y") + 
+  theme(legend.position="bottom", axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+# Discusión de los resultados
+
+El ajuste es bueno pero las predicciones futuras tienen demasiada varianza. En realidad no es clara la interpretación del parámetro $\gamma_i$ o cómo se estima cuando los datos ya no son observados. Si necesito tres observaciones hacia atrás del precio internacional es lógico que las estimaciones sean cada vez menos precisas, pero no contamos con un modelo para estimar el precio internacional.
+
+
+# Consideraciones
+
+Pensamos que sería buena idea modelar las diferencias para cada entidad 
+$$
+d_{ij} = p_{ij} - p_{i-1,j}.
+$$
+Consideramos la posibilidad de utilizar las diferencias entre el precio internacional y el precio actual en cada estado para cada tiempo $f_i - p_{ij}$ como una opción que permita modelar mejor el precio en cada entidad, pero por ahora no lo incluimos en el modelo.
+
+Otros aspectos que podrían ser útiles son
+
+* incluir información climática, como precipitación temporal
+
+* datos sobre el subsidio a la producción del maíz de Sagarpa
+
+Otros objetivos que tenemos en mente son:
+
+* estimar el costo del coyote que podría calcularse como la diferencia entre el precio a nivel de parcela y el precio de la central de abastos más cercana para cada municipio. Se puede además comparar esta diferencia con los kilómetros de distancia entre la parcela y la central de abastos y estudiar si existe una posible asociación entre la distancia y la difrencia en el precio.
+
+Algunas ideas sobre fuentes externas que pueden ser útiles son las siguientes:
+
+* el paquete de R "quantmod" 
+
+* datos de "index mundi"
+
+
+
