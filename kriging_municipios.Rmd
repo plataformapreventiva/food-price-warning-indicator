@@ -343,6 +343,7 @@ ggplot(semantic_2) +
 
 Esto lo queremos hacer con el fin únicamente de interpolar utilizando un método estadístico simple
 
+
  -->
 
 Contamos con los precios del maíz para el tiempo $i$ y el estado $j$ que denotamos por $p_{ij}$. También contamos con los precios internacionales en el tiempo $i$, que denotamos por $f_i$.
