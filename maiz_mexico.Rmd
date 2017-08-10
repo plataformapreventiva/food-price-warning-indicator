@@ -3,15 +3,13 @@ title: "Los precios del maíz en México"
 output: hmtl_document
 ---
 
-
-
 ```{r opts, echo = FALSE}
 knitr::opts_chunk$set(
   fig.path = "images/"
 )
 ```
 
- 
+
 ```{r, message=FALSE, warning=FALSE, comment=NA, results='hide'}
 library(tidyverse)
 library(lubridate)
@@ -28,18 +26,18 @@ tipo_cambio <-read_csv("data/tipo_de_cambio.csv") %>%
 
 
 ```{r, results='hide', message=FALSE}
-internacional <- read_csv("data/precio_internacional_dolares.csv") %>% 
+internacional <- read_csv("data/precio_internacional_dolares.csv") %>%
   separate(Month, c("mes", "año"), " ")  %>%
   mutate(año = as.numeric(año))  %>%
   filter(año>2000) %>%
   mutate(mes = match(mes,month.abb))  %>%
   mutate(fecha = make_datetime(year=año, month=mes, day=1)) %>%
   mutate(fecha= ymd(fecha)) %>%
-  rename(int_price = Price) %>% 
+  rename(int_price = Price) %>%
   left_join(tipo_cambio) %>%
   # Obtenemos el precio por kilogramo (De tonelada) por el tipo de cambio
-  mutate(int_price = (int_price*tipo_cambio)/1000) %>% 
-  select(fecha,año,mes,int_price) 
+  mutate(int_price = (int_price*tipo_cambio)/1000) %>%
+  select(fecha,año,mes,int_price)
 ```
 
 
@@ -47,7 +45,7 @@ internacional <- read_csv("data/precio_internacional_dolares.csv") %>%
 
 ```{r, results='hide', message=FALSE, comment=NA, warning=FALSE}
 nacional <- read_csv("data/precios_granos_semanales.csv")
-nacional <- select(nacional,producto,precio_min,fecha,edo_destino,obs) %>% 
+nacional <- select(nacional,producto,precio_min,fecha,edo_destino,obs) %>%
   mutate(fecha=dmy(fecha)) %>% # tipo de fecha
   mutate(precio_min = ifelse(precio_min > 8, NA, precio_min)) # identificamos un outlier
 ```
@@ -55,7 +53,7 @@ nacional <- select(nacional,producto,precio_min,fecha,edo_destino,obs) %>%
 
 ```{r, message=FALSE, warning=FALSE}
 estados_dic <- read_csv("data/estados_dic.csv") %>%
-  rename(edo_destino=NOM_ENT) %>% 
+  rename(edo_destino=NOM_ENT) %>%
   mutate(edo_destino = str_to_lower(edo_destino)) %>%
   mutate(CVE_ENT = str_pad(CVE_ENT, 2, pad = "0"))
 ```
@@ -63,39 +61,39 @@ estados_dic <- read_csv("data/estados_dic.csv") %>%
 
 ```{r, message=FALSE, warning=FALSE}
 maiz_nacional <- read_csv("data/precios_granos_semanales.csv") %>%
-  select(producto,fecha,edo_destino,precio_min,obs) %>% 
+  select(producto,fecha,edo_destino,precio_min,obs) %>%
   #definimos variable de fecha
   mutate(fecha=dmy(fecha)) %>%
   #filtramos el outlier
-  filter(precio_min < 15) %>%  
+  filter(precio_min < 15) %>%
   arrange(fecha) %>%
-  mutate(mes = month(fecha)) %>% 
-  mutate(año = year(fecha)) %>% 
-  mutate(fecha = make_datetime(year=año,month=mes,1)) %>% 
+  mutate(mes = month(fecha)) %>%
+  mutate(año = year(fecha)) %>%
+  mutate(fecha = make_datetime(year=año,month=mes,1)) %>%
   mutate(fecha = ymd (fecha)) %>%
   left_join(estados_dic,by = "edo_destino") %>%
-    mutate(CVE_ENT = ifelse(edo_destino== "michoacán", "16", 
+    mutate(CVE_ENT = ifelse(edo_destino== "michoacán", "16",
                           ifelse(edo_destino== "veracruz","30",
                                  ifelse(edo_destino=="df","09",
-                                        ifelse(edo_destino=="coahuila","05",CVE_ENT))))) 
+                                        ifelse(edo_destino=="coahuila","05",CVE_ENT)))))
 ```
 
 
 ```{r}
 nacional <- maiz_nacional %>%
-  group_by(fecha,año,mes) %>% 
-  summarise(precio_promedio = mean(precio_min, na.rm = TRUE)) %>% 
-  left_join(internacional,by = c("fecha", "año", "mes")) 
+  group_by(fecha,año,mes) %>%
+  summarise(precio_promedio = mean(precio_min, na.rm = TRUE)) %>%
+  left_join(internacional,by = c("fecha", "año", "mes"))
 nacional_2 <- nacional %>%
   ungroup() %>% as_data_frame() %>%
-  select(fecha, precio_promedio, int_price) 
+  select(fecha, precio_promedio, int_price)
 colnames(nacional_2) <- c("Fecha","Promedio nacional", "Precio internacional")
-nacional_2 <- nacional_2 %>% 
+nacional_2 <- nacional_2 %>%
   gather(key = Precios, value = Precio, -Fecha) %>%
   filter(!is.na(Precio))
-ggplot(nacional_2) + 
-  geom_line(aes(x = Fecha, y = Precio, color = Precios)) + 
-  scale_x_date(date_breaks = "6 months", date_labels = "%b %y") + 
+ggplot(nacional_2) +
+  geom_line(aes(x = Fecha, y = Precio, color = Precios)) +
+  scale_x_date(date_breaks = "6 months", date_labels = "%b %y") +
   theme(legend.position="bottom", axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
@@ -119,7 +117,7 @@ semantic2 <- maiz_nacional %>%
   rename(cve_ent = CVE_ENT, precio_internacional=int_price, precio_ent = precio_promedio)
 ```
 
-<!-- 
+<!--
 ```{r, message=FALSE, warning=FALSE}
 library(R2jags)
 library(gridExtra)
@@ -268,7 +266,7 @@ Ahora vamos a evaluar los resultados. Lo primero que tenemos que hacer es revisa
 ```{r,echo=FALSE,cache=TRUE}
 analisis_estimacion <- function(z,title){
   g1 <- ggplot(data.frame(est=1:length(z),z=z),aes(x=est,y=z))+
-    geom_line(color='hotpink') 
+    geom_line(color='hotpink')
   g2 <- ggplot(data.frame(est=1:length(z),z=z),aes(x=est,
               y=cumsum(z)/(1:length(z))))+
     geom_line(color='hotpink') + ylab('')
@@ -302,7 +300,7 @@ analisis_estimacion(z,'deviance')
 
 Se puede ver que la devianza es aproximadamente 3450.
 
-El DIC es 
+El DIC es
 ```{r}
 jags_fit$BUGSoutput$DIC
 ```
@@ -315,7 +313,7 @@ out.sum <- jags_fit$BUGSoutput$summary
 #Predictions
 out.yf<-out.sum[grep("yf1",rownames(out.sum)),]
 media <- out.yf[,1]; inf <- out.yf[,3]; sup <- out.yf[,7];
-semantic_2 <- semantic_obs %>% 
+semantic_2 <- semantic_obs %>%
   select(fn,rec,precio_promedio,int_price) %>%
   bind_cols(data.frame(media,inf,sup)) %>%
   filter(rec == 1) %>%
@@ -328,7 +326,7 @@ semantic_3 <- grd %>%
   filter(rec == 1) %>%
   select(fn,rec,precio_promedio,int_price,media,inf,sup)
 ggplot(semantic_2) +
-  geom_point(aes(x=fn, y = precio_promedio), color = "grey80", size = 2) + 
+  geom_point(aes(x=fn, y = precio_promedio), color = "grey80", size = 2) +
   geom_line(aes(x=fn, y=media), color = "navyblue", linetype = 1) +
   geom_line(aes(x=fn, y=inf), color = "navyblue", linetype = 2) +
   geom_line(aes(x=fn, y=sup), color = "navyblue", linetype = 2) +
@@ -352,9 +350,9 @@ El modelo propuesto es:
 $$
 p_{ij} \sim N(\mu_{ij}, \tau_p)
 $$
-donde 
+donde
 $$
-\mu_{ij} = g(f_i, i, j) = h_1(f_i) + h_2(i) + h_3(j), 
+\mu_{ij} = g(f_i, i, j) = h_1(f_i) + h_2(i) + h_3(j),
 $$
 donde $h_1,h_2,h_3$ son funciones lineales y proponemos que
 $$
@@ -392,7 +390,7 @@ length(f)
 ```
 
 ```{r}
-precios <- semantic_ancha %>% 
+precios <- semantic_ancha %>%
   select(-precio_internacional) %>%
   arrange(fecha)
 head(precios)
@@ -416,7 +414,7 @@ model
 {
   #Likelihood
   # Space eq
-  for(i in 4:(n-r-5)){
+  for(i in 4:(n-r)){
     for(j in 1:m){
       P[i,j] ~ dnorm(mu[i,j], tau.p)
       mu[i,j] <- alpha0 + alpha1*f[i-1] + alpha2*f[i-2] + alpha3*f[i-3] + gamma[i] + beta[j]
@@ -435,7 +433,7 @@ model
   }
   tau.p ~ dgamma(0.001,0.001)
   #prediccion 1
-  for(i in 1:(n-3-r-5)){
+  for(i in 1:(n-3-r)){
     for(j in 1:m){
       yf[i,j] ~ dnorm(mu[i+3,j], tau.p)
     }
@@ -444,7 +442,7 @@ model
   for(i in 1:r){
     for(j in 1:m){
       yp[i,j] ~ dnorm(mup[i,j], tau.p)
-      mup[i,j] <- alpha0 + alpha1*f[n-5+i-1] + alpha2*f[n-5+i-2] + alpha3*f[n-5+i-3] + gamma[n-r-5+i] + beta[j]
+      mup[i,j] <- alpha0 + alpha1*f[n+i-1] + alpha2*f[n+i-2] + alpha3*f[n+i-3] + gamma[n-r+i] + beta[j]
     }
   }
 }
@@ -457,7 +455,7 @@ Parámetros iniciales:
 ```{r}
 n <- length(f)
 m <- dim(P)[2]
-r <- 6
+r <- 1
 data <- list("n" = n, "m" = m, "r" = r,
              "P" = P,
              "f" = f)
@@ -468,7 +466,7 @@ inits <- function(){list(alpha0 = 0,
                          tau.p = 0.01,
                          gamma = rep(0,n),
                          beta = rep(0,m),
-                         yf = matrix(rep(0, (n-3-r-5)*m), ncol = m),
+                         yf = matrix(rep(0, (n-3-r)*m), ncol = m),
                          yp = matrix(rep(0, r*m), ncol = m)
                     )}
 parameters <- c('alpha0','alpha1','alpha2','alpha3','beta','gamma','tau.p','yf','yp')
@@ -492,12 +490,12 @@ jags_fit <- jags(
 ```
 
 
-Ahora vamos a evaluar los resultados. Lo primero que tenemos que hacer es revisar la convergencia de la cadena. Para esto vemos la siguiente gráfica para la devianza:
+Ahora vamos a evaluar los resultados. Lo primero que tenemos que hacer es revisar la convergencia de la cadena. Para esto vemos la siguiente gráfica para el parámetro $\alpha_1$:
 
 ```{r,echo=FALSE,cache=TRUE}
 analisis_estimacion <- function(z,title){
   g1 <- ggplot(data.frame(est=1:length(z),z=z),aes(x=est,y=z))+
-    geom_line(color='hotpink') 
+    geom_line(color='hotpink')
   g2 <- ggplot(data.frame(est=1:length(z),z=z),aes(x=est,
               y=cumsum(z)/(1:length(z))))+
     geom_line(color='hotpink') + ylab('')
@@ -525,7 +523,7 @@ analisis_estimacion <- function(z,title){
 ```{r,echo=FALSE, echo=FALSE, message=FALSE, warning=FALSE}
 out <- jags_fit$BUGSoutput$sims.list
 z <- out$deviance
-analisis_estimacion(z,'deviance')
+analisis_estimacion(z,'alpha1')
 ```
 
 
@@ -549,15 +547,15 @@ yf <- bind_rows(yf_1, yp_1)
 yf$fecha <- semantic_1$fecha[4:(n-5)]
 semantic_1 <- semantic_1 %>% left_join(yf, by = 'fecha')
 ggplot(subset(semantic_1, fecha <= ymd('2015-11-01'))) +
-  geom_point(aes(x=fecha, y = precio_ent), color = "grey80", size = 2) + 
+  geom_point(aes(x=fecha, y = precio_ent), color = "grey80", size = 2) +
   geom_line(aes(x=fecha, y=mean), color = "navyblue", linetype = 1) +
   geom_line(aes(x=fecha, y=`2.5%`), color = "navyblue", linetype = 2) +
-  geom_line(aes(x=fecha, y=`97.5%`), color = "navyblue", linetype = 2) + 
-  geom_line(data = subset(semantic_1, fecha>ymd('2015-11-01')), 
+  geom_line(aes(x=fecha, y=`97.5%`), color = "navyblue", linetype = 2) +
+  geom_line(data = subset(semantic_1, fecha>ymd('2015-11-01')),
             aes(x=fecha, y=mean), color = 'red') +
-  geom_point(data = subset(semantic_1, fecha>ymd('2015-11-01')), 
+  geom_point(data = subset(semantic_1, fecha>ymd('2015-11-01')),
             aes(x=fecha, y=precio_ent), color = 'black') +
-  scale_x_date(date_breaks = "6 months", date_labels = "%b %y") + 
+  scale_x_date(date_breaks = "6 months", date_labels = "%b %y") +
   theme(legend.position="bottom", axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
@@ -568,7 +566,7 @@ El ajuste es bueno pero las predicciones futuras tienen demasiada varianza. En r
 
 # Consideraciones
 
-Pensamos que sería buena idea modelar las diferencias para cada entidad 
+Pensamos que sería buena idea modelar las diferencias para cada entidad
 $$
 d_{ij} = p_{ij} - p_{i-1,j}.
 $$
@@ -586,9 +584,6 @@ Otros objetivos que tenemos en mente son:
 
 Algunas ideas sobre fuentes externas que pueden ser útiles son las siguientes:
 
-* el paquete de R "quantmod" 
+* el paquete de R "quantmod"
 
 * datos de "index mundi"
-
-
-
