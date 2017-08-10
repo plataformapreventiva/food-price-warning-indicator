@@ -1,0 +1,37 @@
+
+model
+{
+  #Likelihood
+  # Space eq
+  for(i in 4:(n-r-5)){
+    for(j in 1:m){
+      P[i,j] ~ dnorm(mu[i,j], tau.p)
+      mu[i,j] <- alpha0 + alpha1*f[i-1] + alpha2*f[i-2] + alpha3*f[i-3] + gamma[i] + beta[j]
+    }
+  }
+  #priors
+  alpha0 ~ dnorm(0,0.001)
+  alpha1 ~ dnorm(0,0.001)
+  alpha2 ~ dnorm(0,0.001)
+  alpha3 ~ dnorm(0,0.001)
+  for(i in 1:n){
+    gamma[i] ~ dnorm(0, 0.001)
+  }
+  for(j in 1:m){
+    beta[j] ~ dnorm(0,0.001)
+  }
+  tau.p ~ dgamma(0.001,0.001)
+  #prediccion 1
+  for(i in 1:(n-3-r-5)){
+    for(j in 1:m){
+      yf[i,j] ~ dnorm(mu[i+3,j], tau.p)
+    }
+  }
+  #prediccion 2
+  for(i in 1:r){
+    for(j in 1:m){
+      yp[i,j] ~ dnorm(mup[i,j], tau.p)
+      mup[i,j] <- alpha0 + alpha1*f[n-5+i-1] + alpha2*f[n-5+i-2] + alpha3*f[n-5+i-3] + gamma[n-r-5+i] + beta[j]
+    }
+  }
+}

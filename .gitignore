@@ -3,3 +3,5 @@
 .RData
 .Ruserdata
 data/shp/
+.DS_Store
+.html
