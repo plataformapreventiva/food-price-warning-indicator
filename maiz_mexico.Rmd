@@ -190,9 +190,10 @@ model
   for(i in 4:(n-r)){
     for(j in 1:m){
       P[i,j] ~ dnorm(mu[i,j], tau.p)
-      mu[i,j] <- alpha0 + alpha1*f[i-1] + alpha2*f[i-2] + alpha3*f[i-3] + gamma[i] + beta[j]
+      mu[i,j] <-  alpha1*f[i-1] + alpha2*f[i-2] + alpha3*f[i-3] + gamma[i] + beta[j]
     }
     gamma[i] ~ dnorm(gamma[i-1], tau.g)
+    alpha3[i] ~ dnorm(alpha3[i-1], tau.g)
   }
   #priors
   alpha0 ~ dnorm(0,0.001)
@@ -424,14 +425,7 @@ Otros aspectos que podrían ser útiles son
 
 Otros objetivos que tenemos en mente son:
 
-* estimar el costo del coyote que podría calcularse como la diferencia entre el precio a nivel de parcela y el precio de la central de abastos más cercana para cada municipio. Se puede además comparar esta diferencia con los kilómetros de distancia entre la parcela y la central de abastos y estudiar si existe una posible asociación entre la distancia y la difrencia en el precio.
-
-Algunas ideas sobre fuentes externas que pueden ser útiles son las siguientes:
-
-* el paquete de R "quantmod"
-
-* datos de "index mundi"
-
+* estimar el costo del coyote que podría calcularse como la diferencia entre el precio a nivel de parcela y el precio de la central de abastos más cercana para cada municipio. Se puede además comparar esta diferencia con los kilómetros de distancia entre la parcela y la central de abastos y estudiar si existe una posible asociación entre la distancia y la diferencia en el precio.
 
 Proponemos ahora modelar el precio desde el 2005 hasta el 2015 y ajustar la serie y predecir para todos los meses del 2016, y luego analizar los errores para cada mes por cada entidad. Otro aspecto relevante es qué tanta historia hacia atrás es necesaria para lograr una buena predicción del precio actual y el precio futuro.
 
