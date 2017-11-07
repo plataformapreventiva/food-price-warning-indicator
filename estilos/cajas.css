@@ -1,0 +1,34 @@
+<head>
+<style>
+.title_box { 
+  display: block;
+  border: 1px dotted darkRed; 
+  border-radius: 50px;
+    width: 90%;
+    background-color: white;
+    left: 60px;
+    position: relative;
+    margin-top: 60px;
+}
+.title_box #title { 
+    border: 1px dotted darkRed;
+    border-radius: 10px;
+  position: relative; 
+    padding: 5px 5px 5px 5px;
+  top: -0.5em;
+  margin-left: 2em;
+  display: inline; 
+  background-color: seaShell; 
+    font-family: Calibri;
+    color: darkRed;
+    font-style:italic;
+}
+.title_box #content {
+    padding: 5px 25px 25px 25px;
+    line-height: 28px;
+    color: darkRed;
+    font-family: Georgia,'Comic Sans';
+    font-style:italic;
+}
+</style>
+</head>
