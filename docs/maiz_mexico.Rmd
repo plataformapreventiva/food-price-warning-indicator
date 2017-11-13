@@ -17,7 +17,7 @@ library(stringr)
 ```
 
 ```{r, results='hide', message=FALSE}
-tipo_cambio <-read_csv("data/tipo_de_cambio.csv") %>%
+tipo_cambio <-read_csv("../data/tipo_de_cambio.csv") %>%
   mutate(fecha = dmy(fecha)) %>%
   mutate(año = year(fecha))  %>%
   mutate(mes = month(fecha)) %>%
@@ -26,7 +26,7 @@ tipo_cambio <-read_csv("data/tipo_de_cambio.csv") %>%
 
 
 ```{r, results='hide', message=FALSE}
-internacional <- read_csv("data/precio_internacional_dolares.csv") %>%
+internacional <- read_csv("../data/precio_internacional_dolares.csv") %>%
   separate(Month, c("mes", "año"), " ")  %>%
   mutate(año = as.numeric(año))  %>%
   filter(año>2000) %>%
@@ -44,7 +44,7 @@ internacional <- read_csv("data/precio_internacional_dolares.csv") %>%
 # Precios nacionales promedio por estado:
 
 ```{r, results='hide', message=FALSE, comment=NA, warning=FALSE}
-nacional <- read_csv("data/precios_granos_semanales.csv")
+nacional <- read_csv("../data/precios_granos_semanales.csv")
 nacional <- select(nacional,producto,precio_min,fecha,edo_destino,obs) %>%
   mutate(fecha=dmy(fecha)) %>% # tipo de fecha
   mutate(precio_min = ifelse(precio_min > 8, NA, precio_min)) # identificamos un outlier
@@ -52,7 +52,7 @@ nacional <- select(nacional,producto,precio_min,fecha,edo_destino,obs) %>%
 
 
 ```{r, message=FALSE, warning=FALSE}
-estados_dic <- read_csv("data/estados_dic.csv") %>%
+estados_dic <- read_csv("../data/estados_dic.csv") %>%
   rename(edo_destino=NOM_ENT) %>%
   mutate(edo_destino = str_to_lower(edo_destino)) %>%
   mutate(CVE_ENT = str_pad(CVE_ENT, 2, pad = "0"))
@@ -60,7 +60,7 @@ estados_dic <- read_csv("data/estados_dic.csv") %>%
 
 
 ```{r, message=FALSE, warning=FALSE}
-maiz_nacional <- read_csv("data/precios_granos_semanales.csv") %>%
+maiz_nacional <- read_csv("../data/precios_granos_semanales.csv") %>%
   select(producto,fecha,edo_destino,precio_min,obs) %>%
   #definimos variable de fecha
   mutate(fecha=dmy(fecha)) %>%
@@ -344,7 +344,7 @@ library(ggmap)
 ```
 
 ```{r, message=FALSE, warning=FALSE}
-ent_shp <- readOGR("data/shp" , "entidad")
+ent_shp <- readOGR("../data/estados_ligero" , "Mex_Edos")
 ent_df <- fortify(ent_shp, region = "CVE_ENT")
 ent_err <- ent_df %>%
   mutate(CVE_ENT = id) %>%

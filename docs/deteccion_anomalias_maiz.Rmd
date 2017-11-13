@@ -29,7 +29,7 @@ library(rgeos)
 
 Después de la Segunda Guerra Mundial, era considerado fundamental el aumento de la producción de alimentos con el fin de combatir el hambre, reducir la desigualdad y la pobreza. Las inversiones en investigación agrícola para desarrollar variedades de alto rendimiento de trigo y arroz ayudaron a duplicar los rendimientos de cereales en Asia y América Latina. [7] Es por esta razón que la seguridad alimentaria es ahora un aspecto importante para evaluar la condición de salud de una comunidad.
 
-La seguridad alimentaria es una condición necesaria, pero no suficiente, para la salud nutricional. Se dice que hay seguridad alimentaria cuando “todas las personas tienen en todo momento acceso físico y económico a suficientes alimentos inocuos y nutritivos para satisfacer sus necesidades y sus preferencias a fin de llevar una vida activa y sana” [6]. Se estima que el 10.5% de los mexicanos viven con inseguridad alimentaria severa, 17.7% vive con inseguridad moderada, 41.6% con inseguridad leve, y sólo 30.2% vive con seguridad alimentaria. 
+La seguridad alimentaria es una condición necesaria, pero no suficiente, para la salud nutricional. Se dice que hay seguridad alimentaria cuando “todas las personas tienen en todo momento acceso físico y económico a suficientes alimentos inocuos y nutritivos para satisfacer sus necesidades y sus preferencias a fin de llevar una vida activa y sana” [6]. Se estima que el 10.5% de los mexicanos viven con inseguridad alimentaria severa, 17.7% vive con inseguridad moderada, 41.6% con inseguridad leve, y sólo 30.2% vive con seguridad alimentaria.
 
 Hay un debate sobre cuál es la mejor perspectiva para hacer recomendaciones dietéticas, basada en nutrientes o en alimentos. Desde una perspectiva basada en alimentos, hay evidencia científica que justifica la recomendación de una guía dietética basada en una diversidad de alimentos ricos en nutrientes. [8] La agricultura es esencial para la producción de estos alimentos. De esta manera, los estudios de producción agrícola y seguridad alimentaria son importantes para asegurar la salud y bienestar de la población.
 
@@ -39,7 +39,7 @@ En México existen dos ciclos productivos en el cultivo del maíz: el de primave
 
 # Descripción del problema
 
-La ingesta de alimentos nutritivos es el indicador más básico de la calidad de vida y es un factor estratégico fundamental ya que tiene una relación muy importante con el desarrollo de los países a través del desempeño educativo, la productividad y la igualdad de oportunidades, entre otros. Sin embargo, es un fenómeno persistente y a pesar de los acuerdos y acciones llevadas globalmente según la ONU alrededor de 795 millones de personas no disponen de alimentos suficientes para llevar una vida saludable y activa, buena parte de esta población se encuentra en países en desarrollo. Según datos de CONEVAL, en México existen 28 millones de personas que presentan algún nivel de inseguridad alimentaria [1]. 
+La ingesta de alimentos nutritivos es el indicador más básico de la calidad de vida y es un factor estratégico fundamental ya que tiene una relación muy importante con el desarrollo de los países a través del desempeño educativo, la productividad y la igualdad de oportunidades, entre otros. Sin embargo, es un fenómeno persistente y a pesar de los acuerdos y acciones llevadas globalmente según la ONU alrededor de 795 millones de personas no disponen de alimentos suficientes para llevar una vida saludable y activa, buena parte de esta población se encuentra en países en desarrollo. Según datos de CONEVAL, en México existen 28 millones de personas que presentan algún nivel de inseguridad alimentaria [1].
 
 El aumento de los precios del maíz en los mercados de México en 2008, 2012 y nuevamente en 2014 ha generado un gran interés en la creación de un indicador de alerta temprana para detectar un crecimiento anormal de los precios en los mercados de consumo.
 
@@ -55,7 +55,7 @@ donde $P_t$ es el vector de precios, $X_t$ es un vector de variables exógenas u
 
 Una propuesta es utilizar un modelo estacional de orden $p=12$ porque se conoce que la estacionalidad en los precios del maíz tiende a ser anual. Una forma de detectar anomalías es estimando el precio en el tiempo $t$ y consideramos que hay una crisis en el tiempo $t$ si el precio observado rebasa el precio estimado $\hat{P}_t$ (la tendencia) por más de una desviación estándar:
 $$
-I_t = \dfrac{P_t - \hat{P}_t}{\sigma_{\varepsilon}} \geq 1. 
+I_t = \dfrac{P_t - \hat{P}_t}{\sigma_{\varepsilon}} \geq 1.
 $$
 
 Esta propuesta [4] tiene ventajas y desventajas. Por un lado, un aspecto positivo es que el indicador de alerta está basado en un modelo estadístico de series de tiempo y se puede extender para incluir diferentes tipos de covariables e incluso una componente espacial. Sin embargo, si las tendencias estacionales se ven atenuadas por las importaciones o sobrelape de cosechas entre temporadas. Esto puede conducir a estimaciones de tendencias posiblemente erróneas.
@@ -66,7 +66,7 @@ Se utiliza la tasa de crecimiento compuesto para suavizar el efecto de volatilid
 $$
 \mbox{CGR}_t = \left(\dfrac{P_{t_n}}{P_{t_0}}\right)^{\dfrac{1}{t_n-t_0}} - 1,
 $$
-donde $P_{t_n}$ es el precio en el periodo $t_n$ y $P_{t_0}$ es el precio en un periodo base. 
+donde $P_{t_n}$ es el precio en el periodo $t_n$ y $P_{t_0}$ es el precio en un periodo base.
 Para tomar en cuenta la estacionalidad se calculan dos tasas, una cuatrimestra y otra anual. Después se compara con la media _mensual_ y la desviación estándar mensual para los años observados. Se define $\mbox{CQGR}_{yt}$ como la tasa cuatrimestral en el mes $t$ del año $y$, y $\mbox{CAGR}_{yt}$ como la tasa anual en el mes $t$ del año $y$.
 
 De esta forma, se puede calcular la media mensual $\overline{\mbox{CQGR}}_{yt}$ y $\overline{\mbox{CAGR}}_{yt}$, cuatrimestral y anual, respectivamente. De la misma forma, es posible calcular la desviación estándar $\sigma_{\mbox{CQGR}_{t}}$, $\sigma_{\mbox{CAGR}_{t}}$.
@@ -100,7 +100,7 @@ Los datos del precio del maíz y algunos factores importantes para la producció
 Aunque los datos de INEGI para el cálculo del INPC son los que en principio consideramos ideales para este tipo de análisis, encontramos que existen demasiados datos faltantes puesto que no se registra el precio del maíz más que en 26 ciudades del total de 46 e incluso para las ciudades con que se cuenta con datos existen también faltantes en algunos meses.
 
 ```{r, echo=FALSE, fig.height=6, fig.width=10, message=FALSE, warning=FALSE}
-maiz_inpc <- read_csv('data/maiz_INPC.csv')
+maiz_inpc <- read_csv('../data/maiz_INPC.csv')
 
 maiz_inpc_1 <- maiz_inpc %>%
   mutate(fecha = ymd(paste0(ano,'-',mes,'-1'))) %>%
@@ -118,17 +118,17 @@ ggplot(maiz_inpc_1, aes(x=fecha, y=precio_media, group=nombreciudad)) +
 
 Por lo tanto, decidimos utilizar los datos de Secretaría de Economía. Estos datos provienen de información de precios de granos y semillas en centrales de abasto mayoristas de México. Los precios son encuestados los días miércoles. El sitio contiene información de precios mínimos, máximos y frecuentes al mayoreo de granos de consumo generalizado que se comercializan en 44 mercados mayoristas y medio mayoristas. La información considera variables como: calidades, orígenes o estados abastecedores, presentaciones comerciales y clasificaciones por tamaño.
 
-Los datos de los precios del maíz se obtuvieron del SNIIM. El Sistema Nacional de Información e Integración de Mercados (SNIIM) es un servicio de la Secretaría de Economía que tiene el propósito de ofrecer información sobre el comportamiento de los precios al por mayor de los productos agrícolas, pecuarios y pesqueros que se comercializan en los mercados nacionales e internacionales. 
+Los datos de los precios del maíz se obtuvieron del SNIIM. El Sistema Nacional de Información e Integración de Mercados (SNIIM) es un servicio de la Secretaría de Economía que tiene el propósito de ofrecer información sobre el comportamiento de los precios al por mayor de los productos agrícolas, pecuarios y pesqueros que se comercializan en los mercados nacionales e internacionales.
 
 ```{r, echo=FALSE, fig.height=5, fig.width=10, message=FALSE, warning=FALSE}
-maiz_precios <- read_csv(file = "data/maiz_precios.csv")
+maiz_precios <- read_csv(file = "../data/maiz_precios.csv")
 
 maiz <- maiz_precios %>%
   separate(destino, c('destino_ent', 'destino_central'), ":") %>%
   mutate(fecha = ymd(paste0(anio,'-',mes,'-1'))) %>%
   filter(fecha >= ymd('2008-1-1') & fecha <= ymd('2016-12-1'))
 
-ggplot(maiz, aes(x=fecha, y = precio, group=fecha)) + 
+ggplot(maiz, aes(x=fecha, y = precio, group=fecha)) +
   geom_boxplot(outlier.color = 'pink', outlier.size = 0.5) +
   scale_x_date(date_breaks = '2 months', date_labels = '%Y-%m') +
   scale_y_continuous(limits = c(1.8,8.5)) +
@@ -156,9 +156,9 @@ library(maptools)
 library(RColorBrewer)
 library(ggmap)
 
-mun_shp <- readOGR("data/municipios_ligero", layer = "municipios_ligero")
-municipal <- read_csv('data/municipal_2.csv')
-catalogo <- read_csv('data/catalogo_entidades.csv')
+mun_shp <- readOGR("../data/municipios_ligero", layer = "municipios_ligero")
+municipal <- read_csv('../data/municipal_2.csv')
+catalogo <- read_csv('../data/catalogo_entidades.csv')
 mun_shp@data$id <- as.character(paste0(mun_shp@data$CVE_ENT,mun_shp@data$CVE_MUN))
 mun_datos <- mun_shp@data
 muni <- mun_datos %>% select(id,nom=NOM_MUN)
@@ -181,7 +181,7 @@ server <- function(input, output) {
       ZOOM <- 5
       LAT <- 24
       LONG <- -100
-      leaflet() %>% 
+      leaflet() %>%
         setView(lng = LONG, lat = LAT, zoom = ZOOM) %>%
         addTiles(options = providerTileOptions(noWrap = TRUE))
     }else{
@@ -201,27 +201,27 @@ server <- function(input, output) {
         palette = rev(brewer.pal(10, "RdYlGn")),
         domain = mun_shp_2$precio_kg_log
       )
-      popup <- paste0("CVE MUN: ", mun_shp_2$id, "<br>", 
+      popup <- paste0("CVE MUN: ", mun_shp_2$id, "<br>",
                       "NOM_MUN: ", mun_shp_2$nom, ", ", mun_shp_2$nom_ent, "<br>",
-                      "Log precio maíz (kg): ", 
+                      "Log precio maíz (kg): ",
                       round(mun_shp_2$precio_kg_log,2))
-      leaflet() %>% 
+      leaflet() %>%
         setView(lng = LONG, lat = LAT, zoom = ZOOM) %>%
         addTiles(options = providerTileOptions(noWrap = TRUE)) %>%
-        addPolygons(data = mun_shp_2, 
-                    fillColor = ~pal(precio_kg_log), 
+        addPolygons(data = mun_shp_2,
+                    fillColor = ~pal(precio_kg_log),
                     color = "#b2aeae",
-                    fillOpacity = 0.7, 
-                    weight = 0.3, 
+                    fillOpacity = 0.7,
+                    weight = 0.3,
                     smoothFactor = 0.2,
                     popup = popup) %>%
-        addLegend(pal = pal_2, 
-                  values = mun_shp_2$precio_kg_log, 
-                  position = "bottomright", 
+        addLegend(pal = pal_2,
+                  values = mun_shp_2$precio_kg_log,
+                  position = "bottomright",
                   title = "Log precio <br> maíz(kg)")
     }
   })
-  
+
   observe({
     proxy <- leafletProxy("map")
     if(input$estado == "Nacional"){
@@ -232,23 +232,23 @@ server <- function(input, output) {
         left_join(filteredData(), by = "id") %>%
         select(id, precio_kg_log, nom, nom_ent)
       mun_shp@data <- muni_2
-      popup <- paste0("CVE MUN: ", mun_shp$id, "<br>", 
+      popup <- paste0("CVE MUN: ", mun_shp$id, "<br>",
                       "NOM_MUN: ", mun_shp$nom, ", ", mun_shp$nom_ent, "<br>",
-                      "Log precio maíz (kg): ", 
+                      "Log precio maíz (kg): ",
                       round(mun_shp$precio_kg_log,2))
       # Remove any existing legend
       proxy %>% clearControls()
       proxy %>%
-        addPolygons(data = mun_shp, 
-                    fillColor = ~pal(precio_kg_log), 
+        addPolygons(data = mun_shp,
+                    fillColor = ~pal(precio_kg_log),
                     color = "#b2aeae",
-                    fillOpacity = 0.7, 
-                    weight = 0.3, 
+                    fillOpacity = 0.7,
+                    weight = 0.3,
                     smoothFactor = 0.2,
                     popup = popup) %>%
-        addLegend(pal = pal, 
-                  values = mun_shp$precio_kg_log, 
-                  position = "bottomright", 
+        addLegend(pal = pal,
+                  values = mun_shp$precio_kg_log,
+                  position = "bottomright",
                   title = "Log precio <br> maíz(kg)")
     }
     else{
@@ -268,23 +268,23 @@ server <- function(input, output) {
         palette = rev(brewer.pal(10, "RdYlGn")),
         domain = mun_shp_2$precio_kg_log
       )
-      popup <- paste0("CVE MUN: ", mun_shp_2$id, "<br>", 
+      popup <- paste0("CVE MUN: ", mun_shp_2$id, "<br>",
                       "NOM_MUN: ", mun_shp_2$nom, ", ", mun_shp_2$nom_ent, "<br>",
-                      "Log precio maíz (kg): ", 
+                      "Log precio maíz (kg): ",
                       round(mun_shp_2$precio_kg_log,2))
-      leaflet() %>% 
+      leaflet() %>%
         setView(lng = LONG, lat = LAT, zoom = ZOOM) %>%
         addTiles(options = providerTileOptions(noWrap = TRUE)) %>%
-        addPolygons(data = mun_shp_2, 
-                    fillColor = ~pal(precio_kg_log), 
+        addPolygons(data = mun_shp_2,
+                    fillColor = ~pal(precio_kg_log),
                     color = "#b2aeae",
-                    fillOpacity = 0.7, 
-                    weight = 0.3, 
+                    fillOpacity = 0.7,
+                    weight = 0.3,
                     smoothFactor = 0.2,
                     popup = popup) %>%
-        addLegend(pal = pal_2, 
-                  values = mun_shp_2$precio_kg_log, 
-                  position = "bottomright", 
+        addLegend(pal = pal_2,
+                  values = mun_shp_2$precio_kg_log,
+                  position = "bottomright",
                   title = "Log precio <br> maíz(kg)")
     }
   })
@@ -298,7 +298,7 @@ ui <- bootstrapPage(
                             value = 2004, step = 1, sep = ""
                 )
   ),
-  absolutePanel(bottom = 100, left = 520, 
+  absolutePanel(bottom = 100, left = 520,
                 selectInput("estado", "Selecciona un estado:",
                             c("Nacional",catalogo$nom_ent_corto)
                 )
@@ -319,8 +319,8 @@ library(RcppRoll)
 library(broom)
 library(gridExtra)
 
-maiz_precios <- read_csv(file = "data/maiz_precios.csv")
-catalogo_entidad <- read_csv('data/catalogo_entidades.csv')
+maiz_precios <- read_csv(file = "../data/maiz_precios.csv")
+catalogo_entidad <- read_csv('../data/catalogo_entidades.csv')
 
 cum_sd <- function(x){
   nas <- which(is.na(x))
@@ -356,15 +356,15 @@ maiz_baquedano <- maiz %>%
   mutate(precio_lag3 = lag(precio, n = 3),
          precio_lag12 = lag(precio, n = 12),
          CQGR=(precio/precio_lag3)^(1/3)-1,
-         CAGR=(precio/precio_lag12)^(1/12)-1) %>% 
+         CAGR=(precio/precio_lag12)^(1/12)-1) %>%
   mutate(CQGR_ma = roll_mean(CQGR, 3, align="right", fill=NA),
          CAGR_ma = roll_mean(CQGR, 12, align="right", fill=NA)) %>%
   ungroup() %>%
-  group_by(cve_ent, mes) %>% 
+  group_by(cve_ent, mes) %>%
   # mutate(CQGR_media = cum_mean(CQGR_ma),
   #        CAGR_media = cum_mean(CAGR_ma),
   #        CQGR_sd = cum_sd(CQGR_ma),
-  #        CAGR_sd = cum_sd(CAGR_ma)) %>% 
+  #        CAGR_sd = cum_sd(CAGR_ma)) %>%
   mutate(CQGR_media = mean(CQGR_ma, na.rm = T),
          CAGR_media = mean(CAGR_ma, na.rm = T),
          CQGR_sd = sd(CQGR_ma, na.rm = T),
@@ -391,12 +391,12 @@ maiz_baquedano_2 <- maiz_baquedano %>%
 chihuahua <- maiz_baquedano_2 %>%
   filter(cve_ent == '08' & fecha <= ymd('2015-8-1')) %>%
   filter(fecha >= ymd('2001-1-1'))
-chihuahua$X_IPA <- ordered(chihuahua$X_IPA, 
+chihuahua$X_IPA <- ordered(chihuahua$X_IPA,
                            levels = c("Normal", "Watch", "Alert"),
                            labels = c("Normal", "Watch", "Alert"))
 
-rect_alert <- data.frame(xmin=chihuahua$fecha[c(39,49)], 
-                   xmax=chihuahua$fecha[c(44,50)], 
+rect_alert <- data.frame(xmin=chihuahua$fecha[c(39,49)],
+                   xmax=chihuahua$fecha[c(44,50)],
                    ymin=-Inf, ymax=Inf)
 rect_watch <- data.frame(xmin=chihuahua$fecha[46],
                          xmax=chihuahua$fecha[48],
@@ -417,12 +417,12 @@ g1 <- ggplot(chihuahua) +
              color = '#F8766D') +
   geom_vline(data=tibble(),
              aes(xintercept=as.numeric(chihuahua$fecha[c(46,48,51,86)])),
-             color = '#F9D649') + 
+             color = '#F9D649') +
   geom_line(data = chihuahua, aes(x = fecha, y = precio)) +
   scale_x_date(date_breaks = '2 months', date_labels = '%Y-%m') +
   scale_y_continuous(name="Precio del maíz",
                      labels = 4:6, breaks = 4:6) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 g2 <- ggplot(chihuahua, aes(x=fecha)) +
   geom_rect(data=rect_alert, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax),
             color="#F8766D",
