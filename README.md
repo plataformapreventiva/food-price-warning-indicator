@@ -8,7 +8,33 @@ El mercado alimentario mexicano se debe analizar desde el ámbito de la oferta y
 
 El objetivo de este proyecto es analizar el nivel de precios y estimar con métodos bayesianos [**] el movimiento de los precios del maiz a nivel estatal en periodos de 3 y 6 meses. Con el vector de precios se utiliza la metodología del indicador IPA [2] desarrollado por la fao para para generar un indicador de alerta temprana de crecimiento anómalo en precios de alimentos básicos que pueden impactar en la seguridad alimentaria de la población en situación de pobreza, en esta primera etapa se implementa el análisis para el maíz por la importancia que tiene en el mercado de consumo mexicano especialmente en la población de alta vulnerabilidad.
 
-La primera sección de este documento describe la generación de la base de datos, la segunda la metodología y los modelos utilizados y la tercera resultados y conclusiones.
+
+## Avances
+
+- Análisis de tópicos:
+Se generan tópicos por medio de Latent Dirichlet Allocation.
+
+- Medidas de Similitud
+Doc2vec 
+
+## Estructura
+- `etl:` directorio que contiene la ingesta de información
+    - ingest_texts.txt ingesta del texto, transformación y unión del texto para cada programa
+- `data:` directorio que contiene archivos de texto utilizados en el análisis
+    - stop.txt: contiene las palabras a excluir en el ánalisis que no cuentan con significado semántico para el contexto
+- `docs:` jupyter notebooks que explican los pasos seguidos
+- `scripts:` 
+
+### Instrucciones
+
+
+## Requisitos
+- `R`
+
+Además:
+- `nltk`
+- `gensim`
+
 
 # Datos
 
@@ -31,7 +57,15 @@ La primera sección de este documento describe la generación de la base de dato
 - Fuente:
  http://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?accion=consultarCuadro&idCuadro=CF86
 
-# Bibliografía
+## Siguientes Pasos
+- Analizar distribución de cobertura de programas similar
+- Ampliar a más programas
+- Ampliar análisis a ms niveles: estatal y municipal
+
+### ¿Cómo Constribuir?
+
+
+# Referencias
 - [1] El Universal, En México, 28 millones con con carencia alimentaria. http://www.eluniversal.com.mx/articulo/nacion/sociedad/2016/04/23/en-mexico-28-millones-con-carencia-alimentaria
 - [2] Baquedano, Felix G. Developing a price warning indicator as an early warning tool - a compound growth approach. 2015.
 http://www.fao.org/giews/food-prices/research/detail/es/c/235685/ 
@@ -40,4 +74,3 @@ http://www.fao.org/giews/food-prices/research/detail/es/c/235685/
 - http://www.fao.org/giews/food-prices/price-warnings/en/
 -http://www.fao.org/giews/food-prices/research/detail/es/c/235685/
 - Duncan Lee. CARBayes: An R Package for Bayesian Spatial Modeling with Conditional Autoregressive Priors. https://www.jstatsoft.org/article/view/v055i13
-
