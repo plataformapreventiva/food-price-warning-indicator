@@ -17,7 +17,7 @@ library(stringr)
 ```
 
 ```{r, results='hide', message=FALSE}
-tipo_cambio <-read_csv("data/tipo_de_cambio.csv") %>%
+tipo_cambio <-read_csv("../data/tipo_de_cambio.csv") %>%
   mutate(fecha = dmy(fecha)) %>%
   mutate(año = year(fecha))  %>%
   mutate(mes = month(fecha)) %>%
@@ -26,7 +26,7 @@ tipo_cambio <-read_csv("data/tipo_de_cambio.csv") %>%
 
 
 ```{r, results='hide', message=FALSE}
-internacional <- read_csv("data/precio_internacional_dolares.csv") %>%
+internacional <- read_csv("../data/precio_internacional_dolares.csv") %>%
   separate(Month, c("mes", "año"), " ")  %>%
   mutate(año = as.numeric(año))  %>%
   filter(año>2000) %>%
@@ -44,7 +44,7 @@ internacional <- read_csv("data/precio_internacional_dolares.csv") %>%
 # Precios nacionales promedio por estado:
 
 ```{r, results='hide', message=FALSE, comment=NA, warning=FALSE}
-nacional <- read_csv("data/precios_granos_semanales.csv")
+nacional <- read_csv("../data/precios_granos_semanales.csv")
 nacional <- select(nacional,producto,precio_min,fecha,edo_destino,obs) %>%
   mutate(fecha=dmy(fecha)) %>% # tipo de fecha
   mutate(precio_min = ifelse(precio_min > 8, NA, precio_min)) # identificamos un outlier
@@ -52,7 +52,7 @@ nacional <- select(nacional,producto,precio_min,fecha,edo_destino,obs) %>%
 
 
 ```{r, message=FALSE, warning=FALSE}
-estados_dic <- read_csv("data/estados_dic.csv") %>%
+estados_dic <- read_csv("../data/estados_dic.csv") %>%
   rename(edo_destino=NOM_ENT) %>%
   mutate(edo_destino = str_to_lower(edo_destino)) %>%
   mutate(CVE_ENT = str_pad(CVE_ENT, 2, pad = "0"))
@@ -60,7 +60,7 @@ estados_dic <- read_csv("data/estados_dic.csv") %>%
 
 
 ```{r, message=FALSE, warning=FALSE}
-maiz_nacional <- read_csv("data/precios_granos_semanales.csv") %>%
+maiz_nacional <- read_csv("../data/precios_granos_semanales.csv") %>%
   select(producto,fecha,edo_destino,precio_min,obs) %>%
   #definimos variable de fecha
   mutate(fecha=dmy(fecha)) %>%
@@ -224,7 +224,7 @@ model
   }
 }
 '
-cat(modelo_ar.txt, file = 'modelo_ar.bugs')
+cat(modelo_ar.txt, file = '../scripts/models/modelo_ar.bugs')
 ```
 
 Parámetros iniciales:
@@ -233,8 +233,8 @@ Parámetros iniciales:
 n <- length(f)
 m <- dim(P)[2]
 r <- 1
-data <- list("n" = n, 
-             "m" = m, 
+data <- list("n" = n,
+             "m" = m,
              "r" = r,
              "P" = P,
              "f" = f)
@@ -265,7 +265,7 @@ Ajuste del modelo:
 
 ```{r,warning=FALSE,message=FALSE}
 jags_fit <- jags(
-  model.file = "modelo_ar.bugs",    # modelo de JAGS
+  model.file = "../scripts/models/modelo_ar.bugs",    # modelo de JAGS
   inits = inits,   # valores iniciales
   data = data,    # lista con los datos
   parameters.to.save = parameters,  # parámetros por guardar
@@ -344,12 +344,12 @@ library(ggmap)
 ```
 
 ```{r, message=FALSE, warning=FALSE}
-ent_shp <- readOGR("data/shp" , "entidad")
+ent_shp <- readOGR("../data/estados_ligero" , "Mex_Edos")
 ent_df <- fortify(ent_shp, region = "CVE_ENT")
 ent_err <- ent_df %>%
   mutate(CVE_ENT = id) %>%
   left_join(errores, by = "CVE_ENT")
-ggplot() + 
+ggplot() +
   geom_polygon(data = ent_err, aes(long, lat, group = group, fill = error)) +
   labs(title = "Error cuadrático por entidad", fill = "Error") +
   scale_fill_gradient(low = "white", high = "red") +
@@ -374,8 +374,8 @@ ent_error_cuant <- ent_err %>% left_join(medias_ent, by = "entidad")
 media_mes <- function(mes){
   regex <- paste0('yf\\[',as.character(mes),'\\,([0-9]*)\\]')
   out.yf <- out.sum[str_detect(pattern=regex, string=rownames(out.sum)),]
-  return(tibble(media = mean(out.yf[,1],na.rm=T), 
-                inf = mean(out.yf[,3],na.rm=T), 
+  return(tibble(media = mean(out.yf[,1],na.rm=T),
+                inf = mean(out.yf[,3],na.rm=T),
                 sup = mean(out.yf[,7],na.rm=T)))
 }
 medias_mes <- purrr::map_df(.x = 1:134, .f = media_mes)
@@ -396,8 +396,8 @@ ggplot(semantic_1) +
   geom_line(aes(x=fecha, y=sup), color = "navyblue", linetype = 2) +
   geom_point(data = data.frame(fecha=ymd('2016-10-01'),media=mean(pred)),
             aes(x=fecha, y=media), color = 'red') +
-  geom_segment(x = as.numeric(ymd('2016-10-01')), y = mean(out.yp[,3]), 
-               xend = as.numeric(ymd('2016-10-01')), yend = mean(out.yp[,7]), 
+  geom_segment(x = as.numeric(ymd('2016-10-01')), y = mean(out.yp[,3]),
+               xend = as.numeric(ymd('2016-10-01')), yend = mean(out.yp[,7]),
                color = 'red', alpha = 0.8) +
   scale_x_date(date_breaks = "6 months", date_labels = "%b %y") +
   theme(legend.position="bottom", axis.text.x = element_text(angle = 45, hjust = 1)) +
