@@ -1,0 +1,281 @@
+??geostat
+install.packages("diseasemapping")
+?inla
+inla.version()
+update.packages("INLA")
+library(INLA)
+demo("Tokyo-compare")
+21.5+29+19.9
+`-`
+`matrix`
+`&`
+`*`
+`^`
+A = matrix(runif(9),3,3)
+A=t(A)%*%A
+A
+solve(A,c(1,1,1))
+b=solve(A,c(1,1,1))
+b/sum(b)
+b^2/sum(b)
+tt<-function(n) { solve(A + n*matrix(rep(1,9),3,3)) }
+tt(1)
+tt(10)
+tt(100)
+tt(1000)
+tt(100000)
+A
+solve(A)
+tt(10000000)
+tt(10000000)-tt(100)
+tt(10000000)-tt(1000)
+tt(10000000)-tt(10000)
+tt(10000000)
+solve(A) -b%*%t(b)/sum(b)
+solve(A) -b%*%t(b)/sum(b) - tt(100000)
+tt
+?rmvnorm
+?rnorm
+library(mass)
+library(MASS)
+?mvnorm
+??rmvnorm
+test <- function(mu_prior,Sigma_prior,sss){#
+	y = rnorm(1,mean=sss,sd=1)#
+	Q_post = solve(Sigma_prior) + matrix(rep(1,9),3,3)#
+	b_post = solve(Sigma_prior,mu_prior) + rep(y,3)#
+	return( list(mu = solve(Q_post,b_post), Sigma=solve(Q_post)) )#
+}#
+#
+x = mvrnorm(n=1,mu=c(0,0,0), Sigma = solve(A))\#
+sss = sum(x)#
+out = test(c(0,0,0), solve(A), sss)#
+#
+for(i in 2:100) {#
+out = test(out$mu, out$Sigma, sss)#
+}
+x = mvrnorm(n=1,mu=c(0,0,0), Sigma = solve(A))
+x
+test <- function(mu_prior,Sigma_prior,sss){#
+	y = rnorm(1,mean=sss,sd=1)#
+	Q_post = solve(Sigma_prior) + matrix(rep(1,9),3,3)#
+	b_post = solve(Sigma_prior,mu_prior) + rep(y,3)#
+	return( list(mu = solve(Q_post,b_post), Sigma=solve(Q_post)) )#
+}#
+#
+x = mvrnorm(n=1,mu=c(0,0,0), Sigma = solve(A))#
+sss = sum(x)#
+out = test(c(0,0,0), solve(A), sss)#
+#
+for(i in 2:100) {#
+out = test(out$mu, out$Sigma, sss)#
+}
+out
+x
+for(i in 2:10000) {#
+out = test(out$mu, out$Sigma, sss)#
+}
+out
+53+126+73
+53+126+73+93
+4700+4000
+?dgamma
+x=seq(0.001,0.01,10)
+plot(x,dgamma(x,2,0.01))
+x=seq(0.001,10,0.01)
+plot(x,dgamma(x,2,0.01))
+plot(x,dgamma(x,2,1))
+2^0;.1
+2^0.1
+library(INLA)
+update.packages("INLA")
+??inla.spde.make.A.block
+??inla.spde.make.A
+library(INLA)
+?inla.spde.make.block.A
+36.8*5
+4*97
+2*73
+184+388+146
+323.8*0.72
+323.8*0.72+52.9
+250*11.98
+93*11.98
+93*11.98 + 2995
+895/2469
+1540/12
+995-130
+.4*2500
+library(INLA)
+inla.version()
+66-15
+(51-33)/33
+(51-33)/51
+33/84
+?anova
+?lme
+??lme
+?inla
+library(nlme)
+?lme
+fm1 <- lme(distance ~ age, data = Orthodont) # random is ~ age#
+fm2 <- lme(distance ~ age + Sex, data = Orthodont, random = ~ 1)#
+summary(fm1)#
+summary(fm2)
+data(trees)
+ls()
+rm(list=ls())
+data(trees)
+ls()
+head(trees)
+library(MASS)
+library(mcycle)
+data(mcycle)
+plot(mcycle)
+library(INLA)
+?inla.plot
+inla.doc("rw2")
+inla.doc("loggamma")
+data(Seeds)
+head(Seeds)
+pred = c(NA,NA, 0,1,NA)
+data.pred= rbind(Seeds,pred)
+r = inla(r~x1*x2 + f(plate), data=data.pred, family="binomial",Ntrials=n,control.predictor=list(compute=TRUE, link=1))
+plot(r)
+r$summary.linear.predictor$mean$[-1]
+r$summary.linear.predictor$mean$[22]
+r$summary.linear.predictor$mean$[22,]
+tail(r$summary.linear.predictor$mean)
+inla.doc("binomial")
+data(Germany)
+head(Germany)
+n=100# x1 and x2 are the same ar1 process with# different interceptsx1 = arima.sim(n, model=list(ar=0.9)) + 1x2 = arima.sim(n, model=list(ar=0.9)) - 1y1 = rpois(n,exp(x1)) #poisson obsy2 = rpois(n,exp(x2))y = c(y1,y2)i = rep(1:n,2) #indexing!r = rep(1:2,each=n) #replicate no.intercept = as.factor(r) #2 interceptsformula = y ~ f(i, model="ar1", replicate=r) + intercept -1result = inla(formula, family = "poisson",              data = data.frame(y, i, r, intercept))
+summary(result)
+library(mvtnorm)n = 100Sigma = matrix(c(1, 0.8, 0.8, 1), 2, 2)z = runif(n)ab = rmvnorm(n, sigma = Sigma)a = ab[, 1]b = ab[, 2]eta = a + b * zy = eta + rnorm(n, sd=0.1)i = 1:nj = 1:n + nformula = y ~ f(i, model="iid2d", n = 2*n) +              f(j, z, copy="i") - 1r = inla(formula, data = data.frame(y, i, j))
+summary(r)
+inla.version()
+?inla.mesh.2d
+example(inla.mesh.2d)
+?inla.mesh.2d
+?inla.mesh.create.helper
+inla.doc("scale.model")
+library(INLA)
+names(inla.models()$likelihood)
+inla.doc("zeroinflated")
+inla.doc("zeroinflatedpoisson2")
+inla.models()$likelihood$gamma
+\\
+?kron
+??kron
+??rw12
+??rw2
+?control.inla
+library(INLA)
+?inla.spde.make.index
+y1= arima.sim(100, model=list(ar=0.9))
+y2= arima.sim(100, model=list(ar=0.9))
+plot(1:100,y1,type="l")
+lines(1:100,y2)
+plot(1:100,y1,type="l")
+lines(1:100,y2,col="red")
+example(inla.mesh.2d)
+hist(rgamma(1000,15,0.005))
+plot(1:100,y1,type="l")
+?s
+library(mgcv)
+?s
+?control.inla
+?inla.spde.make.index
+?inla.stack
+?control.predictor
+?inla.spde.make.index
+?inla.stack
+library(INLA)
+data(Tokyo)
+head(Tokyo)
+formula = y ~ f(time, model="rw2",cyclic=TRUE) - 1
+r = inla(formula, family = "binomial", Ntrials=n, data=Tokyo)
+summary(r)
+plot(r)
+data(trees)
+Y<- log(trees$Volume)
+Z1<-trees$GirthZ2<-trees$Height
+prior.c=c(1,0.05)hyper=list(theta=list(param=prior.c))
+formula = Y ~ 1 + f(Z1, model = "rw2", hyper=hyper)+f(Z2, model = "rw2", hyper=hyper)
+data=data.frame(Y, Z1, Z2)
+TRUE, control.compute=list(dic=TRUE))
+TRUE, control.compute=list(dic=TRUE))
+result=inla(formula,data=data,family="normal", verbose = TRUE, control.compute=list(dic=TRUE))
+library(inla)
+library(INLA)
+result=inla(formula,data=data,family="normal", verbose = TRUE, control.compute=list(dic=TRUE))
+summary(result)
+formula2 = Y ~ 1 + f(Z1, model = "rw1", hyper=hyper)+f(Z2, model = "rw1", hyper=hyper)
+result2=inla(formula2,data=data,family="normal", verbose = TRUE, control.compute=list(dic=TRUE))
+result1$dic$dic
+result$dic$dic
+result2$dic$dic
+names(result)
+names(result$dic)
+names(result$Q)
+result$Q
+plot(result)
+plot(result)
+library(MASS)
+data(mcycle)
+head(mcycle)
+formula = accel ~ 1 + f(times, model="rw1")
+r = inla(formula, family = "gaussian",data =mcycle,control.compute = list(cpo=TRUE))
+plot(r)
+formula = accel ~ 1 + f(times, model="rw2")
+r = inla(formula, family = "gaussian",data =mcycle,control.compute = list(cpo=TRUE))
+plot(r)
+data(Seeds)
+head(Seeds)
+r=inla(r~x1*x2 + f(plate,model="iid"),data=Seeds,Ntrials=n,family="binomial")
+plot(r)
+r=inla(r~x1*x2 + f(plate,model="iid"),data=Seeds,Ntrials=n,family="binomial",control.predictor = list(compute=T)
+)
+plot(r)
+dev.new()
+plot(r$summary.fitted.values$mean)
+points(Seeds$r/Seeds$n,type="x",col="red")
+points(Seeds$r/Seeds$n,col="red")
+plot(Sedds$r/Seeds$n)
+plot(Seeds$r/Seeds$n)
+rm(list=ls())
+data(Seds)
+data(Seeds)
+head(Seeds)
+plot(Seeds$r/Seeds$n)
+graphics.off()
+inla.doc("loggamma")
+inla.doc("rw2")
+inla.doc("bym")
+inla.doc("bym")
+?inla.surv
+data(Germany)
+summary(Germany$Y)
+setwd("~/Dropbox/Talks/INLA 3 Day Applied Course/Course/Day 2/Data")
+paul<- read.delim("paul.txt")# type 5 is Andersonia heterophylladata<-paul[paul$type=="5",]x=data$x/10y=data$y/10
+x.area=22x.win=owin(c(0, x.area),c(0, x.area))
+library(spatstat)
+x.area=22x.win=owin(c(0, x.area),c(0, x.area))data.pp=ppp(x,y,window=x.win)plot(data.pp, main= " Andersonia heterophylla")
+nrow=30ncol=nrowx.grid=quadrats(x.win,ncol,nrow)
+count.grid=quadratcount(data.pp, tess=x.grid) plot(count.grid)
+Y = as.vector(count.grid)
+n = ncol*nrow
+cell.area<-x.area^2/nE<-rep(cell.area, n)INLA requires
+I = 1:nJ = 1:n
+prior.spat=c(1,0.00005) #Default!
+hyper.spat=list(prec=list(param=prior.spat))
+formula = Y ~ 1+f(I, model="rw2d", nrow=nrow, ncol=ncol, hyper=hyper.spat)+f(J, model="iid")
+result=inla(formula,data=data.frame(Y,I,J),family="poisson",E=E, verbose=TRUE,control.compute=list(dic=TRUE))
+library(mvtnorm)library(lattice)library(mgcv)library(pixmap)library(numDeriv)library(fields)library(INLA)
+summary(result)
+plot(result)
+?inla.tmarginal
+fit=E*result$summary.fitted.values$meanim.matrix(matrix(fit, nrow, ncol))
+fit=E*result$summary.fitted.values$meanimage(matrix(fit, nrow, ncol))
+n=100# x1 and x2 are the same ar1 process with# different interceptsx1 = arima.sim(n, model=list(ar=0.9)) + 1x2 = arima.sim(n, model=list(ar=0.9)) - 1y1 = rpois(n,exp(x1)) #poisson obsy2 = rpois(n,exp(x2))y = c(y1,y2)i = rep(1:n,2) #indexing!r = rep(1:2,each=n) #replicate no.intercept = as.factor(r) #2 interceptsformula = y ~ f(i, model="ar1", replicate=r) + intercept -1result = inla(formula, family = "poisson",              data = data.frame(y, i, r, intercept))
+summary(result)

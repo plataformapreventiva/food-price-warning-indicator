@@ -1,0 +1,40 @@
+elev=read.table("elevdata.txt",header=T)
+elevmat=matrix(elev[,3],ncol=101,byrow=T)
+oomit=elev$x!=1000 & elev$y!=500
+z1=elev$elev[oomit]
+mz1=mean(z1)
+elevim=im(t(elevmat-mz1),xcol=10*c(0:200)/2,yrow=10*c(0:100)/2)
+elev.mean=lookup.im(elevim,mid.p$x,mid.p$y)
+
+
+zgrad3=scan("zgrad3.out")
+zgrad3mean=zgrad3-mean(zgrad3)
+gradim=im(t(matrix(zgrad3mean,ncol=101,byrow=T)),xcol=10*c(0:200)/2,yrow=10*c(0:100)/2)
+grad.mean=lookup.im(gradim,mid.p$x,mid.p$y)
+
+
+Soil<-read.csv("bci.block20.data.csv",dec=",")
+soil.x<-Soil$x
+soil.y<-Soil$y
+soil.pp=ppp(x=soil.x,y=soil.y,window=x.win)
+
+soil.index=c(3:15)
+no.cov<-length(soil.index) # Number of covariates
+cov.mat<-matrix(0,nrow=n,ncol=no.cov)
+for (i in 1:no.cov)
+{
+	soil.pp<-ppp(x=soil.x, y=soil.y, window=x.win,marks=Soil[,soil.index[i]])
+	cov.mat[,i]=func.grid.cov2(soil.pp,x.grid,mid.p) # Assign covariate values to the four neighbouring cells. 
+}
+
+# Log-transform all covariates except N.min
+cov.mat.log=cov.mat
+cov.mat.log[,-12]=log(cov.mat[,-12])
+
+for (i in 1:no.cov)
+	cov.mat.log[,i]=cov.mat.log[,i]-mean(cov.mat.log[,i])
+
+cov.string=c("Elev.","Slope",names(Soil)[3:(no.cov+2)])
+cov.all=cbind(elev.mean,grad.mean,cov.mat.log)
+
+
