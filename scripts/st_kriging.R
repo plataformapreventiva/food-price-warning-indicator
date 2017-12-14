@@ -122,7 +122,7 @@ semanales_2 <- semanales %>%
 # al 1 de diciembre, ya que estos datos se registran a final de año.
 
 municipal_2 <- municipal_2 %>%
-  filter(precio_kg >= 1 & precio_kg <= 10 & anio >= 2015 & anio <= 2016) %>%
+  filter(precio_kg >= 1 & precio_kg <= 7 & anio >= 2015 & anio <= 2016) %>%
   mutate(fecha = ymd(paste0(anio,'-12-28'))) 
 
 municipal_3 <- municipal_2 %>%
@@ -134,7 +134,7 @@ municipal_3 <- municipal_2 %>%
   mutate(tipo = "Pie de parcela")
 
 semanales_3 <- semanales_2 %>%
-  filter(precio_frec >= 1 & precio_frec <= 10 & anio >= 2015 & anio <= 2016) %>%
+  filter(precio_frec >= 1 & precio_frec < 7 & anio >= 2015 & anio <= 2016) %>%
   mutate(fecha = dmy(fecha)) %>%
   dplyr::select(fecha, lon, lat, precio=precio_frec) %>%
   mutate(tipo = "Central de abastos")
@@ -153,13 +153,11 @@ ggplot(aux, aes(x=grupo, y=precio)) +
 
 panel_temporal$lon <- panel_temporal$lon + runif(nrow(panel_temporal), min = 1e-6, max = 9e-6)
 panel_temporal$lat <- panel_temporal$lat + runif(nrow(panel_temporal), min = 1e-6, max = 9e-6)
-
 panel_temporal$fecha <- lubridate::floor_date(panel_temporal$fecha,"day")
 
 maizSP <- SpatialPoints(panel_temporal[,c('lon','lat')],crs(sids))
 maizTM <- as.POSIXlt(panel_temporal$fecha)
 maizDF <- panel_temporal %>% dplyr::select(precio)
-
 timeDF <- STIDF(sp=maizSP, time=maizTM, data=maizDF)
 
 # vv <- variogram(precio~1, timeDF, tunit="weeks", twindow=40, tlags=0:3)
@@ -194,7 +192,7 @@ extractPar(SimplesumMetric_Vgm)
 plot(vv,SimplesumMetric_Vgm, map = FALSE)
 
 grid_sp <- spsample(sids, n = 500, type = "regular")
-plot(grid_sp, col = 'dark red', pch = ".")
+#plot(grid_sp, col = 'dark red', pch = ".")
 
 grid_tm <- seq(ymd('2015-1-1'),ymd('2017-1-1'), by = '3 months')
 grid_tm <- as.POSIXlt(grid_tm)
@@ -220,15 +218,55 @@ panel_temporal %>%
 # para analizar qué tanto sentido tiene hacer pooling ajustando
 # media y desviación estándar
 
+panel_ord <- panel_temporal %>%
+  group_by(tipo) %>%
+  arrange(fecha)
+panel_ajuste <- mutate(panel_ord, 
+                        media = mean(precio),
+                        sd = sd(precio),
+                        residual = (precio - media)/sd
+                        )
+
+todos_residual <- sort(panel_ajuste$residual)
+panel_total <- panel_ajuste %>%
+  arrange(residual) %>%
+  mutate(
+    n_obs = n(),
+    cuantil_total = approx(x = 1:length(todos_residual), y = todos_residual,
+                           n = n_obs[1])$y
+  )
+
+ggplot(panel_total, aes(x = cuantil_total, y = residual)) +
+  geom_point() +
+  facet_wrap(~ tipo, nrow = 1) +
+  stat_smooth(method = "lm")
+
+n <- nrow(panel_total)
+panel_normal <- panel_total %>%
+  ungroup() %>%
+  arrange(residual) %>%
+  mutate(
+    valor.f.tot = (seq(1, n) - 0.5) / n, 
+    q.norm.tot = qnorm(valor.f.tot)
+  )
+
+ggplot(panel_normal, aes(x = q.norm.tot, y = residual)) +
+  geom_point() +
+  stat_smooth(method = "lm")
 
 
+# Calculamos nuevamente el semivariograma empírico
+maizSP <- SpatialPoints(panel_normal[,c('lon','lat')],crs(sids))
+maizTM <- as.POSIXlt(panel_normal$fecha)
+maizDF <- panel_normal %>% dplyr::select(precio)
+timeDF <- STIDF(sp=maizSP, time=maizTM, data=maizDF)
 
-
-
-
-
-
-
+vv2 <- variogram(precio~1, timeDF, tunit="weeks", twindow=40, tlags=0:3)
+# write_rds(x = vv2, path = 'out/semivgm_emp_maiz2.rds')
+vv2 <- read_rds(path = 'out/semivgm_emp_maiz2.rds')
+plot(vv)
+plot(vv, map=FALSE)
+plot(vv,wireframe=T)
 
 
 
