@@ -261,12 +261,12 @@ maizTM <- as.POSIXlt(panel_normal$fecha)
 maizDF <- panel_normal %>% dplyr::select(precio)
 timeDF <- STIDF(sp=maizSP, time=maizTM, data=maizDF)
 
-vv2 <- variogram(precio~1, timeDF, tunit="weeks", twindow=40, tlags=0:34
-# write_rds(x = vv2, path = 'out/semivgm_emp_maiz2.rds')
+vv2 <- variogram(precio~1, timeDF, tunit="weeks", twindow=40, tlags=0:4)
+write_rds(x = vv2, path = 'out/semivgm_emp_maiz2.rds')
 vv2 <- read_rds(path = 'out/semivgm_emp_maiz2.rds')
-plot(vv)2
-plot(vv,2 map=FALSE)
-plot(vv,2wireframe=T)
+plot(vv2)
+plot(vv2, map=FALSE)
+plot(vv2,wireframe=T)
 
 
 
