@@ -261,7 +261,7 @@ maizTM <- as.POSIXlt(panel_normal$fecha)
 maizDF <- panel_normal %>% dplyr::select(precio)
 timeDF <- STIDF(sp=maizSP, time=maizTM, data=maizDF)
 
-vv2 <- variogram(precio~1, timeDF, tunit="weeks", twindow=40, tlags=0:4)
+vv2 <- variogram(precio~1, timeDF, tunit="weeks", twindow=40, tlags=0:3)
 write_rds(x = vv2, path = 'out/semivgm_emp_maiz2.rds')
 vv2 <- read_rds(path = 'out/semivgm_emp_maiz2.rds')
 plot(vv2)
@@ -269,8 +269,32 @@ plot(vv2, map=FALSE)
 plot(vv2,wireframe=T)
 
 
+# Ajustamos nuevamente el semivariograma empírico
+SimplesumMetric2 <- vgmST("simpleSumMetric",
+                         space = vgm(0.1,"Sph", 200, 0),
+                         time = vgm(2,"Sph", 200, 0),
+                         joint = vgm(0.1,"Sph", 200, 0), 
+                         nugget=0.1, 
+                         stAni=200)
 
+# Adaptamos parámetros iniciales
+pars.l2 <- c(sill.s = 0, 
+            range.s = 10, 
+            nugget.s = 0.1,
+            sill.t = 0,
+            range.t = 1,
+            nugget.t = 0.1,
+            sill.st = 0,
+            range.st = 2,
+            nugget.st = 0.1,
+            anis = 0)
 
+SimplesumMetric_Vgm2 <- fit.StVariogram(vv2, SimplesumMetric2, method = "L-BFGS-B",lower=pars.l2)
+attr(SimplesumMetric_Vgm2, "MSE")
 
+extractPar(SimplesumMetric_Vgm2)
+
+# Semivariograma ajustado
+plot(vv2,SimplesumMetric_Vgm2, map = FALSE)
 
 
