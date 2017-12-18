@@ -10,6 +10,7 @@ library(GISTools)
 library(ggmap)
 library(stringr)
 library(lubridate)
+library(gridExtra)
 
 municipal <- read_csv('data/maiz_municipal_2004_2015.csv')
 
@@ -122,7 +123,7 @@ semanales_2 <- semanales %>%
 # al 1 de diciembre, ya que estos datos se registran a final de año.
 
 municipal_2 <- municipal_2 %>%
-  filter(precio_kg >= 1 & precio_kg <= 7 & anio >= 2015 & anio <= 2016) %>%
+  filter(precio_kg > 2 & precio_kg <= 7 & anio >= 2015 & anio <= 2016) %>%
   mutate(fecha = ymd(paste0(anio,'-12-28'))) 
 
 municipal_3 <- municipal_2 %>%
@@ -134,7 +135,7 @@ municipal_3 <- municipal_2 %>%
   mutate(tipo = "Pie de parcela")
 
 semanales_3 <- semanales_2 %>%
-  filter(precio_frec >= 1 & precio_frec < 7 & anio >= 2015 & anio <= 2016) %>%
+  filter(precio_frec > 2 & precio_frec < 7 & anio >= 2015 & anio <= 2016) %>%
   mutate(fecha = dmy(fecha)) %>%
   dplyr::select(fecha, lon, lat, precio=precio_frec) %>%
   mutate(tipo = "Central de abastos")
@@ -173,23 +174,20 @@ SimplesumMetric <- vgmST("simpleSumMetric",
                          joint = vgm(0.1,"Sph", 200, 0), 
                          nugget=0.3, 
                          stAni=200)
-pars.l <- c(sill.s = 0, 
-            range.s = 10, 
-            nugget.s = 0,
-            sill.t = 0,
-            range.t = 1,
-            nugget.t = 0,
-            sill.st = 0,
-            range.st = 10,
-            nugget.st = 0,
-            anis = 0)
-SimplesumMetric_Vgm <- fit.StVariogram(vv, SimplesumMetric, method = "L-BFGS-B",lower=pars.l)
-attr(SimplesumMetric_Vgm, "MSE")
 
-extractPar(SimplesumMetric_Vgm)
+pars.l <- c(sill.s = 0, range.s = 10, nugget.s = 0,
+            sill.t = 0, range.t = 1, nugget.t = 0,
+            sill.st = 0, range.st = 10, nugget.st = 0,
+            anis = 0)
+
+vgm <- fit.StVariogram(vv, SimplesumMetric, method = "L-BFGS-B",lower=pars.l)
+attr(vgm, "MSE")
+
+# Parámetros ajustados del semivariograma paramétrico
+extractPar(vgm)
 
 # Semivariograma ajustado
-plot(vv,SimplesumMetric_Vgm, map = FALSE)
+plot(vv,vgm, map = FALSE)
 
 grid_sp <- spsample(sids, n = 500, type = "regular")
 #plot(grid_sp, col = 'dark red', pch = ".")
@@ -198,8 +196,9 @@ grid_tm <- seq(ymd('2015-1-1'),ymd('2017-1-1'), by = '3 months')
 grid_tm <- as.POSIXlt(grid_tm)
 grid_ST <- STF(grid_sp, grid_tm)
 
-pred <- krigeST(precio~1, data=timeDF, modelList=SimplesumMetric_Vgm, newdata=grid_ST)
+pred <- krigeST(precio~1, data=timeDF, modelList=vgm, newdata=grid_ST)
 
+# Ajuste de predicción
 stplot(pred)
 
 
@@ -241,6 +240,7 @@ ggplot(panel_total, aes(x = cuantil_total, y = residual)) +
   facet_wrap(~ tipo, nrow = 1) +
   stat_smooth(method = "lm")
 
+# Agrupamos los datos y vemos el ajuste con una distribución normal
 n <- nrow(panel_total)
 panel_normal <- panel_total %>%
   ungroup() %>%
@@ -254,47 +254,89 @@ ggplot(panel_normal, aes(x = q.norm.tot, y = residual)) +
   geom_point() +
   stat_smooth(method = "lm")
 
-
 # Calculamos nuevamente el semivariograma empírico
-maizSP <- SpatialPoints(panel_normal[,c('lon','lat')],crs(sids))
-maizTM <- as.POSIXlt(panel_normal$fecha)
-maizDF <- panel_normal %>% dplyr::select(precio)
-timeDF <- STIDF(sp=maizSP, time=maizTM, data=maizDF)
+maizSP2 <- SpatialPoints(panel_ajuste[,c('lon','lat')],crs(sids))
+maizTM2 <- as.POSIXlt(panel_ajuste$fecha)
+maizDF2 <- panel_ajuste %>% ungroup() %>% dplyr::select(residual)
+timeDF2 <- STIDF(sp=maizSP2, time=maizTM2, data=maizDF2)
 
-vv2 <- variogram(precio~1, timeDF, tunit="weeks", twindow=40, tlags=0:3)
+vv2 <- variogram(residual~1, timeDF2, tunit="weeks", tlags=0:3)
 write_rds(x = vv2, path = 'out/semivgm_emp_maiz2.rds')
 vv2 <- read_rds(path = 'out/semivgm_emp_maiz2.rds')
 plot(vv2)
 plot(vv2, map=FALSE)
 plot(vv2,wireframe=T)
 
-
 # Ajustamos nuevamente el semivariograma empírico
-SimplesumMetric2 <- vgmST("simpleSumMetric",
-                         space = vgm(0.1,"Sph", 200, 0),
-                         time = vgm(2,"Sph", 200, 0),
-                         joint = vgm(0.1,"Sph", 200, 0), 
-                         nugget=0.1, 
-                         stAni=200)
+sumMetric <- vgmST("sumMetric", 
+                   space = vgm(psill=0.5,"Gau", range=200, nugget=0.1),
+                   time = vgm(psill=0.5,"Gau", range=200, nugget=0.1), 
+                   joint = vgm(psill=0.5,"Gau", range=200, nugget=0.1),
+                   nugget = 0.01,
+                   stAni=200)
 
 # Adaptamos parámetros iniciales
-pars.l2 <- c(sill.s = 0, 
-            range.s = 10, 
-            nugget.s = 0.1,
-            sill.t = 0,
-            range.t = 1,
-            nugget.t = 0.1,
-            sill.st = 0,
-            range.st = 2,
-            nugget.st = 0.1,
+pars.l2 <- c(sill.s = 0, range.s = 10, nugget.s = 0,
+            sill.t = 0, range.t = 1, nugget.t = 0,
+            sill.st = 0, range.st = 10, nugget.st = 0,
             anis = 0)
 
-SimplesumMetric_Vgm2 <- fit.StVariogram(vv2, SimplesumMetric2, method = "L-BFGS-B",lower=pars.l2)
-attr(SimplesumMetric_Vgm2, "MSE")
+pars.u2 <- c(sill.s = 2, range.s = 200, nugget.s = 2,
+            sill.t = 200, range.t = 60, nugget.t = 2,
+            sill.st = 2, range.st = 1000, nugget.st = 2,
+            anis = 700) 
 
-extractPar(SimplesumMetric_Vgm2)
-
+vgm2 <- fit.StVariogram(vv2,sumMetric,method="L-BFGS-B",lower=pars.l2,upper=pars.u2)
 # Semivariograma ajustado
-plot(vv2,SimplesumMetric_Vgm2, map = FALSE)
+plot(vv2,vgm2, map = FALSE)
+plot(vv2, map=FALSE)
+
+
+dat <- data.frame(x = seq(0, 1000, 100), y = seq(0, 1, 0.1))
+ggplot(dat, aes(x = x, y = y)) + 
+  labs(title = expression("Semivariograma gaussiano"), 
+       x = "distancia", y = "semivarianza") +
+  stat_function(fun = gau.variog, args = list(sigma2 = 0.1672587, phi = 200, tau2 = 0), 
+                colour = "green3") 
+
+fit <- list(vst=vv2, vstModel=vgm2)
+toPlot = data.frame(fit$vst)
+ggplot(toPlot, aes(x=dist, y=gamma, color=timelag, group=timelag)) + 
+  geom_point() +
+  geom_line()
+ggplot(toPlot, aes(x=timelag, y=gamma, color=spacelag, group=spacelag)) + 
+  geom_point() +
+  geom_line()
+
+
+dist_grid <- expand.grid(timelag = unique(toPlot$timelag), 
+                         spacelag = seq(min(toPlot$spacelag, na.rm=T),
+                                        max(toPlot$spacelag, na.rm=T), 
+                                        length.out=500))
+
+model <- fit$vstModel
+vs = variogramLine(model$space, dist_vector=dist_grid$spacelag)[,2]
+vt = variogramLine(model$time,  dist_vector=dist_grid$timelag)[,2]
+h = sqrt(dist_grid$spacelag^2 + (model$stAni * as.numeric(dist_grid$timelag))^2)
+vst = variogramLine(model$joint, dist_vector=h)[,2]
+aux <- data.frame(spacelag=dist_grid$spacelag, timelag=dist_grid$timelag, model=(vs + vt + vst))
+aux$timelag <- ordered(aux$timelag, levels = unique(aux$timelag))
+ggplot(aux, aes(x=spacelag, y = model, group = timelag, color = timelag)) + 
+  geom_line() +
+  scale_x_continuous(name = "distancia", limits = c(0,1000)) +
+  scale_y_continuous(name = expression(gamma), limits = c(0,0.8))
+
+
+grid_sp <- spsample(sids, n = 200, type = "regular")
+grid_tm <- seq(ymd('2015-7-1'),ymd('2017-1-1'), by = '3 months')
+grid_tm <- as.POSIXlt(grid_tm)
+grid_ST <- STF(grid_sp, grid_tm)
+# Repetimos el ajuste de kriging
+pred2 <- krigeST(residual~1, data=timeDF, modelList=vgm2, newdata=grid_ST)
+
+# Nuevo ajuste de predicción
+stplot(pred2)
+
+
 
 
