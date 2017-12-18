@@ -260,7 +260,7 @@ maizTM2 <- as.POSIXlt(panel_ajuste$fecha)
 maizDF2 <- panel_ajuste %>% ungroup() %>% dplyr::select(residual)
 timeDF2 <- STIDF(sp=maizSP2, time=maizTM2, data=maizDF2)
 
-vv2 <- variogram(residual~1, timeDF2, tunit="weeks", tlags=0:3)
+vv2 <- variogram(residual~1, timeDF2, cutoff = 225, tunit="weeks", twindow = 100, tlags=0:3)
 write_rds(x = vv2, path = 'out/semivgm_emp_maiz2.rds')
 vv2 <- read_rds(path = 'out/semivgm_emp_maiz2.rds')
 plot(vv2)
