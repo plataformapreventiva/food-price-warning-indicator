@@ -199,7 +199,32 @@ grid_ST <- STF(grid_sp, grid_tm)
 pred <- krigeST(precio~1, data=timeDF, modelList=vgm, newdata=grid_ST)
 
 # Ajuste de predicción
-stplot(pred)
+z = names(pred@data)[1]
+df_pred = data.frame(reshape(as.data.frame(pred)[c(z, "time", "sp.ID")], 
+                        timevar = "time", idvar = "sp.ID", direction = "wide"))[, -1, drop=FALSE]
+x = addAttrToGeom(geometry(pred@sp), df_pred, match.ID = FALSE)
+scales = longlat.scales(pred@sp, scales = list(draw = FALSE), 
+                        xlim = bbox(pred@sp)[1,], ylim = bbox(pred@sp)[2,])
+
+trimDates = function(x) {
+  if (is(x, "ST"))
+    x = index(x@time)
+  it = as.character(x)
+  if (identical(grep("-01$", it), 1:length(it))) # all: day
+    it = sub("-01$", "", it)
+  if (identical(grep("-01$", it), 1:length(it))) # all: month
+    it = sub("-01$", "", it)
+  it
+}
+args = list(x, names.attr = trimDates(pred), as.table = T, 
+            auto.key = list(space = "right"), scales = scales, main = "")
+if (!is.factor(pred[[z]])) {
+  args$cuts = 15
+  args$at = NULL
+}
+if (is(pred@sp, "SpatialPoints"))
+  args$key.space = "right"
+do.call(spplot, args)
 
 
 # El problema con este resultado es la diferencia en las medias para 
@@ -216,7 +241,6 @@ panel_temporal %>%
 # Veamos una gráfica de cuantiles empíricos vs cuantiles normales
 # para analizar qué tanto sentido tiene hacer pooling ajustando
 # media y desviación estándar
-
 panel_ord <- panel_temporal %>%
   group_by(tipo) %>%
   arrange(fecha)
@@ -255,13 +279,15 @@ ggplot(panel_normal, aes(x = q.norm.tot, y = residual)) +
   stat_smooth(method = "lm")
 
 # Calculamos nuevamente el semivariograma empírico
+panel_ajuste$lon <- panel_ajuste$lon + runif(nrow(panel_ajuste), min = 1e-6, max = 9e-6)
+panel_ajuste$lat <- panel_ajuste$lat + runif(nrow(panel_ajuste), min = 1e-6, max = 9e-6)
 maizSP2 <- SpatialPoints(panel_ajuste[,c('lon','lat')],crs(sids))
 maizTM2 <- as.POSIXlt(panel_ajuste$fecha)
 maizDF2 <- panel_ajuste %>% ungroup() %>% dplyr::select(residual)
 timeDF2 <- STIDF(sp=maizSP2, time=maizTM2, data=maizDF2)
 
-vv2 <- variogram(residual~1, timeDF2, cutoff = 225, tunit="weeks", twindow = 100, tlags=0:3)
-write_rds(x = vv2, path = 'out/semivgm_emp_maiz2.rds')
+#vv2 <- variogram(residual~1, timeDF2, cutoff = 1100, tunit="weeks", twindow = 1000, tlags=0:4)
+#write_rds(x = vv2, path = 'out/semivgm_emp_maiz2.rds')
 vv2 <- read_rds(path = 'out/semivgm_emp_maiz2.rds')
 plot(vv2)
 plot(vv2, map=FALSE)
@@ -269,9 +295,9 @@ plot(vv2,wireframe=T)
 
 # Ajustamos nuevamente el semivariograma empírico
 sumMetric <- vgmST("sumMetric", 
-                   space = vgm(psill=0.5,"Gau", range=200, nugget=0.1),
-                   time = vgm(psill=0.5,"Gau", range=200, nugget=0.1), 
-                   joint = vgm(psill=0.5,"Gau", range=200, nugget=0.1),
+                   space = vgm(psill=0.5,"Gau", range=200, nugget=0.2),
+                   time = vgm(psill=0.5,"Gau", range=200, nugget=0.2), 
+                   joint = vgm(psill=0.5,"Gau", range=200, nugget=0.2),
                    nugget = 0.01,
                    stAni=200)
 
@@ -281,32 +307,28 @@ pars.l2 <- c(sill.s = 0, range.s = 10, nugget.s = 0,
             sill.st = 0, range.st = 10, nugget.st = 0,
             anis = 0)
 
-pars.u2 <- c(sill.s = 2, range.s = 200, nugget.s = 2,
-            sill.t = 200, range.t = 60, nugget.t = 2,
-            sill.st = 2, range.st = 1000, nugget.st = 2,
-            anis = 700) 
+pars.u2 <- c(sill.s = 2, range.s = 100, nugget.s = 1,
+            sill.t = 100, range.t = 100, nugget.t = 1,
+            sill.st = 2, range.st = 100, nugget.st = 1,
+            anis = 700)
 
 vgm2 <- fit.StVariogram(vv2,sumMetric,method="L-BFGS-B",lower=pars.l2,upper=pars.u2)
 # Semivariograma ajustado
 plot(vv2,vgm2, map = FALSE)
 plot(vv2, map=FALSE)
-
-
-dat <- data.frame(x = seq(0, 1000, 100), y = seq(0, 1, 0.1))
-ggplot(dat, aes(x = x, y = y)) + 
-  labs(title = expression("Semivariograma gaussiano"), 
-       x = "distancia", y = "semivarianza") +
-  stat_function(fun = gau.variog, args = list(sigma2 = 0.1672587, phi = 200, tau2 = 0), 
-                colour = "green3") 
+extractPar(vgm2)
 
 fit <- list(vst=vv2, vstModel=vgm2)
 toPlot = data.frame(fit$vst)
-ggplot(toPlot, aes(x=dist, y=gamma, color=timelag, group=timelag)) + 
+toPlot2 <- toPlot %>% mutate(timelag = ordered(timelag, levels=unique(toPlot$timelag)))
+ggplot(toPlot2, aes(x=dist, y=gamma, color=timelag, group=timelag)) + 
   geom_point() +
-  geom_line()
-ggplot(toPlot, aes(x=timelag, y=gamma, color=spacelag, group=spacelag)) + 
-  geom_point() +
-  geom_line()
+  geom_line() +
+  scale_x_continuous(name = "distancia", limits = c(0,1100)) +
+  scale_y_continuous(name = expression(gamma), limits = c(0.2,1.42))
+# ggplot(toPlot, aes(x=timelag, y=gamma, color=spacelag, group=spacelag)) + 
+#   geom_point() +
+#   geom_line()
 
 
 dist_grid <- expand.grid(timelag = unique(toPlot$timelag), 
@@ -322,21 +344,19 @@ vst = variogramLine(model$joint, dist_vector=h)[,2]
 aux <- data.frame(spacelag=dist_grid$spacelag, timelag=dist_grid$timelag, model=(vs + vt + vst))
 aux$timelag <- ordered(aux$timelag, levels = unique(aux$timelag))
 ggplot(aux, aes(x=spacelag, y = model, group = timelag, color = timelag)) + 
-  geom_line() +
-  scale_x_continuous(name = "distancia", limits = c(0,1000)) +
-  scale_y_continuous(name = expression(gamma), limits = c(0,0.8))
+  geom_line(position = position_dodge(30)) +
+  scale_x_continuous(name = "distancia", limits = c(0,1100)) +
+  scale_y_continuous(name = expression(gamma), limits = c(0.2,1.42))
 
 
-grid_sp <- spsample(sids, n = 200, type = "regular")
-grid_tm <- seq(ymd('2015-7-1'),ymd('2017-1-1'), by = '3 months')
+grid_sp <- spsample(sids, n = 700, type = "regular")
+grid_sp@coords[,1] + runif(350, min = 1e-6, max = 9e-6)
+grid_sp@coords[,2] + runif(350, min = 1e-6, max = 9e-6)
+grid_tm <- seq(ymd('2015-1-1'),ymd('2017-1-1'), by = '3 months')
 grid_tm <- as.POSIXlt(grid_tm)
 grid_ST <- STF(grid_sp, grid_tm)
 # Repetimos el ajuste de kriging
-pred2 <- krigeST(residual~1, data=timeDF, modelList=vgm2, newdata=grid_ST)
+pred2 <- krigeST(residual~1, data=timeDF2, modelList=vgm2, newdata=grid_ST)
 
 # Nuevo ajuste de predicción
-stplot(pred2)
-
-
-
-
+stplot(pred2, main = "Precio del maíz en el espacio y tiempo")
