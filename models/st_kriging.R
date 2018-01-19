@@ -68,9 +68,10 @@ con <- dbConnect(RPostgres::Postgres(),
 )
 
 query = sprintf("drop table if exists models.%s; create table models.%s as (select * from raw.%s;",
-	pipeline_task,
-	pipeline_task,
-	pipeline_task)
+	#pipeline_task,
+	#pipeline_task,
+	#pipeline_task)
+	"maiz_precios", "maiz_precios", "maiz_precios")
 
 dbGetQuery(con, query)
 
