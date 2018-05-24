@@ -137,7 +137,7 @@ municipal_3 <- municipal_2 %>%
 semanales_3 <- semanales_2 %>%
   filter(precio_frec > 2 & precio_frec < 7 & anio >= 2015 & anio <= 2016) %>%
   mutate(fecha = dmy(fecha)) %>%
-  dplyr::select(fecha, lon, lat, precio=precio_frec) %>%
+  dplyr::select(fecha, lon, lat, precio=precio_frec, id=mercado) %>%
   mutate(tipo = "Central de abastos")
 
 panel_temporal <- bind_rows(municipal_3, semanales_3) %>%
@@ -155,77 +155,6 @@ ggplot(aux, aes(x=grupo, y=precio)) +
 panel_temporal$lon <- panel_temporal$lon + runif(nrow(panel_temporal), min = 1e-6, max = 9e-6)
 panel_temporal$lat <- panel_temporal$lat + runif(nrow(panel_temporal), min = 1e-6, max = 9e-6)
 panel_temporal$fecha <- lubridate::floor_date(panel_temporal$fecha,"day")
-
-maizSP <- SpatialPoints(panel_temporal[,c('lon','lat')],crs(sids))
-maizTM <- as.POSIXlt(panel_temporal$fecha)
-maizDF <- panel_temporal %>% dplyr::select(precio)
-timeDF <- STIDF(sp=maizSP, time=maizTM, data=maizDF)
-
-# vv <- variogram(precio~1, timeDF, tunit="weeks", twindow=40, tlags=0:3)
-# write_rds(x = vv, path = 'out/semivgm_emp_maiz.rds')
-vv <- read_rds(path = 'out/semivgm_emp_maiz.rds')
-plot(vv)
-plot(vv, map=FALSE)
-plot(vv,wireframe=T)
-
-SimplesumMetric <- vgmST("simpleSumMetric",
-                         space = vgm(1,"Sph", 200, 0),
-                         time = vgm(200,"Sph", 200, 0),
-                         joint = vgm(0.1,"Sph", 200, 0), 
-                         nugget=0.3, 
-                         stAni=200)
-
-pars.l <- c(sill.s = 0, range.s = 10, nugget.s = 0,
-            sill.t = 0, range.t = 1, nugget.t = 0,
-            sill.st = 0, range.st = 10, nugget.st = 0,
-            anis = 0)
-
-vgm <- fit.StVariogram(vv, SimplesumMetric, method = "L-BFGS-B",lower=pars.l)
-attr(vgm, "MSE")
-
-# Parámetros ajustados del semivariograma paramétrico
-extractPar(vgm)
-
-# Semivariograma ajustado
-plot(vv,vgm, map = FALSE)
-
-grid_sp <- spsample(sids, n = 500, type = "regular")
-#plot(grid_sp, col = 'dark red', pch = ".")
-
-grid_tm <- seq(ymd('2015-1-1'),ymd('2017-1-1'), by = '3 months')
-grid_tm <- as.POSIXlt(grid_tm)
-grid_ST <- STF(grid_sp, grid_tm)
-
-pred <- krigeST(precio~1, data=timeDF, modelList=vgm, newdata=grid_ST)
-
-# Ajuste de predicción
-z = names(pred@data)[1]
-df_pred = data.frame(reshape(as.data.frame(pred)[c(z, "time", "sp.ID")], 
-                        timevar = "time", idvar = "sp.ID", direction = "wide"))[, -1, drop=FALSE]
-x = addAttrToGeom(geometry(pred@sp), df_pred, match.ID = FALSE)
-scales = longlat.scales(pred@sp, scales = list(draw = FALSE), 
-                        xlim = bbox(pred@sp)[1,], ylim = bbox(pred@sp)[2,])
-
-trimDates = function(x) {
-  if (is(x, "ST"))
-    x = index(x@time)
-  it = as.character(x)
-  if (identical(grep("-01$", it), 1:length(it))) # all: day
-    it = sub("-01$", "", it)
-  if (identical(grep("-01$", it), 1:length(it))) # all: month
-    it = sub("-01$", "", it)
-  it
-}
-args = list(x, names.attr = trimDates(pred), as.table = T, 
-            auto.key = list(space = "right"), scales = scales, main = "")
-if (!is.factor(pred[[z]])) {
-  args$cuts = 15
-  args$at = NULL
-}
-if (is(pred@sp, "SpatialPoints"))
-  args$key.space = "right"
-do.call(spplot, args)
-
 
 # El problema con este resultado es la diferencia en las medias para 
 # precios semanales en central de abstos y precios mensuales a nivel 
