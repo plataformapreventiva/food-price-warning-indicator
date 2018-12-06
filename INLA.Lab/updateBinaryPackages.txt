@@ -1,2 +1,0 @@
-#!/bin/sh
-R -e 'tools::write_PACKAGES(type = "win.binary", latestOnly = FALSE)'
